@@ -56,45 +56,18 @@ export default {
               title: "用户管理",
               icon: "el-icon-platform-eleme",
               url: "userTest",
-              children: [
-                {
-                  id: 1,
-                  title: "角色管理",
-                  icon: "el-icon-user-solid",
-                  url: "roleTest",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          title: "系统管理",
-          icon: "el-icon-setting",
-          children: [
-            {
-              id: 2,
-              title: "用户管理",
-              icon: "el-icon-platform-eleme",
-              url: "userTest",
-              children: [],
+              children:[]
             },
             {
               id: 3,
-              title: "角色管理",
-              icon: "el-icon-user-solid",
-              url: "roleTest",
-              children: [],
-            },
-            {
-              id: 4,
-              title: "演示管理",
-              icon: "el-icon-user-solid",
-              url: "test3",
-              children: [],
+              title: "测试管理",
+              icon: "el-icon-platform-eleme",
+              url: "test1",
+              children:[]
             },
           ],
         },
+
       ],
     };
   },
