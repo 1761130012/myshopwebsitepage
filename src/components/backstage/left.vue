@@ -67,7 +67,21 @@ export default {
             },
           ],
         },
+        {
+          id: 2,
+          title: "商户订单管理",
+          icon: "el-icon-setting",
+          children: [
+            {
+              id: 1,
+              title: "测试管理",
+              icon: "el-icon-platform-eleme",
+              url: "test12",
+              children:[]
+            },
 
+          ],
+        },
       ],
     };
   },
