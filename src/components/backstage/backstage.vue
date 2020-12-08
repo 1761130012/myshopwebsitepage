@@ -1,22 +1,22 @@
 <template>
   <div>
     <el-row >
-      <el-col :span="20" :offset="2">
-        <el-container>
-          <el-header class="backstageHeader" height="70px">
+      <el-col :span="22" :offset="1" class="homeWrap">
+        <el-container style="height:100%" direction="vertical">
+          <el-header class="backstageHeader" height="61px">
             <el-col :span="5" :offset="19">
               <my-top></my-top>
             </el-col>
           </el-header>
           <el-container>
-            <el-aside class="backstageAside" width="230px">
+            <el-aside class="backstageAside" width="210px">
               <my-left @addTable='addTable'></my-left>
             </el-aside>
-            <el-main class="backstageMain" style="height: 550px">
+            <el-main class="backstageMain" style="height: 650px">
               <my-right ref="rightRef"></my-right>
             </el-main>
           </el-container>
-          <el-footer class="backstageFooter" height="100px">
+          <el-footer class="backstageFooter" height="50px">
             <h4>XXX 有限公司</h4>
           </el-footer>
         </el-container>
@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .backstageHeader {
   border-bottom: 1px #e6e6e6 solid;
 }
@@ -55,5 +55,13 @@ export default {
 }
 .backstageFooter {
  border-top: 1px #e6e6e6 solid;
+}
+
+.homeWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /*width: 100%;
+  height: 100%;*/
 }
 </style>

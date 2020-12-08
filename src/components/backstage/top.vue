@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-menu
-       :default-active="activeIndex" 
-       class="el-menu-demo" 
+       :default-active="activeIndex"
+       class="el-menu-demo"
        mode="horizontal"
         @select="handleSelect"
        id="backstagetop"
@@ -33,8 +33,8 @@ export default {
 
 <style >
 #backstagetop{
-    margin-top: 10px;
-    margin-right: -20px;
+    /*margin-top: 10px;
+    margin-right: -20px;*/
 }
 
 </style>
