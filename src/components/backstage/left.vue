@@ -13,7 +13,7 @@
           </template>
           <div v-for="child in menu.children">
             <el-submenu
-              v-if="child.children.length > 0"
+              v-if=" child.children !== undefined && child.children.length > 0"
               :index="menu.id + '_' + child.id"
             >
               <template slot="title"
@@ -52,18 +52,10 @@ export default {
           icon: "el-icon-setting",
           children: [
             {
-              id: 2,
+              id: 1,
               title: "用户管理",
               icon: "el-icon-platform-eleme",
               url: "userTest",
-              children:[]
-            },
-            {
-              id: 3,
-              title: "测试管理",
-              icon: "el-icon-platform-eleme",
-              url: "test1",
-              children:[]
             },
           ],
         },
