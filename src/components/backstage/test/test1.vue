@@ -8,9 +8,17 @@
     export default {
       methods:{
         clickButton(){
+
           this.$axios({
-            url:'test/loginTest',
+            url:'test/setList',
             method:'post',
+            data: JSON.stringify({
+              array:[[1,2,3,4]],
+              name:"张三",
+            } ),
+            headers:{
+              "Content-Type":"application/json;charset=utf-8"
+            },
           }).then((option) => {
             console.log(option.data)
           }).catch((option)=>{
