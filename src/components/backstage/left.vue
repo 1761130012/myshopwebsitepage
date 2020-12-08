@@ -74,9 +74,9 @@ export default {
           children: [
             {
               id: 1,
-              title: "测试管理",
+              title: "商户管理",
               icon: "el-icon-platform-eleme",
-              url: "test12",
+              url: "backShop",
               children:[]
             },
 
