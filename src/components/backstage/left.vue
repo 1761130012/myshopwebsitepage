@@ -53,16 +53,23 @@ export default {
           children: [
             {
               id: 2,
-              title: "用户管理",
-              icon: "el-icon-platform-eleme",
-              url: "userTest",
+              title: "员工管理",
+              icon: "el-icon-s-custom\n",
+              url: "staff",
               children:[]
             },
             {
               id: 3,
-              title: "测试管理",
-              icon: "el-icon-platform-eleme",
-              url: "test1",
+              title: "角色管理",
+              icon: "el-icon-user",
+              url: "role",
+              children:[]
+            },
+            {
+              id: 4,
+              title: "菜单管理",
+              icon: "el-icon-s-unfold",
+              url: "menuItem",
               children:[]
             },
           ],
