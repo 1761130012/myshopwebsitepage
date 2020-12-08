@@ -27,9 +27,9 @@ export default {
       editableTabsValue: "1",
       editableTabs: [
         {
-          title: "Tab 1",
+          title: "仓库管理",
           name: "-1",
-          viewUrl: "test",
+          viewUrl: "test2",
         },
         {
           title: "Tab 2",
