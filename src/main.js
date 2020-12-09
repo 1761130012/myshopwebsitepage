@@ -6,6 +6,7 @@ import BackstageRouter from './routes/backstageRouter.js'
 import DepositRouter from './routes/depositRouter.js'
 import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
+import ar from "element-ui/src/locale/lang/ar";
 //import VueAxios from 'vue-axios'
 //Vue.use(VueAxios,axios);
 
@@ -22,15 +23,17 @@ VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
-
 Vue.use(VueRouter)
 Vue.use(ElementUi)
 
-let vm=new Vue({
+let array=[1,2,3,4];
+let array1=[5,6,7,8];
+array.concat(array1)
+
+let vm = new Vue({
   el: '#app',
-  router:new VueRouter({
-    routes: [
-      BackstageRouter,DepositRouter,IndexRouter]
+  router: new VueRouter({
+    routes: BackstageRouter.concat(DepositRouter).concat(IndexRouter)
   }),
 })
 

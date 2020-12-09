@@ -1,11 +1,11 @@
 import Index from '../components/index/index.vue'
 import IndexChild from '../components/index/indexChild.vue'
-import LeftMenu from '../components/index/userCenter/leftMenu.vue' 
+import LeftMenu from '../components/index/userCenter/leftMenu.vue'
 
-import UserInfo from '../components/index/userCenter/userInfo.vue' 
+import UserInfo from '../components/index/userCenter/userInfo.vue'
 
 
-export default {
+export default [{
     path:'/index',component:Index,alias:'/index',
     children:[
         {path:'child',component:IndexChild},
@@ -14,4 +14,4 @@ export default {
             {path:'userInfo',component:UserInfo}
         ]}
     ]
-}
+}]
