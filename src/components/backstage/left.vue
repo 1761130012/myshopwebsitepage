@@ -104,6 +104,27 @@
 
             ],
           },
+          {
+            id: 3,
+            title: "商户订单管理",
+            icon: "el-icon-setting",
+            children: [
+              {
+                id: 1,
+                title: "商户管理",
+                icon: "el-icon-platform-eleme",
+                url: "backShop",
+                children: []
+              },
+              {
+                id: 2,
+                title: "订单管理",
+                icon: "el-icon-platform-eleme",
+                url: "backOrder",
+                children: []
+              }
+            ],
+          },
         ],
       };
     },
