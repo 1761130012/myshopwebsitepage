@@ -5,6 +5,8 @@ import purchase_record from '../components/backstage/supply_chain/purchase_recor
 import BackShop from '../components/backstage/merchantsOrderSetting/backShop';
 import Role from '../components/backstage/systemSetting/role';
 
+
+
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
   {
@@ -12,17 +14,7 @@ export default [
     children: [
       {
         path: 'right', components: {
-          test: {
-            template: '<h1> this is test </h1>'
-          },
           backShop: BackShop,
-          role: Role,
-          //仓库管理 要改名
-          test2: Test2,
-          //后台登录
-          back_login: backstage_login,
-          // 采购管理
-          purchase_record: purchase_record,
         }
       },
     ]

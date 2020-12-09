@@ -54,56 +54,19 @@
             icon: "el-icon-setting",
             children: [
               {
-                id: 2,
+                id: 1,
                 title: "测试管理",
                 icon: "el-icon-s-custom",
                 url: "backShop",
-                children: []
-              },
-              {
-                id: 3,
-                title: "测试管理",
-                icon: "el-icon-user",
-                url: "role",
-                children: []
-              },
-              {
-                id: 4,
-                title: "菜单管理",
-                icon: "el-icon-s-unfold",
-                url: "menuItem",
-                children: []
-              },
-            ],
-          },
-          {
-            id: 2,
-            title: "供应链管理",
-            icon: "el-icon-setting",
-            children: [
-              {
-                id: 1,
-                title: "仓库管理",
-                icon: "el-icon-platform-eleme",
-                url: "test2",
-                children: []
               }, {
                 id: 2,
-                title: "登录",
-                icon: "el-icon-platform-eleme",
-                url: "back_login",
-                children: []
+                title: "测试管理",
+                icon: "el-icon-s-custom",
+                url: "test1",
               },
-              {
-                id: 3,
-                title: "采购记录",
-                icon: "el-icon-platform-eleme",
-                url: "purchase_record",
-                children: []
-              }
-
             ],
           },
+
         ],
       };
     },

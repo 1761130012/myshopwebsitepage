@@ -18,7 +18,7 @@ export default {
     return {
       leftMenuData: [
         { id: "1a", title: "个人信息", icon: "el-icon-date", url: "/index/leftMenu/userInfo" },
-        { id: "2", title: "我的订单", icon: "el-icon-date", url: "" },
+        { id: "2", title: "我的订单", icon: "el-icon-date", url: "/index/leftMenu/shopCar" },
         { id: "3", title: "商户订单管理", icon: "el-icon-date", url: "" },
         { id: "4", title: "营收统计", icon: "el-icon-date", url: "" },
       ],

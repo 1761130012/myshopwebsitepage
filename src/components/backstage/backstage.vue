@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <el-row >
-      <el-col :span="22" :offset="1" class="homeWrap">
-        <el-container style="height:100%" direction="vertical">
-          <el-header class="backstageHeader" height="61px">
+  <div class="backstage_auto_height"  >
+    <el-row  class="backstage_auto_height" >
+      <el-col :span="22" :offset="1"   class="backstage_auto_height">
+        <el-container class="backstage_auto_height"  direction="vertical">
+          <el-header>
             <el-col :span="5" :offset="19">
               <my-top></my-top>
             </el-col>
           </el-header>
           <el-container>
-            <el-aside class="backstageAside" width="210px">
+            <el-aside width="200px">
               <my-left @addTable='addTable'></my-left>
             </el-aside>
-            <el-main class="backstageMain" style="height: 650px">
+            <el-main>
               <my-right ref="rightRef"></my-right>
             </el-main>
           </el-container>
-          <el-footer class="backstageFooter" height="50px">
+          <el-footer>
             <h4>XXX 有限公司</h4>
           </el-footer>
         </el-container>
@@ -25,41 +25,43 @@
   </div>
 </template>
 <script>
-import Top from "./top";
-import Left from './left';
-import Right from './right'
+  import Top from "./top";
+  import Left from './left';
+  import Right from './right'
 
-export default {
-  methods: {
-    addTable(target){
-      this.$refs.rightRef.addTab(target);
+  export default {
+    methods: {
+      addTable(target) {
+        this.$refs.rightRef.addTab(target);
+      },
     },
-  },
-  components: {
-    myTop: Top,
-    myLeft: Left,
-    myRight:Right,
-  },
-};
+    components: {
+      myTop: Top,
+      myLeft: Left,
+      myRight: Right,
+    },
+  };
 </script>
 
 <style scoped>
-.backstageHeader {
-  border-bottom: 1px #e6e6e6 solid;
-}
-.backstageAside {
-}
-.backstageMain {
-  border-left: 1px #e6e6e6 solid;
-   border-right: 1px #e6e6e6 solid;
-}
-.backstageFooter {
- border-top: 1px #e6e6e6 solid;
-}
+  .backstage_auto_height{
+    height: 100%;
+  }
 
-.homeWrap {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+  .el-header {
+    border-bottom: 1px #e6e6e6 solid;
+  }
+
+  .el-aside {
+  }
+
+  .el-main {
+    border-left: 1px #e6e6e6 solid;
+    border-right: 1px #e6e6e6 solid;
+  }
+
+  .el-footer {
+    border-top: 1px #e6e6e6 solid;
+
+  }
 </style>
