@@ -55,7 +55,7 @@ export default {
               id: 2,
               title: "员工管理",
               icon: "el-icon-s-custom\n",
-              url: "staff",
+              url: "test1",
               children:[]
             },
             {

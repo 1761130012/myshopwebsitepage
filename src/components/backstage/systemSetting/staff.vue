@@ -25,14 +25,14 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="staffonSubmit" size="small">查询</el-button>
+        <el-button type="primary" icon="el-icon-search"  size="small">查询</el-button>
       </el-form-item>
     </el-form>
     <!--    按钮组-->
     <el-row type="flex" justify="end">
-      <el-button type="success" size="small" icon="el-icon-circle-plus-outline" @click="staffadd" >添加</el-button>
-      <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="staffedit">修改</el-button>
-      <el-button type="danger" size="small" icon="el-icon-delete" :disabled="multiple" @click="staffdelete">删除</el-button>
+      <el-button type="success" size="small" icon="el-icon-circle-plus-outline" @click=" staffadd " >添加</el-button>
+      <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="staffUpdate">修改</el-button>
+      <el-button type="danger" size="small" icon="el-icon-delete" :disabled="multiple" @click="staffDelete">删除</el-button>
     </el-row>
     <!--    表格-->
     <el-table
@@ -83,11 +83,11 @@
         min-width="130">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
-            <el-button type="warning" icon="el-icon-edit" @click="staffhandleClick(scope.row)" size="small"
+            <el-button type="warning" icon="el-icon-edit" @click="staffUpdate(scope.row)" size="small"
                        circle></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top-end">
-            <el-button type="danger" size="small" icon="el-icon-delete" circle></el-button>
+            <el-button type="danger" size="small" icon="el-icon-delete" circle @click="staffDelete(scope.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -102,43 +102,43 @@
     </el-row>
 
     <!--    添加/修改-->
-    <el-dialog @close="cancel" :title="title" :visible.sync="staffdialog">
+    <el-dialog :title="title" :visible.sync="staffdialog">
       <el-row :gutter="15">
-        <el-form ref="staffadd" :model="staffformData" :rules="staffaddrules" size="smail"
+        <el-form ref="staffformData" :model="staffformData" :rules="staffaddrules" size="smail"
                  label-width="100px">
           <el-col :span="12">
-            <el-form-item label="登录名" prop="staff_loginname">
-              <el-input v-model="staffformData.staff_loginname" placeholder="请输入登录名" clearable
+            <el-form-item label="登录名" prop="loginname">
+              <el-input v-model="staffformData.loginname" placeholder="请输入登录名" clearable
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="密码" prop="staff_password">
-              <el-input v-model="staffformData.staff_password" placeholder="请输入密码" clearable show-password
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="staffformData.password" placeholder="请输入密码" clearable show-password
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="昵称" prop="staff_name">
-              <el-input v-model="staffformData.staff_name" placeholder="请输入昵称" clearable
+            <el-form-item label="昵称" prop="name">
+              <el-input v-model="staffformData.name" placeholder="请输入昵称" clearable
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Email" prop="staff_email">
-              <el-input v-model="staffformData.staff_email" placeholder="请输入Email" clearable
+            <el-form-item label="Email" prop="email">
+              <el-input v-model="staffformData.email" placeholder="请输入Email" clearable
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系电话" prop="staff_phone">
-              <el-input v-model="staffformData.staff_phone" placeholder="请输入联系电话" clearable
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="staffformData.phone" placeholder="请输入联系电话" clearable
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别" prop="staff_sex">
-              <el-radio-group v-model="staffformData.staff_sex" size="small">
+            <el-form-item label="性别" prop="sex">
+              <el-radio-group v-model="staffformData.sex" size="small">
                 <el-radio v-for="(item, index) in staff_sexOptions" :key="index" :label="item.value"
                           :disabled="item.disabled" border>{{ item.label }}
                 </el-radio>
@@ -155,7 +155,7 @@
         </el-form>
       </el-row>
       <div slot="footer">
-        <el-button @click="staffclose">取 消</el-button>
+        <el-button @click="staffclose('staffformData')">取 消</el-button>
         <el-button type="primary" @click="staffConfirm">确定</el-button>
       </div>
     </el-dialog>
@@ -163,7 +163,11 @@
 </template>
 
 <script>
+
+
 export default {
+
+
   data() {
     return {
       // 非单个禁用
@@ -172,6 +176,8 @@ export default {
       multiple: true,
       // 弹出层标题
       title: "",
+      //选中数组
+      ids: [],
       staffquery: {
         name: "",
         sex: "",
@@ -300,23 +306,47 @@ export default {
       staffpagesize: 5,  //当前显示页数
       staffdialog: false,  //对话框
       staffformData: {
+        staffid:null,
+        loginname: null,
+        password: null,
+        name: null,
+        email: null,
+        phone: null,
+        sex: 0,
+        head_image: null
       },
       staffaddrules: {
-        staff_loginname: [{
+        loginname: [{
           required: true,
           message: '请输入登录名',
           trigger: 'blur'
         }],
-        staff_password: [{
+        password: [{
           required: true,
           message: '请输入密码',
           trigger: 'blur'
         }],
-        staff_name: [{
+        name: [{
           required: true,
           message: '请输入昵称',
           trigger: 'blur'
         }],
+        email: [
+          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+          {
+            type: "email",
+            message: "'请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
+        ],
+        phonenumber: [
+          { required: true, message: "手机号码不能为空", trigger: "blur" },
+          {
+            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+            message: "请输入正确的手机号码",
+            trigger: "blur"
+          }
+        ]
       },
       head_imageAction: 'https://8081/',
       head_imagefileList: [],
@@ -341,24 +371,12 @@ export default {
       this.staffcurrentPage = val;
     },
     // 取消按钮
-    staffclose() {
+    staffclose(name) {
+      console.log("测试")
       this.staffdialog = false;
-      this.reset();
+      this.$refs[name].resetFields();
     },
-    // 表单重置
-    reset() {
-      this.form = {
-        staff_id:"",
-        staff_loginname: '',
-        staff_password: undefined,
-        staff_name: undefined,
-        staff_email: undefined,
-        staff_phone: undefined,
-        staff_sex: 0,
-        head_image: null
-      };
-      this.resetForm("staffformData");
-    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.staffcurrentPage = 1;
@@ -366,57 +384,53 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.userId)
-      this.single = selection.length !== 1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.staffid);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     staffadd() {
-      this.reset();
-      this.open = true;
+      //this.$refs['staffformData'].resetFields();
+      this.staffdialog = true;
       this.title = "添加用户信息";
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const userId = row.userId || this.ids
-      getUser(userId).then(response => {
-        this.form = response.data;
-        this.open = true;
+    staffUpdate(row) {
+      //this.$refs['staffformData'].resetFields();
+       const staffId = row.staffid || this.ids
+        console.log(staffId);
+        this.staffdialog = true;
         this.title = "修改用户信息";
-      });
+
     },
     /** 提交按钮 */
     staffConfirm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["staffformData"].validate(valid => {
         if (valid) {
-          if (this.form.userId != null) {
-            updateUser(this.form).then(response => {
-              this.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
+          if (this.staffformData.staff_id != null) {
+            this.$message({ showClose: true, message: "修改成功", type: "success" });
+              this.staffdialog = false;
+
+
           } else {
-            addUser(this.form).then(response => {
-              this.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
+            this.$message({ showClose: true, message: "新增成功", type: "success" });
+
+              this.staffdialog = false;
+
+
           }
         }
       });
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
-      const userIds = row.userId || this.ids;
-      this.$confirm('是否确认删除用户信息编号为"' + userIds + '"的数据项?', "警告", {
+    staffDelete(row) {
+      const staffIds = row.staffid || this.ids;
+      this.$confirm('是否确认删除用户信息编号为"' + staffIds + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
-        return delUser(userIds);
       }).then(() => {
-        this.getList();
+
         this.msgSuccess("删除成功");
       })
     }
