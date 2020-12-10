@@ -3,7 +3,6 @@ import ElementUi from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueRouter from 'vue-router'
 import BackstageRouter from './routes/backstageRouter.js'
-import DepositRouter from './routes/depositRouter.js'
 import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
 
@@ -26,7 +25,7 @@ Vue.use(ElementUi)
 let vm = new Vue({
   el: '#app',
   router: new VueRouter({
-    routes: BackstageRouter.concat(DepositRouter).concat(IndexRouter)
+    routes: BackstageRouter.concat(IndexRouter)
   }),
 })
 
