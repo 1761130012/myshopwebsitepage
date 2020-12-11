@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import BackstageRouter from './routes/backstageRouter.js'
 import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
+import echarts from "echarts/dist/echarts.js"
 
 //所有axios的默认请求地址
 axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
@@ -12,6 +13,7 @@ axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
 //axios.defaults.withCredentials = true
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios
+Vue.prototype.$echarts = echarts
 
 //解决重复点击 路由报错
 const originalPush = VueRouter.prototype.push

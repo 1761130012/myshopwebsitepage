@@ -12,6 +12,7 @@
             <span>{{ menu.title }}</span>
           </template>
           <div v-for="child in menu.children">
+
             <el-submenu
               v-if="child.children !==undefined && child.children.length > 0"
               :index="menu.id + '_' + child.id"
@@ -27,6 +28,7 @@
                 ><i :class="child1.icon"></i> {{ child1.title }}
                 </el-menu-item>
               </div>
+
             </el-submenu>
             <el-menu-item
               v-else
@@ -57,12 +59,7 @@
                 id: 1,
                 title: "测试管理",
                 icon: "el-icon-s-custom",
-                url: "backShop",
-              }, {
-                id: 2,
-                title: "测试管理",
-                icon: "el-icon-s-custom",
-                url: "test1",
+                url: "staffRole",
               },
             ],
           },
