@@ -1,26 +1,22 @@
 <template>
   <div>
-    <el-row>
-      <el-col :span="9">
-        <div id="market_goodsType" style="width: 400px;height: 500px"></div>
-      </el-col>
-      <el-col :span="9" :offset="1">
-        <div  v-show="showGoods" style="width: 400px;height: 500px">
-        <div id="market_goods" style="width: 400px;height: 500px"></div>
-        </div>
-      </el-col>
-    </el-row>
+    <el-col :span="11">
+      <div id="income_goodsType_chart" style="width: 400px;height: 500px"></div>
+    </el-col>
+    <el-col :span="11" :offset="1">
+      <div style="width: 100px;height: 500%">
+        <div id="income_goods_chart" style="width: 400px;height: 500px"></div>
+      </div>
+    </el-col>
   </div>
 </template>
 
 <script>
-  // 绘制图表
   export default {
     data() {
       return {
         goodsTypeChart: undefined,
         goodsChart: undefined,
-        showGoods: false,
         goodsType: {
           legendData: [],
           seriesData: [],//格式 {value:'',name:''}
@@ -29,24 +25,25 @@
           legendData: [],
           seriesData: [],//格式 {value:'',name:''}
         }
-      }
+      };
     },
     created() {
-      let data = this.getGoodsTypeData();
+      let data = this.getData();
       this.goodsType.legendData = data.legend;
       this.goodsType.seriesData = data.series;
     },
-    mounted() {
-      // 基于准备好的dom，初始化echarts实例
-      this.goodsTypeChart = this.$echarts.init(document.getElementById('market_goodsType'));
-      this.goodsChart = this.$echarts.init(document.getElementById("market_goods"));
+    mounted: function () {
+      //进行 初始化
+      this.goodsTypeChart = this.$echarts.init(document.getElementById("income_goodsType_chart"));
+      this.goodsChart = this.$echarts.init(document.getElementById("income_goods_chart"))
+
       this.setGoodsTypeChartOption();
       this.setGoodsChartOption();
 
       let _this = this;
       _this.goodsTypeChart.on('click', function (param) {
         _this.showGoods = true;
-        let data = _this.getGoodsTypeData();
+        let data = _this.getData();
         _this.goods.legendData = data.legend;
         _this.goods.seriesData = data.series;
         _this.setGoodsChartOption();
@@ -121,7 +118,7 @@
           ]
         });
       },
-      getGoodsTypeData() {
+      getData() {
         let legend = ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
         let series = [
           {value: 335, name: '直接访问', id: 1},

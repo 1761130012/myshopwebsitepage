@@ -13,6 +13,7 @@
         <el-table
           :data="tableData"
           border
+          highlight-current-row
           @row-click="roleClickMethod"
         >
           <el-table-column
@@ -38,7 +39,7 @@
           class="filter-tree"
           :data="menuData"
           :props="defaultProps"
-          node-key="id"
+          node-key="menuId"
           highlight-current
           show-checkbox
           ref="tree">
@@ -49,78 +50,88 @@
 </template>
 
 <script>
+  import main from "../../../main"
+
   export default {
     data() {
       return {
-        tableData: [
-          {
-            roleId: '1',
-            name: '管理员',
-            remark: '不知道'
-          }, {
-            roleId: '2',
-            name: '老板',
-            remark: '不知道'
-          }, {
-            roleId: '3',
-            name: '经理',
-            remark: '不知道'
-          },
-        ],
-        menuData: [
-          {
-            id: 1,
-            name: '一级 1',
-            children: [{
-              id: 4,
-              name: '二级 1-1',
-              children: [{
-                id: 9,
-                name: '三级 1-1-1'
-              }, {
-                id: 10,
-                name: '三级 1-1-2'
-              }]
-            }]
-          },
-          {
-            id: 2,
-            name: '一级 1',
-            children: [{
-              id: 3,
-              name: '二级 1-1',
-              children: [{
-                id: 8,
-                name: '三级 1-1-1'
-              }, {
-                id: 11,
-                name: '三级 1-1-2'
-              }]
-            }]
-          },
-        ],
+        tableData: undefined,
+        menuData: undefined,
         defaultProps: {
           children: 'children',
           label: 'name'
-        }
+        },
+        selectRoleId: undefined,
       }
     },
+    created() {
+      this.getRoleData();
+      this.getMenuData();
+    },
     methods: {
-      roleClickMethod(row, column) {
-        console.log(row)
+      getRoleData() {
+        let _this = this;
+        this.$axios({
+          url: 'role/queryAll',
+          methods: "get",
+        }).then((option) => {
+          _this.tableData = option.data;
+        })
+      },
+      getMenuData() {
 
+        let _this = this;
+        this.$axios({
+          url: 'menu/queryAll',
+          methods: "get",
+        }).then((option) => {
+          _this.menuData = option.data;
+        })
+      },
+      getMenuIdsByRoleId: async function (roleId) {
+        let menuIds = undefined;
+        await this.$axios({
+          url: 'menu/queryMenuIdsByRoleId',
+          method: "get",
+          params: {roleId: roleId},
+        }).then((option) => {
+          menuIds = option.data;
+        })
+        return menuIds;
+      },
+      roleClickMethod: async function (row, column) {
+        this.selectRoleId = row.roleId;
+
+        let arrayIds = await this.getMenuIdsByRoleId(row.roleId);
         //进行 模拟后台响应
-        this.$refs.tree.setCheckedKeys([1, 11]);
+        console.log(arrayIds)
+        if (arrayIds !== undefined && arrayIds.length > 0) {
+          console.log(arrayIds)
+          this.$refs.tree.setCheckedKeys(arrayIds);
+        } else {
+          this.$refs.tree.setCheckedKeys([]);
+        }
       },
       getHalfAndCheckedKeys() {
         let tree = this.$refs.tree;
+        let menus = tree.getCheckedKeys().concat(tree.getHalfCheckedKeys());
+        this.$axios({
+          url: 'role/updateRoleMenuId',
+          method: "post",
+          data: JSON.stringify({roleId: this.selectRoleId, menus: menus}),
+          headers: {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+        }).then((option) => {
+          if (option.data === true) {
+            this.$message.success("授权成功！")
+          } else {
+            this.$message.error("授权失败！")
+          }
 
-        //获取 选中的 key
-        console.log(tree.getCheckedKeys());
-        //获取 半选中的 key
-        console.log(tree.getHalfCheckedKeys())
-        //进行拼装
-        console.log(tree.getCheckedKeys().concat(tree.getHalfCheckedKeys())  )
+        }).catch((option) => {
+          this.$message.error("错误！" + option)
+        })
       },
     },
   }

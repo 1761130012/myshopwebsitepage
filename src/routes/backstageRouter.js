@@ -8,6 +8,10 @@ import StaffRole from '../components/backstage/systemSetting/staffRole';
 
 import Power from '../components/backstage/systemSetting/power';
 import Market from '../components/backstage/statistics/market';
+import Income from '../components/backstage/statistics/income';
+import AprShop from '../components/backstage/approval/aprShop';
+import TestPay from '../components/backstage/testPay';
+
 
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
@@ -20,6 +24,9 @@ export default [
           power: Power,
           staffRole:StaffRole,
           market:Market,
+          income:Income,
+          aprShop:AprShop,
+          pay:TestPay,
         }
       },
     ]

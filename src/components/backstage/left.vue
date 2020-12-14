@@ -59,7 +59,7 @@
                 id: 1,
                 title: "测试管理",
                 icon: "el-icon-s-custom",
-                url: "staffRole",
+                url: "power",
               },
             ],
           },
