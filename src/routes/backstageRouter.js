@@ -4,7 +4,9 @@ import backstage_login from '../components/backstage/login/backstage_login';
 import purchase_record from '../components/backstage/supply_chain/purchase_record';
 import BackShop from '../components/backstage/merchantsOrderSetting/backShop';
 import BackOrder from '../components/backstage/merchantsOrderSetting/backOrder';
-import Role from '../components/backstage/systemSetting/role';
+import Role from '../components/backstage/systemSetting/role/index';
+import Staff from '../components/backstage/systemSetting/staff/index';
+import MenuItem from '../components/backstage/systemSetting/menuItem/index';
 
 
 export default [
@@ -21,8 +23,12 @@ export default [
           backShop: BackShop,
           //订单管理
           backOrder: BackOrder,
-
+          //员工管理
+          staff:Staff,
+          //角色管理
           role: Role,
+          //菜单管理
+          menuItem:MenuItem,
           //仓库管理 要改名
           test2: Test2,
           //后台登录

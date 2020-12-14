@@ -55,14 +55,14 @@
             children: [
               {
                 id: 2,
-                title: "测试管理",
+                title: "员工管理",
                 icon: "el-icon-s-custom",
-                url: "backShop",
+                url: "staff",
                 children: []
               },
               {
                 id: 3,
-                title: "测试管理",
+                title: "角色管理",
                 icon: "el-icon-user",
                 url: "role",
                 children: []
@@ -73,7 +73,7 @@
                 icon: "el-icon-s-unfold",
                 url: "menuItem",
                 children: []
-              },
+              }
             ],
           },
           {
