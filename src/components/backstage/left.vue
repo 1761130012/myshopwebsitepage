@@ -54,7 +54,7 @@
             icon: "el-icon-setting",
             children: [
               {
-                id: 2,
+                id: 1,
                 title: "员工管理",
                 icon: "el-icon-s-custom",
                 url: "staff",

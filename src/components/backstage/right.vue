@@ -44,7 +44,7 @@
     },
     methods: {
       addTab(target) {
-        let flag = this.editableTabs.some((tab) => tab.name === target.id);
+        let flag = this.editableTabs.some((tab) => tab.name+"" === target.id+"");
         if (!flag) {
           this.editableTabs.push({
             title: target.title,
