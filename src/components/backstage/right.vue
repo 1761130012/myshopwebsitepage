@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="loadingtext">
     <el-tabs
       v-model="editableTabsValue"
       type="card"
@@ -18,58 +18,60 @@
   </div>
 </template>
 <script>
-export default {
-  created() {
-    this.$router.push("/backstage/right/");
-  },
-  data() {
-    return {
-      editableTabsValue: "1",
-      editableTabs: [
-        {
-          title: "仓库管理",
-          name: "-1",
-          viewUrl: "test2",
-        },
-        {
-          title: "Tab 2",
-          name: "-2",
-          viewUrl: "test",
-        },
-      ],
-      tabIndex: 2,
-    };
-  },
-  methods: {
-    addTab(target) {
-      let flag = this.editableTabs.some((tab) => tab.name == target.id);
-      if (!flag) {
-        this.editableTabs.push({
-          title: target.title,
-          name: target.id + "",
-          icon: target.icon,
-          viewUrl: target.url,
-        });
-      }
-      this.editableTabsValue = target.id + "";
-    },
-    removeTab(targetName) {
-      let tabs = this.editableTabs;
-      let activeName = this.editableTabsValue;
-      if (activeName === targetName) {
-        tabs.forEach((tab, index) => {
-          if (tab.name === targetName) {
-            let nextTab = tabs[index + 1] || tabs[index - 1];
-            if (nextTab) {
-              activeName = nextTab.name;
-            }
-          }
-        });
-      }
 
-      this.editableTabsValue = activeName;
-      this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+
+  export default {
+    created() {
+      this.$router.push("/backstage/right/");
     },
-  },
-};
+    data() {
+      return {
+        editableTabsValue: "1",
+        editableTabs: [
+          {
+            title: "仓库管理",
+            name: "-1",
+            viewUrl: "test2",
+          },
+          {
+            title: "Tab 2",
+            name: "-2",
+            viewUrl: "test",
+          },
+        ],
+        tabIndex: 2,
+      };
+    },
+    methods: {
+      addTab(target) {
+        let flag = this.editableTabs.some((tab) => tab.name === target.id);
+        if (!flag) {
+          this.editableTabs.push({
+            title: target.title,
+            name: target.id + "",
+            icon: target.icon,
+            viewUrl: target.url,
+          });
+        }
+        this.editableTabsValue = target.id + "";
+      },
+      removeTab(targetName) {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+              }
+            }
+          });
+        }
+
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+      },
+    },
+  };
 </script>
