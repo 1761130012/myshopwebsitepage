@@ -32,7 +32,7 @@
 
     <!--    表格.slice((queryParams.pageNum-1)*queryParams.pageSize,queryParams.pageNum*queryParams.pageSize)"-->
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange" @row-click="clickRow"
-              ref="moviesTable" border>
+              ref="moviesTable">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="用户ID" align="center" prop="staffId"/>
       <el-table-column label="用户账号" align="center" prop="loginName"/>

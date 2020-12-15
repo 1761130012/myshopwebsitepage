@@ -51,7 +51,6 @@
       @selection-change="handleSelectionChange"
       @row-click="clickRow"
       ref="moviesTable"
-      border
       style="width: 100%" header-align="center">
       <el-table-column
         type="selection"
