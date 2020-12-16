@@ -23,12 +23,7 @@
         <el-button type="primary" icon="el-icon-search" @click="getData" size="small">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="success" size="small" icon="el-icon-circle-plus-outline">
-          添加
-        </el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="danger" size="small" icon="el-icon-delete">删除</el-button>
+        <el-button type="danger" size="small" @click="del" icon="el-icon-delete">批量删除</el-button>
       </el-form-item>
     </el-form>
 
@@ -38,7 +33,7 @@
       row-key="id"
       border
       lazy
-      :load="load"
+      @selection-change="handleSelectionChange"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
         type="selection"
@@ -46,13 +41,13 @@
         min-width="80">
       </el-table-column>
       <el-table-column
-        prop="order_id"
+        prop="orderId"
         label="订单id"
         align="center"
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="user_id"
+        prop="userVo.name"
         label="用户姓名"
         align="center"
         min-width="100">
@@ -60,20 +55,27 @@
       <el-table-column
         prop="time"
         min-width="100"
+        sortable
         align="center"
         label="订单时间">
       </el-table-column>
       <el-table-column
         prop="money"
+        sortable
         label="订单总金额"
         align="center"
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="state"
         min-width="100"
         align="center"
         label="物流状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.state==0">未发货</span>
+          <span v-if="scope.row.state==1">已发货</span>
+          <span v-if="scope.row.state==2">到达商户</span>
+          <span v-if="scope.row.state==3">已收货</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="remark"
@@ -81,139 +83,173 @@
         align="center"
         label="备注">
       </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        min-width="150">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" content="发货" placement="top-start">
+            <el-popconfirm title="确定发货吗？" @confirm="update(scope.row.orderId)">
+              <el-button type="warning" slot="reference" icon="el-icon-edit" size="small"></el-button>
+            </el-popconfirm>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+            <el-popconfirm title="确定删除吗？" @confirm="delpinlun(scope.row.orderId)">
+              <el-button type="danger" slot="reference" icon="el-icon-delete" size="small"></el-button>
+            </el-popconfirm>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="查看详情" placement="top-start">
+            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)" size="small"></el-button>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页-->
     <el-pagination
+      align="center"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[5, 10, 20, 40]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="orderList.length">  <!--//这是显示总共有多少数据，-->
+      :total="total">
     </el-pagination>
+
+    <my-select ref="selectRef"></my-select>
   </div>
 </template>
 
 <script>
+  import Select from "./backOrder/select";
+
   export default {
     name: "backOrder",
     methods: {
+
       getData: function () {
-        //在数组的新的方法里面，使用this获取data中的数据  获取不到得
-        //在外层定义变量接收
-        var order = [];
-        this.orderList = this.orderList2;
-        var oname2 = this.oname;
-        var ostate2 = this.ostate;
-        //数据查询
-        //将满足查询条件的数据保留,不满足的删除
-        this.orderList.forEach(function (item, index) {
-          //条件
-          if (item.user_id.indexOf(oname2) != -1) {
-            if (item.state.indexOf(ostate2) != -1) {
-              order.push(item);
-            }
-          }
-        })
+        var _this = this;
+        console.log("刷新")
+        var params = new URLSearchParams();
+        params.append("page", _this.currentPage);
+        params.append("rows", _this.pagesize);
+        params.append("name", _this.oname);
+        params.append("state", _this.ostate);
+        this.$axios.post("/order/selectOrderVo",params).then(function (result) {  //成功  执行then里面的方法
+          _this.orderList = result.data.records;
+          _this.total = result.data.total;
 
-        this.orderList = order;
+        }).catch(function () { //失败 执行catch方法
+        });
+      },
+      delpinlun(id) {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("id", id);
+
+        this.$axios.post("/order/deleteOrderVo", params).then(function (result) {  //成功  执行then里面的方法
+
+          _this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+
+          _this.getData();  //删除操作做完，刷新数据
+
+        }).catch(function (error) { //失败 执行catch方法
+          this.$message.error("删除失败");
+        });
 
       },
-      // 初始页currentPage、初始每页数据数pagesize和数据data
-      handleSizeChange: function (size) {
-        this.pagesize = size;
-        console.log(this.pagesize) //每页下拉显示数据
+      update(id) {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("orderId", id);
+        params.append("state",1)
+        this.$axios.post("/order/updateOrderVo", params).then(function (result) {  //成功  执行then里面的方法
+
+          _this.$message({
+            message: '发货成功',
+            type: 'success'
+          });
+
+          _this.getData();  //删除操作做完，刷新数据
+
+        }).catch(function (error) { //失败 执行catch方法
+          this.$message.error("发货失败");
+        });
       },
-      handleCurrentChange: function (currentPage) {
-        this.currentPage = currentPage;
-        console.log(this.currentPage) //点击第几页
+      handleSizeChange(val) {
+        this.pagesize = val;
+        this.getData();
       },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getData();
+      },
+      del() {
+        var _this = this;
+        const length = this.multipleSelection.length;
+
+        for (let i = 0; i < length; i++) {
+          var params = new URLSearchParams();
+          params.append("id", _this.multipleSelection[i]);
+          this.$axios.post("/order/deleteOrderVo", params).then(function (result) {  //成功  执行then里面的方法
+
+            _this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+
+            _this.getData();  //删除操作做完，刷新数据
+
+          }).catch(function (error) { //失败 执行catch方法
+            this.$message.error("删除失败");
+          });
+        }
+      },
+      //操作多选
+      handleSelectionChange(val) {
+        this.multipleSelection = val.map(item => item.orderId);
+        console.log(this.multipleSelection)
+      },
+      details(id) {
+        this.$refs.selectRef.getData(id);
+      }
     },
     data() {
       return {
         currentPage: 1, //初始页
         pagesize: 5,  //  每页的数据
+        total: 0, //总页数
         oname: "",
         ostate: "",
+        multipleSelection: [],//多选的数据
         options: [
           {
-            value: '未发货',
+            value: '0',
             label: '未发货'
           }, {
-            value: '已发货',
+            value: '1',
             label: '已发货'
           }, {
-            value: '到达商户',
+            value: '2',
             label: '到达商户'
           }, {
-            value: '已收货',
+            value: '3',
             label: '已收货'
           }
         ],
-        orderList: [
-          {
-            order_id: 1,
-            user_id: "谭洋",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "未发货"
-          }, {
-            order_id: 2,
-            user_id: "周涛",
-            time: '2016-05-02',
-            money: 300,
-            remark: "",
-            state: "已发货"
-          }, {
-            order_id: 3,
-            user_id: "赵明",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "到达商户"
-          }, {
-            order_id: 4,
-            user_id: "刘洋",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "已收货"
-          }
-        ],
-        orderList2: [
-          {
-            order_id: 1,
-            user_id: "谭洋",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "未发货"
-          }, {
-            order_id: 2,
-            user_id: "周涛",
-            time: '2016-05-02',
-            money: 300,
-            remark: "",
-            state: "已发货"
-          }, {
-            order_id: 3,
-            user_id: "赵明",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "到达商户"
-          }, {
-            order_id: 4,
-            user_id: "刘洋",
-            time: '2016-05-02',
-            money: 200,
-            remark: "",
-            state: "已收货"
-          }
-        ],
+        orderList: [],
       }
+    }
+    ,
+    components: {
+      mySelect: Select
+    }
+    ,
+    created: function () {
+      this.getData();
     }
   }
 </script>

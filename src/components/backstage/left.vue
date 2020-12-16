@@ -49,59 +49,37 @@
       return {
         menuData: [
           {
-            id: 1,
-            title: "系统管理",
-            icon: "el-icon-setting",
-            children: [
-              {
-                id: 2,
-                title: "测试管理",
-                icon: "el-icon-s-custom",
-                url: "backShop",
-                children: []
-              },
-              {
-                id: 3,
-                title: "测试管理",
-                icon: "el-icon-user",
-                url: "role",
-                children: []
-              },
-              {
-                id: 4,
-                title: "菜单管理",
-                icon: "el-icon-s-unfold",
-                url: "menuItem",
-                children: []
-              },
-            ],
-          },
-          {
             id: 2,
             title: "供应链管理",
             icon: "el-icon-setting",
             children: [
               {
-                id: 1,
+                id: 34,
                 title: "仓库管理",
                 icon: "el-icon-platform-eleme",
                 url: "test2",
                 children: []
               }, {
-                id: 2,
+                id: 35,
                 title: "登录",
                 icon: "el-icon-platform-eleme",
                 url: "back_login",
                 children: []
               },
               {
-                id: 3,
+                id: 36,
                 title: "采购记录",
                 icon: "el-icon-platform-eleme",
                 url: "purchase_record",
                 children: []
-              }
-
+              },
+              {
+                id: 44,
+                title: "供应商管理",
+                icon: "el-icon-platform-eleme",
+                url: "supplier",
+                children: []
+              },
             ],
           },
           {
@@ -110,17 +88,23 @@
             icon: "el-icon-setting",
             children: [
               {
-                id: 1,
+                id: 37,
                 title: "商户管理",
                 icon: "el-icon-platform-eleme",
                 url: "backShop",
                 children: []
               },
               {
-                id: 2,
+                id: 38,
                 title: "订单管理",
                 icon: "el-icon-platform-eleme",
                 url: "backOrder",
+                children: []
+              },{
+                id: 39,
+                title: "测试",
+                icon: "el-icon-platform-eleme",
+                url: "text",
                 children: []
               }
             ],
