@@ -7,30 +7,30 @@
         :label="item.title"
         :name="item.url"
       >
-      <router-view/>
+        <router-view/>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      leftMenuData: [
-        { id: "1a", title: "个人信息", icon: "el-icon-date", url: "/index/leftMenu/userInfo" },
-        { id: "2", title: "我的订单", icon: "el-icon-date", url: "/index/leftMenu/shopCar" },
-        { id: "3", title: "商户订单管理", icon: "el-icon-date", url: "" },
-        { id: "4", title: "营收统计", icon: "el-icon-date", url: "" },
-      ],
-    };
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab.name);
-      this.$router.push(tab.name);
+  export default {
+    data() {
+      return {
+        leftMenuData: [
+          {id: "1", title: "个人信息", icon: "el-icon-date", url: "/index/leftMenu/userInfo"},
+          {id: "2", title: "我的订单", icon: "el-icon-date", url: "/index/leftMenu/shopCar"},
+          {id: "3", title: "商户订单管理", icon: "el-icon-date", url: ""},
+          {id: "4", title: "商户营收统计", icon: "el-icon-date", url: "/index/leftMenu/shopIncome"},
+        ],
+      };
     },
-  },
-};
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab.name);
+        this.$router.push(tab.name);
+      },
+    },
+  };
 </script>
 <style>
 </style>

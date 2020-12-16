@@ -26,11 +26,10 @@
           购物车
         </el-badge>
       </el-menu-item>
-      <el-menu-item index="4" @click=" $router.push('/index/leftMenu') " style='margin-left:100px'
+      <el-menu-item index="4" @click=" $router.push('/index/userInfoLeftMenu') " style='margin-left:100px'
       ><i class="el-icon-user-solid"></i>
         <span>个人中心</span>
-      </el-menu-item
-      >
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

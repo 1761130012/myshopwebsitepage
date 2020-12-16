@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: 20px">
     <el-row>
       <el-col :span="20" :offset="2">
         <my-top-menu></my-top-menu>

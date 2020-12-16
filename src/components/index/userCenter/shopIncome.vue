@@ -1,15 +1,11 @@
 <template>
-<div>
-  <h1>菜单管理</h1>
-</div>
+  <div>
+    <!-- 加载问题 -->
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+  export default {}
 </script>
-
 <style scoped>
-
 </style>
