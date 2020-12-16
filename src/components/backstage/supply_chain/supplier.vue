@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>商户订单管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>供应链管理</el-breadcrumb-item>
+      <el-breadcrumb-item>供应商管理</el-breadcrumb-item>
     </el-breadcrumb>
     <hr>
-    <!--    查询表单-->
+    <!--        查询表单-->
     <el-form :inline="true" class="demo-form-inline">
-      <el-form-item label="店铺名">
-        <el-input v-model="dname" placeholder="请输入店铺名"></el-input>
+      <el-form-item label="供应商名姓名：">
+        <el-input v-model="sname" placeholder="请输入供应商名姓名"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="getData" size="small">查询</el-button>
@@ -21,58 +21,60 @@
       <el-form-item>
         <el-button type="danger" size="small" @click="del" icon="el-icon-delete">批量删除</el-button>
       </el-form-item>
+
     </el-form>
+
     <el-table border
+              :data="supplierList"
               style="width: 100%;" header-align="center"
-              :data="shopList"
               @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
         align="center"
-        min-width="80">
+        min-width="70"
+      >
       </el-table-column>
       <el-table-column
-        v-if="false"
-        prop="shopId"
+        prop="supId"
         align="center"
-        label="店铺id"
+        label="供应商id"
         min-width="100">
       </el-table-column>
       <el-table-column
         prop="name"
         align="center"
-        label="商铺名"
-        min-width="100">
+        label="供应商名"
+        min-width="150">
       </el-table-column>
       <el-table-column
         prop="joinName"
         align="center"
         label="联系人"
-        min-width="100">
+        min-width="120">
       </el-table-column>
       <el-table-column
         prop="phone"
         align="center"
         label="联系电话"
-        min-width="100">
+        min-width="150">
       </el-table-column>
-      <el-table-column label="店铺地址" align="center">
+      <el-table-column label="供应商地址" align="center">
         <el-table-column
           align="center"
-          prop="provinceVo.name"
+          prop="gpsProvinceVo.name"
           label="省份"
           min-width="100">
         </el-table-column>
         <el-table-column
           align="center"
-          prop="cityVo.name"
+          prop="gpsCityVo.name"
           label="市区"
           min-width="100">
         </el-table-column>
         <el-table-column
           align="center"
-          prop="areaVo.name"
+          prop="gpsAreaVo.name"
           label="区县"
           min-width="100">
         </el-table-column>
@@ -84,33 +86,22 @@
         </el-table-column>
       </el-table-column>
       <el-table-column
-        align="center"
-        label="店铺状态"
-        min-width="100">
-        <template slot-scope="scope">
-          <span v-if="scope.row.state==0">未审核</span>
-          <span v-if="scope.row.state==1">通过</span>
-          <span v-if="scope.row.state==2">驳回</span>
-          <span v-if="scope.row.state==3">上线</span>
-          <span v-if="scope.row.state==4">下线</span>
-        </template>
-      </el-table-column>
-      <el-table-column
         label="操作"
         align="center"
-        min-width="100">
+        min-width="150">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
             <el-button type="warning" icon="el-icon-edit" @click=" update(scope.row)" size="small"></el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-            <el-popconfirm title="确定删除吗？" @confirm="delpinlun(scope.row.shopId)">
+            <el-popconfirm title="确定删除吗？" @confirm="delpinlun(scope.row.supId)">
               <el-button type="danger" slot="reference" icon="el-icon-delete" size="small"></el-button>
             </el-popconfirm>
           </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
+
 
     <!-- 分页-->
     <el-pagination
@@ -130,16 +121,25 @@
     <my-update ref="updateRef" @getData="getData"></my-update>
 
   </div>
-
-
 </template>
 
 <script>
-  import Add from "./backShop/add";
-  import Update from "./backShop/update";
+
+  import Add from "./supplier/add";
+  import Update from "./supplier/update";
 
   export default {
-    name: "backShop",
+    name: "supplier",
+    data() {
+      return {
+        currentPage: 1, //初始页
+        pagesize: 5,  //  每页的数据
+        total: 0, //总页数
+        sname: "",
+        supplierList: [],
+        multipleSelection: [],//多选的数据
+      }
+    },
     methods: {
       addMethod() {
         this.$refs.addRef.dialogVisible2 = true
@@ -159,7 +159,7 @@
         for (let i = 0; i < length; i++) {
           var params = new URLSearchParams();
           params.append("id", _this.multipleSelection[i]);
-          this.$axios.post("/shop/deleteShopVo", params).then(function (result) {  //成功  执行then里面的方法
+          this.$axios.post("/supplier/deleteSupplierVo", params).then(function (result) {  //成功  执行then里面的方法
 
             _this.$message({
               message: '删除成功',
@@ -175,7 +175,7 @@
       },
       //操作多选
       handleSelectionChange(val) {
-        this.multipleSelection = val.map(item => item.shopId);
+        this.multipleSelection = val.map(item => item.supId);
         console.log(this.multipleSelection)
       },
       getData: function () {
@@ -184,9 +184,9 @@
         var params = new URLSearchParams();
         params.append("page", _this.currentPage);
         params.append("rows", _this.pagesize);
-        params.append("name", _this.dname);
-        this.$axios.post("/shop/selectShopVo", params).then(function (result) {  //成功  执行then里面的方法
-          _this.shopList = result.data.records;
+        params.append("name", _this.sname);
+        this.$axios.post("/supplier/selectSupplierVo", params).then(function (result) {  //成功  执行then里面的方法
+          _this.supplierList = result.data.records;
           _this.total = result.data.total;
         }).catch(function () { //失败 执行catch方法
         });
@@ -196,7 +196,7 @@
         var params = new URLSearchParams();
         params.append("id", id);
 
-        this.$axios.post("/shop/deleteShopVo", params).then(function (result) {  //成功  执行then里面的方法
+        this.$axios.post("/supplier/deleteSupplierVo", params).then(function (result) {  //成功  执行then里面的方法
 
           _this.$message({
             message: '删除成功',
@@ -212,16 +212,6 @@
       },
       update(list) {
         this.$refs.updateRef.getData(list);
-      }
-    },
-    data() {
-      return {
-        currentPage: 1, //初始页
-        pagesize: 5,  //  每页的数据
-        total: 0, //总页数
-        dname: "",
-        shopList: [],
-        multipleSelection: [],//多选的数据
       }
     },
     components: {
