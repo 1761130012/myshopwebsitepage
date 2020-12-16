@@ -185,6 +185,7 @@ export default {
       })
     },
 
+
     //表格单击
     clickRow(row) {
       this.$refs.moviesTable.toggleRowSelection(row);
@@ -288,7 +289,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete: function (row) {
       let userIds = row.roleId || this.ids;
-      this.$confirm('是否确认删除用户信息编号为"' + userIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除角色信息编号为"' + userIds + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -308,7 +309,7 @@ export default {
             this.getList();
           }
         )
-      })
+      }).catch(()=>{})
     }
 
   },

@@ -66,7 +66,7 @@
     </el-pagination>
 
     <!-- 添加或修改用户信息对话框 :rules="rules"-->
-    <el-dialog :title="title" :visible.sync="open" append-to-body @close="cancel">
+    <el-dialog :title="title" :visible.sync="open" append-to-body>
       <el-row :gutter="15">
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-col :span="12">
@@ -378,7 +378,7 @@ export default {
             this.getList();
           }
         )
-      })
+      }).catch(()=>{})
     }
 
   },
