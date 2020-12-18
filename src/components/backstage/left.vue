@@ -1,39 +1,40 @@
 <template>
-  <div>
+  <div class="loadingtext">
     <el-menu
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
     >
       <div v-for="menu in menuData">
-        <el-submenu :index="menu.id + ''">
+        <el-submenu :index="menu.menuId + ''">
           <template slot="title">
             <i :class="menu.icon"></i>
-            <span>{{ menu.title }}</span>
+            <span>{{ menu.name }}</span>
           </template>
           <div v-for="child in menu.children">
             <el-submenu
               v-if="child.children !==undefined && child.children.length > 0"
-              :index="menu.id + '_' + child.id"
+              :index="menu.menuId + '_' + child.menuId"
             >
               <template slot="title"
-              ><i :class="child.icon"></i> {{ child.title }}
+              ><i :class="child.icon"></i> {{ child.name }}
               </template
               >
               <div v-for="child1 in child.children">
                 <el-menu-item
-                  :index="menu.id + '_' + child.id + '_' + child1.id"
+                  :index="menu.menuId + '_' + child.menuId + '_' + child1.menuId"
                   @click="addTable(child1)"
-                ><i :class="child1.icon"></i> {{ child1.title }}
+                ><i :class="child1.icon"></i> {{ child1.name }}
                 </el-menu-item>
               </div>
+
             </el-submenu>
             <el-menu-item
               v-else
-              :index="menu.id + '_' + child.id"
+              :index="menu.menuId + '_' + child.menuId"
               @click="addTable(child)"
             >
-              <i :class="child.icon"></i> {{ child.title }}
+              <i :class="child.icon"></i> {{ child.name }}
             </el-menu-item
             >
           </div>
@@ -49,70 +50,45 @@
       return {
         menuData: [
           {
-            id: 2,
-            title: "供应链管理",
-            icon: "el-icon-setting",
-            children: [
+            "menuId": 1,
+            "name": "系统管理",
+            "url": null,
+            "type": "M",
+            "perms": "system",
+            "icon": "el-icon-setting",
+            "parentId": 0,
+            "children": [
               {
-                id: 34,
-                title: "仓库管理",
-                icon: "el-icon-platform-eleme",
-                url: "test2",
-                children: []
-              }, {
-                id: 35,
-                title: "登录",
-                icon: "el-icon-platform-eleme",
-                url: "back_login",
-                children: []
-              },
-              {
-                id: 36,
-                title: "采购记录",
-                icon: "el-icon-platform-eleme",
-                url: "purchase_record",
-                children: []
-              },
-              {
-                id: 44,
-                title: "供应商管理",
-                icon: "el-icon-platform-eleme",
-                url: "supplier",
-                children: []
+                "menuId": 2,
+                "name": "测试管理",
+                "url": "staff",
+                "type": "C",
+                "perms": "system:staff",
+                "icon": null,
+                "parentId": 1,
+                "children": []
               },
             ],
           },
-          {
-            id: 3,
-            title: "商户订单管理",
-            icon: "el-icon-setting",
-            children: [
-              {
-                id: 37,
-                title: "商户管理",
-                icon: "el-icon-platform-eleme",
-                url: "backShop",
-                children: []
-              },
-              {
-                id: 38,
-                title: "订单管理",
-                icon: "el-icon-platform-eleme",
-                url: "backOrder",
-                children: []
-              },{
-                id: 39,
-                title: "测试",
-                icon: "el-icon-platform-eleme",
-                url: "text",
-                children: []
-              }
-            ],
-          },
+
         ],
       };
     },
+    created() {
+      //连接数据库
+      //this.getData();
+    },
     methods: {
+      getData() {
+        let _this = this;
+        this.$axios({
+          url: "menu/queryAllMenuNotButton",
+          method: 'get',
+          params: {loginName: sessionStorage.getItem("loginName")},
+        }).then((option) => {
+          _this.menuData = option.data;
+        })
+      },
       addTable(target) {
         this.$emit("addTable", target);
       },

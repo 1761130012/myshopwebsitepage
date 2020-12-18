@@ -1,8 +1,8 @@
 <template>
-  <div class="backstage_auto_height"  >
-    <el-row  class="backstage_auto_height" >
-      <el-col :span="22" :offset="1"   class="backstage_auto_height">
-        <el-container class="backstage_auto_height"  direction="vertical">
+  <div class="backstage_auto_height">
+    <el-row class="backstage_auto_height">
+      <el-col :span="22" :offset="1" class="backstage_auto_height">
+        <el-container class="backstage_auto_height" direction="vertical">
           <el-header>
             <el-col :span="5" :offset="19">
               <my-top></my-top>
@@ -30,6 +30,12 @@
   import Right from './right'
 
   export default {
+    created() {
+      //进行 设置登录 名
+      sessionStorage.setItem("loginName", "staff_admin");
+      //进行 设置 权限
+      this.$store.commit("setMenuPerms", "staff_admin");
+    },
     methods: {
       addTable(target) {
         this.$refs.rightRef.addTab(target);
@@ -44,7 +50,7 @@
 </script>
 
 <style scoped>
-  .backstage_auto_height{
+  .backstage_auto_height {
     height: 100%;
   }
 

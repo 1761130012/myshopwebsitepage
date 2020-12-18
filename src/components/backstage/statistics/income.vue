@@ -1,5 +1,31 @@
 <template>
   <div>
+    <el-row :gutter="20">
+      <el-col :span="2" :offset="4">
+        <el-select v-model="selectDateId" placeholder="请选择">
+          <el-option
+            v-for="item in selectDateType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="5">
+        <el-date-picker
+          v-model="startDateValue"
+          :type="dateType"
+          placeholder="起始时间">
+        </el-date-picker>
+      </el-col>
+      <el-col :span="5">
+        <el-date-picker
+          v-model="endDateValue"
+          :type="dateType"
+          placeholder="结束时间">
+        </el-date-picker>
+      </el-col>
+    </el-row>
     <el-col :span="11">
       <div id="income_goodsType_chart" style="width: 400px;height: 500px"></div>
     </el-col>
@@ -15,6 +41,17 @@
   export default {
     data() {
       return {
+        //时间控件
+        startDateValue: undefined,
+        endDateValue: undefined,
+        dateType: "date",
+        selectDateId: '1',
+        selectDateType: [
+          {value: "1", label: "日", typeName: 'date'},
+          {value: "2", label: "月", typeName: 'month'},
+          {value: "3", label: "年", typeName: 'year'},
+        ],
+
         goodsTypeChart: undefined,
         goodsChart: undefined,
         goodsType: {
@@ -31,6 +68,12 @@
       let data = this.getData();
       this.goodsType.legendData = data.legend;
       this.goodsType.seriesData = data.series;
+    },
+    watch: {
+      selectDateId(newValue) {
+        let dateType = this.selectDateType.find((item) => newValue === item.value)
+        this.dateType = dateType.typeName;
+      },
     },
     mounted: function () {
       //进行 初始化
