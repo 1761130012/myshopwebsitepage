@@ -68,6 +68,10 @@
       this.getRoleData();
       this.getMenuData();
     },
+    mounted() {
+      let aa = this.$store.getters.getMenuPerms("system");
+      console.log(aa)
+    },
     methods: {
       getRoleData() {
         let _this = this;
@@ -79,7 +83,6 @@
         })
       },
       getMenuData() {
-
         let _this = this;
         this.$axios({
           url: 'menu/queryAll',
@@ -104,10 +107,19 @@
 
         let arrayIds = await this.getMenuIdsByRoleId(row.roleId);
         //进行 模拟后台响应
-        console.log(arrayIds)
         if (arrayIds !== undefined && arrayIds.length > 0) {
-          console.log(arrayIds)
-          this.$refs.tree.setCheckedKeys(arrayIds);
+          let _this = this;
+
+          //进行 全不选
+          _this.$refs.tree.setCheckedKeys([]);
+
+          arrayIds.forEach((item) => {
+            let node = _this.$refs.tree.getNode(item);
+            if (node.isLeaf) {
+              _this.$refs.tree.setChecked(node, true)
+            }
+          })
+
         } else {
           this.$refs.tree.setCheckedKeys([]);
         }

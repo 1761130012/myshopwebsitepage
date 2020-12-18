@@ -11,22 +11,13 @@
         <span style="font-size: 20px">兴盛优选</span>
       </el-menu-item
       >
-      <el-menu-item index="2" style='margin-left:350px'
-      >
-        <el-input
-          placeholder="请输入内容"
-          prefix-icon="el-icon-search"
-        >
-        </el-input>
-      </el-menu-item
-      >
-      <el-menu-item index="3" style='margin-left:100px'>
+      <el-menu-item index="3" style='margin-left:700px'>
         <i class="el-icon-shopping-cart-full"></i>
         <el-badge :value="shoppingCartNumber" :max="99">
           购物车
         </el-badge>
       </el-menu-item>
-      <el-menu-item index="4" @click=" $router.push('/index/userInfoLeftMenu') " style='margin-left:100px'
+      <el-menu-item index="4" @click=" $router.push('/index/userInfo/show') " style='margin-left:100px'
       ><i class="el-icon-user-solid"></i>
         <span>个人中心</span>
       </el-menu-item>

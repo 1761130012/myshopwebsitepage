@@ -16,8 +16,8 @@ axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
-
-//Vue.prototype.$loading = Loading;
+moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn');
+Vue.prototype.$moment = moment;//赋值使用
 
 //解决重复点击 路由报错
 const originalPush = VueRouter.prototype.push
@@ -27,12 +27,38 @@ VueRouter.prototype.push = function push(location) {
 
 Vue.use(VueRouter)
 Vue.use(ElementUi)
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+    perms: [],
+  },
+  getters: {
+    //可以进行 传参数
+    getMenuPerms: (state) => (perms) => {
+      return state.perms.find((item) => item === perms) !== undefined;
+    }
+  },
+  mutations: {
+    setMenuPerms(state, loginName) {
+      //连接数据库 进行 查询
+      axios({
+        url: "menu/queryPower",
+        method: 'get',
+        params: {loginName: loginName},
+      }).then((option) => {
+        state.perms = option.data;
+      })
+    }
+  },
+})
 
 let vm = new Vue({
   el: '#app',
   router: new VueRouter({
     routes: BackstageRouter.concat(IndexRouter)
   }),
+  store: store,
 })
 
 // //默认
@@ -90,7 +116,7 @@ axios.interceptors.response.use((response) => {
   return response;
 }, function (error) {
   hideFullScreenLoading();
-  this.$message.error("加载失败！")
+  _this.$message.error("加载失败！")
   return Promise.reject(error);
 })
 
