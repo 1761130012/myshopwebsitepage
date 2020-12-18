@@ -49,6 +49,40 @@
       return {
         menuData: [
           {
+            id: 1,
+            title: "系统管理",
+            icon: "el-icon-setting",
+            children: [
+              {
+                id: 30,
+                title: "员工管理",
+                icon: "el-icon-platform-eleme",
+                url: "staff",
+                children: []
+              }, {
+                id: 31,
+                title: "角色管理",
+                icon: "el-icon-platform-eleme",
+                url: "role",
+                children: []
+              },
+              {
+                id: 32,
+                title: "菜单管理",
+                icon: "el-icon-platform-eleme",
+                url: "menu",
+                children: []
+              },
+              {
+                id: 33,
+                title: "用户管理",
+                icon: "el-icon-platform-eleme",
+                url: "user",
+                children: []
+              },
+            ],
+          },
+          {
             id: 2,
             title: "供应链管理",
             icon: "el-icon-setting",

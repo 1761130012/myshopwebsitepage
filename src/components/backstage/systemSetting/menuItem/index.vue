@@ -8,7 +8,7 @@
     <!--    查询表单-->
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
       <el-form-item label="菜单名">
-        <el-input v-model="queryParams.name" placeholder="菜单名" clearable></el-input>
+        <el-input v-model="queryParams.name" placeholder="请输入菜单名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">查询</el-button>
@@ -94,8 +94,8 @@
         </el-row>
       </el-form>
       <div slot="footer">
-        <el-button @click="cancel">取消</el-button>
         <el-button type="primary" @click="submitForm">确定</el-button>
+        <el-button @click="cancel">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -107,7 +107,7 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
-  name: "staff",
+  name: "menuItem",
   components: { Treeselect },
   data() {
     return {
@@ -316,7 +316,7 @@ export default {
           type: 'warning'
       }).then(()=>{
         let params=new URLSearchParams();
-        params.append("id",row.menuId)
+        params.append("id",row.menuId);
           this.$axios.post('menu/delete',params).then(response =>{
             this.$message({showClose: true, message: "删除成功", type: "success"});
             this.getList();

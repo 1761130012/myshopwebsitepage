@@ -7,6 +7,9 @@ import BackOrder from '../components/backstage/merchantsOrderSetting/backOrder';
 import Role from '../components/backstage/systemSetting/role';
 import testRole from '../components/backstage/test/test';
 import Supplier from '../components/backstage/supply_chain/supplier';
+import User from '../components/backstage/systemSetting/user/index';
+import Staff from '../components/backstage/systemSetting/staff/index';
+import Menu from '../components/backstage/systemSetting/menuItem/index';
 
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
@@ -26,7 +29,10 @@ export default [
           backShop: BackShop,
           //订单管理
           backOrder: BackOrder,
-
+          staff:Staff,
+          menu:Menu,
+          user:User,
+          //角色管理
           role: Role,
           //仓库管理 要改名
           test2: Test2,

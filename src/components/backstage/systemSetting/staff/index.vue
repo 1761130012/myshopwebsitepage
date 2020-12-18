@@ -8,7 +8,7 @@
     <!--    查询表单-->
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
       <el-form-item label="员工名">
-        <el-input v-model="queryParams.name" placeholder="员工名" clearable></el-input>
+        <el-input v-model="queryParams.name" placeholder="请输入员工名" clearable></el-input>
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="queryParams.sex" placeholder="请选择性别" clearable>
@@ -23,10 +23,12 @@
         <el-button type="primary" icon="el-icon-plus" size="small" @click="handleAdd">新增</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="warning" icon="el-icon-edit" size="small" :disabled="single" @click="handleUpdate">修改</el-button>
+        <el-button type="warning" icon="el-icon-edit" size="small" :disabled="single" @click="handleUpdate">修改
+        </el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger" icon="el-icon-delete" size="small" :disabled="multiple" @click="handleDelete">删除</el-button>
+        <el-button type="danger" icon="el-icon-delete" size="small" :disabled="multiple" @click="handleDelete">删除
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -56,13 +58,13 @@
 
     <!-- 分页-->
     <el-pagination background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="pageNum"
-      :page-sizes="[5, 10, 20, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">  <!--//这是显示总共有多少数据，-->
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="pageNum"
+                   :page-sizes="[5, 10, 20, 40]"
+                   :page-size="pageSize"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="total">  <!--//这是显示总共有多少数据，-->
     </el-pagination>
 
     <!-- 添加或修改用户信息对话框 :rules="rules"-->
@@ -109,12 +111,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <!--  报错
-             <el-form-item label="头像上传" prop="head_image">
-                          <el-upload ref="head_image" disabled>
-                            <el-button size="small"  type="primary" icon="el-icon-upload">点击上传</el-button>
-                          </el-upload>
-                        </el-form-item>-->
+            <el-form-item label="头像上传" prop="head_image">
+              <el-upload ref="head_image" action="">
+                <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+              </el-upload>
+            </el-form-item>
           </el-col>
         </el-form>
       </el-row>
@@ -252,7 +253,7 @@ export default {
     },
     //格式
     formatter(row, column) {
-      return row.sex === 0? "男" : "女";
+      return row.sex === 0 ? "男" : "女";
     },
 
     //表格单击
@@ -298,7 +299,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.open = true;
-      this.title = "添加用户信息";
+      this.title = "添加员工信息";
     },
 
     /** 修改按钮操作 */
@@ -311,7 +312,7 @@ export default {
         .then(function (response) {
           _this.form = response.data;
           _this.open = true;
-          _this.title = "修改用户信息";
+          _this.title = "修改员工信息";
         })
     },
     /** 提交按钮 */
@@ -373,12 +374,13 @@ export default {
           headers: {
             "Content-Type": "application/json;charset=utf-8"
           },
-        }).then((option) =>{
-          this.$message({showClose: true, message: "删除成功", type: "success"});
+        }).then((option) => {
+            this.$message({showClose: true, message: "删除成功", type: "success"});
             this.getList();
           }
         )
-      }).catch(()=>{})
+      }).catch(() => {
+      })
     }
 
   },
