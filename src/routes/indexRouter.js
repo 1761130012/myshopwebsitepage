@@ -2,6 +2,7 @@ import Index from '../components/index/index.vue'
 import IndexChild from '../components/index/indexChild.vue'
 import LeftMenu from '../components/index/userCenter/leftMenu.vue'
 
+import ShopInfo from '../components/index/userCenter/shopInfo.vue'
 import UserInfo from '../components/index/userCenter/userInfo.vue'
 import ShopCar from '../components/index/userCenter/shopCar'
 import ShopIncome from '../components/index/userCenter/shopIncome'
@@ -17,6 +18,7 @@ export default [{
     {
       path: 'userInfoLeftMenu', component: LeftMenu,
       children: [
+        {path: 'shopInfo', component: ShopInfo},
         {path: 'userInfo', component: UserInfo},
         {path: 'shopCar', component: ShopCar},
         {path: 'shopIncome', component: ShopIncome},

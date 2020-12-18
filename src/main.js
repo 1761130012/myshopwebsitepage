@@ -16,6 +16,7 @@ axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
+
 //Vue.prototype.$loading = Loading;
 
 //解决重复点击 路由报错
