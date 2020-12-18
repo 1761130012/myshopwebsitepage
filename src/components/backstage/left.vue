@@ -82,20 +82,20 @@
             icon: "el-icon-setting",
             children: [
               {
-                id: 1,
+                id: 100,
                 title: "仓库管理",
                 icon: "el-icon-platform-eleme",
                 url: "test2",
                 children: []
               }, {
-                id: 2,
+                id: 101,
                 title: "登录",
                 icon: "el-icon-platform-eleme",
                 url: "back_login",
                 children: []
               },
               {
-                id: 3,
+                id: 102 ,
                 title: "采购记录",
                 icon: "el-icon-platform-eleme",
                 url: "purchase_record",
