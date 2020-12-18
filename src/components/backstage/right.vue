@@ -44,16 +44,16 @@
     },
     methods: {
       addTab(target) {
-        let flag = this.editableTabs.some((tab) => tab.name+"" === target.id+"");
+        let flag = this.editableTabs.some((tab) => tab.name === target.id);
         if (!flag) {
           this.editableTabs.push({
-            title: target.title,
-            name: target.id + "",
+            title: target.name,
+            name: target.menuId + "",
             icon: target.icon,
             viewUrl: target.url,
           });
         }
-        this.editableTabsValue = target.id + "";
+        this.editableTabsValue = target.menuId + "";
       },
       removeTab(targetName) {
         let tabs = this.editableTabs;

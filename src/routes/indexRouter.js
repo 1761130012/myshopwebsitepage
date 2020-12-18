@@ -6,29 +6,24 @@ import UserInfo from '../components/index/userCenter/userInfo.vue'
 import ShopCar from '../components/index/userCenter/shopCar'
 import ShopIncome from '../components/index/userCenter/shopIncome'
 import ShoInfoPage from '../components/index/shoInfoPage'
-import PayMoney from '../components/index/payMoney'
+import PayMoney from '../components/index/payPage/indexPay'
 
 export default [{
-  path: '/index', component: Index, alias: '/',
+  path: '/index', component: Index, alias: '/index',
   children: [
+    {path: 'indexPage', component: IndexChild,},
     {
-      path: 'indexPage', component: IndexChild,
-    },
-    {
-      path: 'userInfoLeftMenu', component: LeftMenu,
+      path: 'userInfo',
+      component: LeftMenu,
       children: [
-        {path: 'userInfo', component: UserInfo},
-        {path: 'shopCar', component: ShopCar},
-        {path: 'shopIncome', component: ShopIncome},
+        {
+          path: 'show', components: {
+            shopIncome: ShopIncome,
+          }
+        }
       ]
     },
-    {
-      //需要传递 参数
-      path: 'shoInfoPage/:goodsId', component: ShoInfoPage,
-    },
-    {
-      //需要传递 参数
-      path: 'payMoney', component: PayMoney,
-    },
+    {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
+    {path: 'payMoney/:orderId', component: PayMoney,},
   ]
 }]
