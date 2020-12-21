@@ -21,7 +21,7 @@
     <!--    表格-->
     <el-table v-loading="loading" :data="menuList" row-key="menuId"
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true" width="160"></el-table-column>
+      <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true" width="160" ></el-table-column>
       <el-table-column prop="icon" label="图标" align="center" width="200">
         <template slot-scope="scope">
           <i :class="scope.row.icon"></i>

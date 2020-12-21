@@ -19,6 +19,7 @@ export default [{
         {
           path: 'show', components: {
             shopIncome: ShopIncome,
+            userInfo:UserInfo,
           }
         }
       ]
