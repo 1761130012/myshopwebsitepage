@@ -9,7 +9,7 @@ import ShoInfoPage from '../components/index/shoInfoPage'
 import PayMoney from '../components/index/payPage/indexPay'
 
 export default [{
-  path: '/index', component: Index, alias: '/index',
+  path: '/index', component: Index, alias: '/',
   children: [
     {path: 'indexPage', component: IndexChild,},
     {

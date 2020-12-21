@@ -6,15 +6,12 @@
           <div class="grzlbt ml40">我的资料 <a href="javascript:" @click="openUpdateModal" style="color:#1baeae;margin-left: 600px;">更改个人信息</a>
           </div>
           <div class="info_item ml40"><span>昵称</span><span
-            >newbee-mall</span>
+            >{{ userList.name }}</span>
           </div>
           <div class="info_item ml40"><span>手机号</span><span
-            >newbee-mall</span>
+            >{{ userList.phone }}</span>
           </div>
           <div class="info_item ml40"><span>密码</span><span>******</span>
-          </div>
-          <div class="info_item ml40"><span>个性签名</span><span
-            >newbee-mall</span>
           </div>
           <div class="info_item ml40"><span>收货信息</span><span>newbee-mall</span>
           </div>
@@ -56,12 +53,23 @@ export default {
         dizhi:undefined
       }
     }
+  },created() {
+    this.getlist();
   },
   methods:{
     openUpdateModal(){
       this.open = true;
       this.title = "修改个人信息";
     },
+    getlist(){
+      let _this = this;
+      let params = new URLSearchParams();
+      params.append("id", 1);
+      this.$axios.post("user/querybyid", params)
+        .then(function (response) {
+          _this.userList = response.data;
+        })
+    }
   }
 }
 </script>
