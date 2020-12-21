@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import ElementUi from 'element-ui'
 import {Loading} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -9,7 +10,7 @@ import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
 import moment from 'moment'
-import Vuex from 'vuex'
+
 
 //所有axios的默认请求地址
 axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
@@ -118,7 +119,6 @@ axios.interceptors.response.use((response) => {
   return response;
 }, function (error) {
   hideFullScreenLoading();
-  _this.$message.error("加载失败！")
   return Promise.reject(error);
 })
 

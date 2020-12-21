@@ -34,13 +34,14 @@
               @selection-change="handleSelectionChange"
               @row-click="clickRow" ref="moviesTable"
               style="width: 100%" header-align="center">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="userId" label="用户序号" min-width="80"></el-table-column>
-      <el-table-column prop="loginName" label="用户账号" min-width="120"></el-table-column>
-      <el-table-column prop="password" label="用户密码" min-width="120"></el-table-column>
-      <el-table-column prop="name" label="用户名" min-width="120"></el-table-column>
-      <el-table-column prop="phone" label="电话号码" min-width="120"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" min-width="120"></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column prop="userId" label="用户序号" min-width="80" align="center"></el-table-column>
+      <el-table-column prop="loginName" label="用户账号" min-width="110" align="center"></el-table-column>
+      <el-table-column prop="password" label="用户密码" min-width="110" align="center"></el-table-column>
+      <el-table-column prop="name" label="用户名" min-width="110" align="center"></el-table-column>
+      <el-table-column prop="phone" label="电话号码" min-width="110" align="center"></el-table-column>
+      <el-table-column prop="dizhi" label="收货地址" min-width="140" align="center" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" min-width="80" align="center"></el-table-column>
       <el-table-column label="操作" min-width="130">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
@@ -91,6 +92,12 @@
                         :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="收货地址" prop="phone">
+              <el-input v-model="form.dizhi" placeholder="请输入收货地址" clearable
+                        :style="{width: '100%'}"></el-input>
+            </el-form-item>
+          </el-col>
         </el-form>
       </el-row>
       <div slot="footer" class="dialog-footer">
@@ -136,7 +143,8 @@ export default {
         loginName: undefined,
         password: undefined,
         name: undefined,
-        phone: undefined
+        phone: undefined,
+        dizhi:undefined
       },
       // 表单校验
       rules: {
@@ -235,7 +243,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.open = true;
-      this.title = "添加员工信息";
+      this.title = "添加用户信息";
     },
 
     /** 修改按钮操作 */
@@ -248,7 +256,7 @@ export default {
         .then(function (response) {
           _this.form = response.data;
           _this.open = true;
-          _this.title = "修改员工信息";
+          _this.title = "修改用户信息";
         })
     },
     /** 提交按钮 */
@@ -269,6 +277,7 @@ export default {
               this.$message({showClose: true, message: "修改成功", type: "success"});
               this.reset();
               this.open = false;
+              this.pageNum =this.pageNum;
               this.getList();
             });
           } else {
@@ -282,6 +291,7 @@ export default {
               this.$message({showClose: true, message: "新增成功", type: "success"});
               this.reset()
               this.open = false;
+              this.pageNum = this.total%this.pageSize==0?this.total/this.pageSize:Math.floor(this.total/this.pageSize)+1;
               this.getList();
             });
           }
@@ -306,6 +316,18 @@ export default {
         )
       }).catch(() => {
       })
+    }
+  },
+  watch: {
+    total (newValue, oldValue) {
+      // alert("我total变了")
+      console.log(newValue,oldValue)
+      if(newValue != 0 &&  newValue == ((this.pageNum -1)*this.pageSize)){
+        // alert("我执行了！！！")
+        // console.log("watch生效了")
+        this.pageNum -= 1;
+        this.getList();
+      }
     }
   }
 }

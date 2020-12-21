@@ -12,7 +12,7 @@
         :name="item.name"
       >
         <span slot="label"><i :class="item.icon"></i> {{ item.title }}</span>
-        <router-view :name="item.viewUrl"></router-view>
+        <router-view v-if="isRouterActive" :name="item.viewUrl"></router-view>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -21,30 +21,33 @@
 
 
   export default {
+    provide() {
+      return {
+        reload: this.reload,
+      }
+    },
     created() {
       this.$router.push("/backstage/right/");
     },
     data() {
       return {
         editableTabsValue: "1",
-        editableTabs: [
-          {
-            title: "仓库管理",
-            name: "-1",
-            viewUrl: "test2",
-          },
-          {
-            title: "Tab 2",
-            name: "-2",
-            viewUrl: "test",
-          },
-        ],
+        editableTabs: [],
         tabIndex: 2,
+
+        //路由
+        isRouterActive: true,
       };
     },
     methods: {
+      reload() {
+        this.isRouterActive = false;
+        this.$nextTick(() => {
+          this.isRouterActive = true;
+        })
+      },
       addTab(target) {
-        let flag = this.editableTabs.some((tab) => tab.name === target.id);
+        let flag = this.editableTabs.some((tab) => tab.name + "" === target.menuId + "");
         if (!flag) {
           this.editableTabs.push({
             title: target.name,
