@@ -105,7 +105,6 @@ export default {
   showFullScreenLoading,
   hideFullScreenLoading
 }
-let _this = this;
 //进行 匹配 拦截器  加效果
 axios.interceptors.request.use((request) => {
   showFullScreenLoading(".loadingtext");// loadingtext class right.vue
@@ -119,7 +118,6 @@ axios.interceptors.response.use((response) => {
   return response;
 }, function (error) {
   hideFullScreenLoading();
-  _this.$message.error("加载失败！")
   return Promise.reject(error);
 })
 
