@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 import ElementUi from 'element-ui'
+import {Loading} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueRouter from 'vue-router'
 import BackstageRouter from './routes/backstageRouter.js'
@@ -8,8 +8,6 @@ import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
-import moment from 'moment'
-
 
 //所有axios的默认请求地址
 axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
@@ -105,7 +103,7 @@ export default {
   showFullScreenLoading,
   hideFullScreenLoading
 }
-let _this = this;
+
 //进行 匹配 拦截器  加效果
 axios.interceptors.request.use((request) => {
   showFullScreenLoading(".loadingtext");// loadingtext class right.vue
@@ -113,7 +111,6 @@ axios.interceptors.request.use((request) => {
 }, function (error) {
   return Promise.reject(error);
 })
-
 axios.interceptors.response.use((response) => {
   hideFullScreenLoading();
   return response;
