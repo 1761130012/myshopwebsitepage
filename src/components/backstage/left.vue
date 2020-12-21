@@ -100,7 +100,13 @@
                 icon: "el-icon-platform-eleme",
                 url: "purchase_record",
                 children: []
-              }
+              },{
+                id: 103 ,
+                title: "采购审批",
+                icon: "el-icon-platform-eleme",
+                url: "purchase_examine",
+                children: []
+              },
 
             ],
           },

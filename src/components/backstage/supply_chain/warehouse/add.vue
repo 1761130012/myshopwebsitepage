@@ -1,11 +1,10 @@
 <template>
   <div>
-    <el-dialog :title="title" :visible.sync="warehouseVisible">
+    <el-dialog :title="title" :visible.sync="warehouseVisible"   :before-close="handleClose">
       <el-form :model="form" label-width="100px" :rules="rules" ref="form">
         <el-form-item label="仓库名称" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-
         <el-form-item label="仓库驻地" prop="areaId">
           <el-select @change="cityList()" v-model="select.select1" placeholder="请选择">
             <el-option v-for="p in provinceVo" :key="p.provinceId" :label="p.name" :value="p.provinceId"></el-option>
@@ -148,6 +147,7 @@
         this.areaVo = [];
         this.$refs.form.resetFields();
       },
+      //获取市的方法
       cityList() {
         var _this = this;
         // this.select.select1
@@ -162,6 +162,7 @@
           _this.cityVo = result.data;
         })
       },
+      //获取县的方法
       areaList() {
         var _this = this;
         _this.$axios({
@@ -172,6 +173,14 @@
           _this.select.select3 = "";
           _this.areaVo = result.data;
         })
+      },
+      //关闭
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
       },
     }
   }
