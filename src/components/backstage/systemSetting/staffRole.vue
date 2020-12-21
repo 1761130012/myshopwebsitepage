@@ -6,6 +6,14 @@
       </el-col>
     </el-row>
     <el-divider></el-divider>
+    <el-row>
+      <el-col :span="4">
+        <el-input v-model="value" placeholder="关键字"></el-input>
+      </el-col>
+      <el-col :span="2">
+        <el-button @click="getAllStaff" type="primary"><i class="el-icon-search"></i>查询</el-button>
+      </el-col>
+    </el-row>
     <el-row style="margin-top: 20px">
       <!-- 左边所有用户 -->
       <el-col :span="12">
@@ -13,8 +21,8 @@
           :data="staffData"
           border
           highlight-current-row
-          @row-click="staffClickMethod"
           ref="staffTable"
+          @row-click="staffClickMethod"
         >
           <el-table-column
             prop="staffId"
@@ -71,6 +79,19 @@
         </el-table>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="12">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[5, 10, 20]"
+          :page-size="size"
+          layout="sizes, prev, pager, next"
+          :total="total">
+        </el-pagination>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -81,62 +102,74 @@
     data() {
       return {
         staffData: [],
+        currentPage: 1,
+        size: 5,
+        total: 0,
+        value: "",
+
         roleData: [],
-        selectStaffId: undefined,
+        selectStaffId: undefined,//选中的 员工Id
         multipleSelection: [],//数据结构 {row} 行
+        selectRolesId: [],
       };
     },
     created() {
-      this.staffData = this.getAllStaff();
-      this.roleData = this.getAllRole();
+      this.getAllStaff();
+      this.getAllRole();
     },
-
+    watch: {
+      currentPage() {
+        this.getAllStaff();
+      },
+      size() {
+        this.getAllStaff();
+      },
+      selectStaffId: async function () {
+        //更改
+        await this.getSelectRoleByStaffId();
+        //进行 选中
+        await this.setCheckedRoleByRole();
+      },
+    },
     methods: {
       getAllStaff() {
-        return [
-          {
-            staffId: 1,
-            loginName: "admin",
-            name: "XXX",
-            phone: "12345",
-            createTime: "2020-12-10",
+        let _this = this
+        this.$axios({
+          url: 'staff/queryAllPageVo',
+          method: 'get',
+          params: {
+            current: _this.currentPage,
+            size: _this.size,
+            value: _this.value,
           },
-          {
-            staffId: 2,
-            loginName: "zhagns",
-            name: "XXX",
-            phone: "12345",
-            createTime: "2020-12-10",
-          },
-        ];
+        }).then((option) => {
+          _this.staffData = option.data.records;
+        })
       },
       getAllRole() {
-        return [
-          {
-            roleId: '1',
-            name: '管理员',
-            remark: '不知道'
-          }, {
-            roleId: '2',
-            name: '老板',
-            remark: '不知道'
-          }, {
-            roleId: '3',
-            name: '经理',
-            remark: '不知道'
-          }
-        ];
+        let _this = this;
+        this.$axios.get("role/queryAll").then((option) => {
+          _this.roleData = option.data;
+        })
       },
-      //根据 用户id 获取 角色 id
-      getRoleIdDataByStaffId(staffId) {
-        return [this.roleData[0], this.roleData[1]];
+      handleSizeChange(val) {
+        this.size = val;
       },
-      staffClickMethod(row) {
-        //更改
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
+      getSelectRoleByStaffId: async function () {
+        let _this = this;
+        await this.$axios({
+          url: "role/queryRoleVoByStaffId",
+          method: 'get',
+          params: {staffId: this.selectStaffId},
+        }).then((option) => {
+          _this.selectRolesId = option.data;
+        })
+      },
+      staffClickMethod: async function (row) {
         this.selectStaffId = row.staffId;
-
-        //进行 选中
-        this.setCheckedRoleByRole(this.getRoleIdDataByStaffId(row.staffId));
       },
       //进行赋值 复选框的 行对象
       handleSelectionChange(val) {
@@ -144,7 +177,6 @@
       },
       updateStaffRole() {
         let _this = this;
-
         console.log(_this.getMultipleSelectionId(_this.multipleSelection));
       },
       //解析 multipleSelection 提取 id
@@ -156,12 +188,12 @@
         return arrayId;
       },
       //进行 选中 有 什么 角色
-      setCheckedRoleByRole(roles) {
+      setCheckedRoleByRole() {
         //需要 先请清除 在选中
         this.$refs.roleTable.clearSelection();
-
-        roles.forEach(role => {
-          this.$refs.roleTable.toggleRowSelection(role);
+        let _this = this;
+        this.selectRolesId.forEach(roleId => {
+          _this.$refs.roleTable.toggleRowSelection(_this.roleData.find(role => role.roleId === roleId));
         })
       },
     },

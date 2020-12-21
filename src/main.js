@@ -1,6 +1,6 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import ElementUi from 'element-ui'
-import {Loading} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueRouter from 'vue-router'
 import BackstageRouter from './routes/backstageRouter.js'
@@ -8,6 +8,8 @@ import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
+import moment from 'moment'
+
 
 //所有axios的默认请求地址
 axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
@@ -16,7 +18,8 @@ axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
-//Vue.prototype.$loading = Loading;
+moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn');
+Vue.prototype.$moment = moment;//赋值使用
 
 //解决重复点击 路由报错
 const originalPush = VueRouter.prototype.push
@@ -26,12 +29,38 @@ VueRouter.prototype.push = function push(location) {
 
 Vue.use(VueRouter)
 Vue.use(ElementUi)
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+    perms: [],
+  },
+  getters: {
+    //可以进行 传参数
+    getMenuPerms: (state) => (perms) => {
+      return state.perms.find((item) => item === perms) !== undefined;
+    }
+  },
+  mutations: {
+    setMenuPerms(state, loginName) {
+      //连接数据库 进行 查询
+      axios({
+        url: "menu/queryPower",
+        method: 'get',
+        params: {loginName: loginName},
+      }).then((option) => {
+        state.perms = option.data;
+      })
+    }
+  },
+})
 
 let vm = new Vue({
   el: '#app',
   router: new VueRouter({
     routes: BackstageRouter.concat(IndexRouter)
   }),
+  store: store,
 })
 
 // //默认
@@ -76,7 +105,7 @@ export default {
   showFullScreenLoading,
   hideFullScreenLoading
 }
-
+let _this = this;
 //进行 匹配 拦截器  加效果
 axios.interceptors.request.use((request) => {
   showFullScreenLoading(".loadingtext");// loadingtext class right.vue
@@ -84,12 +113,12 @@ axios.interceptors.request.use((request) => {
 }, function (error) {
   return Promise.reject(error);
 })
+
 axios.interceptors.response.use((response) => {
   hideFullScreenLoading();
   return response;
 }, function (error) {
   hideFullScreenLoading();
-  this.$message.error("加载失败！")
   return Promise.reject(error);
 })
 
