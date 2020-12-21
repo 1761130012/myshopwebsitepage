@@ -62,3 +62,154 @@
 
 
 </template>
+
+<script>
+  export default {
+    data() {
+      return {
+        shopType: [],
+        goods: [],
+        typeId: 0,
+        name: "",
+        currentPage: 1, //初始页
+        pagesize: 6,  //  每页的数据
+        total: 0, //总页数
+      }
+    },
+    methods: {
+      details(id) {
+        this.$router.push(
+          {
+            name: "",
+            params:{id:id}
+          }
+        )
+      },
+      car(id) {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("goodsId", id);
+        params.append("goodsCount", 1)
+        this.$axios.post("/goods/addCar", params).then(function (result) {  //成功  执行then里面的方法
+          _this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+        }).catch(function (error) { //失败 执行catch方法
+          this.$message.error("添加失败");
+        });
+      },
+      goodAll() {
+        this.typeId = '';
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("page", _this.currentPage);
+        params.append("rows", _this.pagesize);
+        this.$axios.post("/goods/queryGoodsVo").then(function (result) {  //成功  执行then里面的方法
+          _this.goods = result.data.records;
+          _this.total = result.data.total;
+        }).catch(function () { //失败 执行catch方法
+        });
+      },
+      good(id) {
+        this.typeId = id;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("typeId", id);
+        params.append("page", _this.currentPage);
+        params.append("rows", _this.pagesize);
+        this.$axios.post("/goods/queryGoodsVo", params).then(function (result) {  //成功  执行then里面的方法
+          _this.goods = result.data.records;
+          _this.total = result.data.total;
+        }).catch(function () { //失败 执行catch方法
+        });
+      },
+      goodTypes() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("typeId", _this.typeId);
+        params.append("name", _this.name);
+        params.append("page", _this.currentPage);
+        params.append("rows", _this.pagesize);
+        this.$axios.post("/goods/queryGoodsVo", params).then(function (result) {  //成功  执行then里面的方法
+          _this.goods = result.data.records;
+          _this.total = result.data.total;
+        }).catch(function () { //失败 执行catch方法
+        });
+      },
+      getData() {
+        var _this = this;
+        this.$axios.post("/goods/queryGoodsTypeVo").then(function (result) {  //成功  执行then里面的方法
+          _this.shopType = result.data;
+        }).catch(function () { //失败 执行catch方法
+        });
+        var params = new URLSearchParams();
+        params.append("page", _this.currentPage);
+        params.append("rows", _this.pagesize);
+        this.$axios.post("/goods/queryGoodsVo", params).then(function (result) {  //成功  执行then里面的方法
+          _this.goods = result.data.records;
+          _this.total = result.data.total;
+        }).catch(function () { //失败 执行catch方法
+        });
+      },
+      handleSizeChange(val) {
+        this.pagesize = val;
+        this.getData();
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getData();
+      },
+    },
+    created: function () {
+      this.getData();
+    }
+  };
+</script>
+
+<style scoped>
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .price {
+    font-size: 25px;
+    float: left;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 300px;
+    height: 200px;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+
+  .clearfix:after {
+    clear: both
+  }
+
+  .el-header, .el-footer {
+    text-align: center;
+  }
+
+  body {
+    margin-bottom: 40px;
+  }
+
+</style>

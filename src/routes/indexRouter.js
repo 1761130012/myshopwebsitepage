@@ -7,8 +7,11 @@ import ShopCar from '../components/index/userCenter/shopCar'
 import ShopIncome from '../components/index/userCenter/shopIncome'
 import ShoInfoPage from '../components/index/shoInfoPage'
 import PayMoney from '../components/index/payPage/indexPay'
+import test from "./test";
 
-export default [{
+export default [
+  {path: '/',component: test},
+  {
   path: '/index', component: Index, alias: '/index',
   children: [
     {path: 'indexPage', component: IndexChild,},
@@ -26,4 +29,5 @@ export default [{
     {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
     {path: 'payMoney/:orderId', component: PayMoney,},
   ]
-}]
+}
+]

@@ -8,6 +8,8 @@ import IndexRouter from './routes/indexRouter.js'
 import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
+import moment from 'moment'
+import Vuex from 'vuex'
 
 //所有axios的默认请求地址
 axios.defaults.baseURL = "http://localhost:8080/maven_custom_web_war_exploded/"
