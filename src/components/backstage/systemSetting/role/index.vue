@@ -52,10 +52,9 @@
       @row-click="clickRow"
       ref="moviesTable"
       style="width: 100%" header-align="center">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="roleId" label="角色序号" min-width="80"></el-table-column>
-      <el-table-column prop="name" label="角色名" min-width="120"></el-table-column>
-      <el-table-column prop="remark" label="备注" min-width="120"></el-table-column>
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column prop="name" label="角色名" min-width="120" align="center"></el-table-column>
+      <el-table-column prop="remark" label="备注" min-width="120" align="center"></el-table-column>
       <el-table-column label="操作" min-width="130">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
@@ -106,6 +105,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      delnaem:[],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -200,8 +200,9 @@ export default {
 
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.roleId)
-      this.single = selection.length !== 1
+      this.ids = selection.map(item => item.roleId);
+      this.delnaem=selection.map(item=>item.name);
+      this.single = selection.length !== 1;
       this.multiple = !selection.length;
     },
     //表单重置
@@ -212,7 +213,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.open = true;
-      this.title = "添加用户信息";
+      this.title = "添加角色信息";
     },
 
     /** 修改按钮操作 */
@@ -225,7 +226,7 @@ export default {
         .then(function (response) {
           _this.form = response.data;
           _this.open = true;
-          _this.title = "修改用户信息";
+          _this.title = "修改角色信息";
         })
     },
     /** 提交按钮 */
@@ -246,6 +247,7 @@ export default {
               this.$message({showClose: true, message: "修改成功", type: "success"});
               this.reset();
               this.open = false;
+              this.pageNum = this.pageNum;
               this.getList();
             });
           } else {
@@ -262,6 +264,7 @@ export default {
               this.$message({showClose: true, message: "新增成功", type: "success"});
               this.reset();
               this.open = false;
+              this.pageNum = this.total%this.pageSize==0?this.total/this.pageSize:Math.floor(this.total/this.pageSize)+1;
               this.getList();
             });
           }
@@ -271,19 +274,20 @@ export default {
 
     /** 删除按钮操作 */
     handleDelete: function (row) {
-      let userIds = row.roleId || this.ids;
-      this.$confirm('是否确认删除角色信息编号为"' + userIds + '"的数据项?', "警告", {
+      let roleIds = row.roleId || this.ids;
+      let rolename=row.name||this.delnaem;
+      this.$confirm('是否确认删除角色名为"' + rolename + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        if (typeof (userIds) === "number") {
-          userIds = [userIds];
+        if (typeof (roleIds) === "number") {
+          roleIds = [roleIds];
         }
         this.$axios({
           url: 'role/delete',
           method: 'post',
-          data: JSON.stringify(userIds),
+          data: JSON.stringify(roleIds),
           headers: {
             "Content-Type": "application/json;charset=utf-8"
           },
@@ -294,8 +298,19 @@ export default {
         )
       }).catch(()=>{})
     }
-
   },
+  watch: {
+    total (newValue, oldValue) {
+      // alert("我total变了")
+      console.log(newValue,oldValue)
+      if(newValue != 0 &&  newValue == ((this.pageNum -1)*this.pageSize)){
+        // alert("我执行了！！！")
+        // console.log("watch生效了")
+        this.pageNum -= 1;
+        this.getList();
+      }
+    }
+  }
 }
 </script>
 
