@@ -166,7 +166,7 @@ export default {
         name: undefined,
         email: undefined,
         phone: undefined,
-        sex: undefined
+        sex: 0
       },
       // 表单校验
       rules: {

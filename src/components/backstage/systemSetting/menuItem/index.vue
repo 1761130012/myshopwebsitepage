@@ -45,7 +45,7 @@
 
     <!-- 添加或修改菜单信息对话框 -->
     <el-dialog :title="title" :visible.sync="open">
-      <el-form ref="form" :model="form" :rules="rules" size="medium" label-width="100px">
+      <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
         <el-row :gutter="15">
           <el-col :span="24">
             <el-form-item label="上级菜单">
