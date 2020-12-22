@@ -14,7 +14,7 @@ import goods from "../components/backstage/systemSetting/power";
 import purchase from "../components/backstage/supply_chain/purchase_record";
 import warehouse from "../components/backstage/supply_chain/warehouse";
 import supplier from "../components/backstage/systemSetting/power";
-import apr_purchase from "../components/backstage/systemSetting/power";
+import apr_purchase from "../components/backstage/approval/purchase_examine";
 import apr_shop from "../components/backstage/systemSetting/power";
 import apr_goods from "../components/backstage/systemSetting/power";
 import income from "../components/backstage/statistics/income";
