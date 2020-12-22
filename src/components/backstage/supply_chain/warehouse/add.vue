@@ -96,7 +96,7 @@
         _this.loading = true;
         //获取到省
         _this.$axios({
-          url: "gpsProvince/selectAllProvince",
+          url: "gpsProvince/gpsProvinceVo",
           method: 'post'
         }).then(function (result) {
           // alert(1)
@@ -119,10 +119,8 @@
             this.$axios({
               url: "warehouse/addWarehouse",
               method: "post",
-              data: JSON.stringify(this.form),
-              headers: {
-                "Content-Type": "application/json;charset=utf-8"
-              },
+              params:  _this.form,
+
             }).then(function (result) {
               console.log(result)
               _this.$emit("handleQuery");
@@ -152,7 +150,7 @@
         var _this = this;
         // this.select.select1
         _this.$axios({
-          url: "gpsCity/selectAllCity",
+          url: "gpsCity/gpsCityVo",
           method: "post",
           params: {provinceId: _this.select.select1}
         }).then(function (result) {
@@ -166,7 +164,7 @@
       areaList() {
         var _this = this;
         _this.$axios({
-          url: "gpsArea/queryAreaAllByCityId",
+          url: "gpsArea/gpsAreaVo",
           method: "post",
           params: {cityId: _this.select.select2}
         }).then(function (result) {

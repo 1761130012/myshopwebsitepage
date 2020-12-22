@@ -107,7 +107,6 @@
     }, methods: {
       //初始化数据
       getList(){
-
         var _this = this;  //将当前vue对象保存到临时变量  _this中
         _this.loading = false;
         _this.$axios({

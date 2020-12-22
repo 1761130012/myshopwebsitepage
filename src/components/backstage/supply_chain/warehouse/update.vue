@@ -56,9 +56,9 @@
           newCount: undefined,
           maxCount: undefined,
         },
-        provinceVo: undefined,
-        cityVo: undefined,
-        areaVo: undefined,
+        provinceVo: [],
+        cityVo: [],
+        areaVo: [],
         // 表单校验
         rules: {
           name: [{
@@ -95,49 +95,45 @@
         var _this = this;
         _this.loading = true;
 
-
         //获取到省
         _this.$axios({
-          url: "gpsProvince/selectAllProvince",
+          url: "gpsProvince/gpsProvinceVo",
           method: 'post'
         }).then(function (result) {
-          // alert(1)
           _this.provinceVo = result.data;
-
         })
 
         //根据id获取到数据
         let url = new URLSearchParams();
         //查询到数据
-
         url.append('id', id);
         _this.$axios.post('warehouse/queryWarehouseById', url).then(function (result) {
           //声明一个对象保存当前方法的返回结果
           var _thisresult = result;
           _this.form = result.data;
           //赋值省的编号
-          _this.select.select1 = result.data.provinceId;
+          _this.select.select1 = result.data.gpsProvinceVo.provinceId;
           //根据省的编号查询市
           _this.$axios({
-            url: "gpsCity/selectAllCity",
+            url: "gpsCity/gpsCityVo",
             method: "post",
             params: {provinceId: _this.select.select1}
           }).then(function (result1) {
             _this.cityVo = result1.data;
-            _this.select.select2 = _thisresult.data.cityId;
+            _this.select.select2 = result.data.gpsCityVo.cityId;
             //根据市编号查询县
             _this.$axios({
-              url: "gpsArea/queryAreaAllByCityId",
+              url: "gpsArea/gpsAreaVo",
               method: "post",
               params: {cityId: _this.select.select2}
             }).then(function (result2) {
               _this.areaVo = result2.data;
-              _this.select.select3 = _thisresult.data.areaId;
+              _this.select.select3 = result.data.gpsAreaVo.areaId;
             })
           })
-          _this.select.select3 = result.data.areaId;
+          _this.select.select3 = result.data.gpsAreaVo.areaId;
         })
-        //this.reset();
+        // this.reset();
       },
       //表单重置
       reset() {
@@ -152,7 +148,7 @@
         var _this = this;
         // this.select.select1
         _this.$axios({
-          url: "gpsCity/selectAllCity",
+          url: "gpsCity/gpsCityVo",
           method: "post",
           params: {provinceId: _this.select.select1}
         }).then(function (result) {
@@ -165,7 +161,7 @@
       areaList() {
         var _this = this;
         _this.$axios({
-          url: "gpsArea/queryAreaAllByCityId",
+          url: "gpsArea/gpsAreaVo",
           method: "post",
           params: {cityId: _this.select.select2}
         }).then(function (result) {
@@ -175,16 +171,17 @@
       },
       /** 提交按钮 */
       submitForm() {
-
         var _this = this;
         this.form.provinceId = this.select.select1;
         this.form.cityId = this.select.select2;
         this.form.areaId = this.select.select3;
-
+        this.form.gpsAreaVo=undefined;
+        this.form.gpsCityVo=undefined;
+        this.form.gpsProvinceVo=undefined;
+        console.log(_this.form)
+        // console.log(_this.form)
         this.$refs.form.validate((valid) => {
           if (valid) {
-            /*let data=new URLSearchParams();
-            data.append('warehouseVo',_this.form)*/
             _this.$axios({
               url: "warehouse/updWarehouse",
               method: 'post',
@@ -203,12 +200,13 @@
           }
         });
 
-      },  handleClose(done) {
+      }, handleClose(done) {
         this.$confirm('确认关闭？')
           .then(_ => {
             done();
           })
-          .catch(_ => {});
+          .catch(_ => {
+          });
       },
     }
   }

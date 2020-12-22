@@ -70,11 +70,14 @@
       </el-table-column>
 
       <el-table-column
-
         label="仓库驻地"
         min-width="120">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{scope.row.provinceVo.name}}{{scope.row.cityVo.name}}{{scope.row.areaVo.name}}</span>
+          <span style="margin-left: 10px">
+          <span v-if="scope.row.gpsProvinceVo.name!=null">  {{scope.row.gpsProvinceVo.name}}</span>
+          <span v-if="scope.row.gpsCityVo.name!=null">  {{scope.row.gpsCityVo.name}}</span>
+          <span v-if="scope.row.gpsAreaVo.name!=null"> {{scope.row.gpsAreaVo.name}}</span>
+          </span>
         </template>
       </el-table-column>
 
@@ -215,6 +218,8 @@
         }).then(function (result) {   //异步调用成功
           //去结果result中拿数据   data属性
           _this.warehouseList = result.data.records;
+          console.log(result.data.records)
+
           //计算总页数
           _this.total = result.data.total;
 
@@ -224,8 +229,6 @@
       },
       // 查询的方法
       handleQuery() {
-
-
         this.pageNum = 1;
         this.getList();
       },
@@ -267,7 +270,6 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append('ids', id);
-
           this.$axios.post("warehouse/delWarehouse", params).then(function (result) {
             if (result) {
               _this.$message({message: '恭喜你，删除成功', type: 'success'});
