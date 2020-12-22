@@ -10,8 +10,7 @@
       <el-menu-item index="3"
         >欢迎您：管理员 </el-menu-item>
       <el-menu-item index="2"
-        > 退出</el-menu-item
-      >
+        > 退出</el-menu-item>
     </el-menu>
   </div>
 </template>
