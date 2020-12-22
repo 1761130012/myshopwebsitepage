@@ -51,7 +51,7 @@
         label="采购员工"
         min-width="120">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{scope.row.staffVo.loginName}}</span>
+          <span style="margin-left: 10px">{{scope.row.purStaff.loginName}}</span>
         </template>
       </el-table-column>
 
@@ -146,8 +146,8 @@
           state: undefined,
         },
         vo: {
-          staffVo: undefined,
-          staffVoApprover: undefined,
+          purStaff: undefined,
+          aprStaff: undefined,
         }
       }
     }, methods: {

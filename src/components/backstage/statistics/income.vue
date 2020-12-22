@@ -1,39 +1,35 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="2" :offset="4">
-        <el-select v-model="selectDateId" placeholder="请选择">
-          <el-option
-            v-for="item in selectDateType"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="5">
+      <el-col :span="5" :offset="1">
         <el-date-picker
-          v-model="startDateValue"
-          :type="dateType"
+          v-model="timeForm.startDateValue"
+          type="date"
+          value-format="yyyy-MM-dd"
           placeholder="起始时间">
         </el-date-picker>
       </el-col>
       <el-col :span="5">
         <el-date-picker
-          v-model="endDateValue"
-          :type="dateType"
+          v-model="timeForm.endDateValue"
+          type="date"
+          value-format="yyyy-MM-dd"
           placeholder="结束时间">
         </el-date-picker>
       </el-col>
+      <el-col :span="5">
+        <el-button type="primary" @click="screenInfoByTime"><i class="el-icon-search"></i>查询</el-button>
+      </el-col>
     </el-row>
-    <el-col :span="11">
-      <div id="income_goodsType_chart" style="width: 400px;height: 500px"></div>
-    </el-col>
-    <el-col :span="11" :offset="1">
-      <div style="width: 100px;height: 500%">
-        <div id="income_goods_chart" style="width: 400px;height: 500px"></div>
-      </div>
-    </el-col>
+    <el-row>
+      <el-col :span="18" :offset="1">
+        <div v-show="showIncome" style="width: 500px;height: 400px" id="incomeChart">
+        </div>
+        <div v-show="!showIncome">
+          <h1>数据为空！</h1>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -41,142 +37,78 @@
   export default {
     data() {
       return {
-        //时间控件
-        startDateValue: undefined,
-        endDateValue: undefined,
-        dateType: "date",
-        selectDateId: '1',
-        selectDateType: [
-          {value: "1", label: "日", typeName: 'date'},
-          {value: "2", label: "月", typeName: 'month'},
-          {value: "3", label: "年", typeName: 'year'},
-        ],
-
-        goodsTypeChart: undefined,
-        goodsChart: undefined,
-        goodsType: {
-          legendData: [],
-          seriesData: [],//格式 {value:'',name:''}
+        timeForm: {
+          startDateValue: undefined,
+          endDateValue: undefined,
         },
-        goods: {
-          legendData: [],
-          seriesData: [],//格式 {value:'',name:''}
+        incomeChart: undefined,
+        showIncome: true,
+        income: {
+          legendData: [],//格式 ['','']
+          seriesData: [],//格式 ['','']
         }
-      };
-    },
-    created() {
-      let data = this.getData();
-      this.goodsType.legendData = data.legend;
-      this.goodsType.seriesData = data.series;
-    },
-    watch: {
-      selectDateId(newValue) {
-        let dateType = this.selectDateType.find((item) => newValue === item.value)
-        this.dateType = dateType.typeName;
-      },
+      }
     },
     mounted: function () {
-      //进行 初始化
-      this.goodsTypeChart = this.$echarts.init(document.getElementById("income_goodsType_chart"));
-      this.goodsChart = this.$echarts.init(document.getElementById("income_goods_chart"))
-
-      this.setGoodsTypeChartOption();
-      this.setGoodsChartOption();
-
-      let _this = this;
-      _this.goodsTypeChart.on('click', function (param) {
-        _this.showGoods = true;
-        let data = _this.getData();
-        _this.goods.legendData = data.legend;
-        _this.goods.seriesData = data.series;
-        _this.setGoodsChartOption();
-      })
+      this.screenInfoByTime();
     },
     methods: {
-      setGoodsTypeChartOption() {
-        this.goodsTypeChart.setOption({
-          title: {
-            text: '销售量',
-            subtext: '实际情况',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: this.goodsType.legendData
-          },
-          series: [
-            {
-              name: '销售量',
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: this.goodsType.seriesData,
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        });
-      },
-      setGoodsChartOption() {
-        this.goodsChart.setOption({
-          title: {
-            text: '销售量',
-            subtext: '实际情况',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: this.goods.legendData
-          },
-          series: [
-            {
-              name: '销售量',
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: this.goods.seriesData,
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        });
-      },
-      getData() {
-        let legend = ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-        let series = [
-          {value: 335, name: '直接访问', id: 1},
-          {value: 310, name: '邮件营销', id: 2},
-          {value: 234, name: '联盟广告', id: 3},
-          {value: 135, name: '视频广告', id: 4},
-          {value: 1548, name: '搜索引擎', id: 5}
-        ]
-        return {
-          legend: legend,
-          series: series,
-        }
-      },
-    },
+      getIncomeData: async function () {
+        let legendData = [];
+        let seriesData = [];
 
+        await this.$axios({
+          url: "order/queryIncomeByTime",
+          params: {
+            startTime: this.timeForm.startDateValue,
+            endTime: this.timeForm.endDateValue,
+          }
+        })
+          .then((option) => {
+            let data = option.data;
+            let _this = this;
+            Object.keys(data).forEach((item) => {
+              legendData.push(_this.$moment(item).format("yyyy-MM-DD"));
+              seriesData.push(data[item]);
+            })
+          })
+        this.income.legendData = legendData;
+        this.income.seriesData = seriesData;
+      },
+      setIncomeData() {
+        if (this.incomeChart !== null && this.incomeChart !== undefined) {
+          this.incomeChart.dispose();
+          this.incomeChart = this.$echarts.init(document.getElementById("incomeChart"));
+        } else {
+          this.incomeChart = this.$echarts.init(document.getElementById("incomeChart"));
+        }
+        this.incomeChart.setOption({
+          xAxis: {
+            type: 'category',
+            data: this.income.legendData,
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: this.income.seriesData,
+            type: 'bar'
+          }]
+        });
+      },
+      screenInfoByTime: async function () {
+        await this.getIncomeData();
+        this.showIncome = true;
+        if (this.income.legendData.length === 0) {
+          this.$nextTick(() => {
+            this.$message.error("数据为空！")
+            this.showIncome = false;
+          })
+          return;
+        }
+        await this.setIncomeData();
+      }
+    },
   }
 </script>
 
