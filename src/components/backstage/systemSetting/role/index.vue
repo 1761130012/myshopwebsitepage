@@ -196,6 +196,7 @@ export default {
     //取消按钮
     cancel() {
       this.reset();
+      this.$refs.moviesTable.clearSelection();
       this.open = false;
     },
 
@@ -303,7 +304,7 @@ export default {
   watch: {
     total (newValue, oldValue) {
       // alert("我total变了")
-      console.log(newValue,oldValue)
+      // console.log(newValue,oldValue)
       if(newValue != 0 &&  newValue == ((this.pageNum -1)*this.pageSize)){
         // alert("我执行了！！！")
         // console.log("watch生效了")
