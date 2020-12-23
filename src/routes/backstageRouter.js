@@ -10,7 +10,7 @@ import power from "../components/backstage/systemSetting/power";
 
 import order from "../components/backstage/systemSetting/power";
 import shop from "../components/backstage/systemSetting/power";
-import goods from "../components/backstage/systemSetting/power";
+import goods from "../components/backstage/supply_chain/goods";
 import purchase from "../components/backstage/supply_chain/purchase_record";
 import warehouse from "../components/backstage/supply_chain/warehouse";
 import supplier from "../components/backstage/systemSetting/power";
@@ -24,7 +24,7 @@ import market from "../components/backstage/statistics/market";
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
   {
-    path: '/backstage', component: Backstage, alias: 'backstage',
+    path: '/backstage', component: Backstage, alias: '/',
     children: [
       {
         path: 'right', components: {

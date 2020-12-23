@@ -107,6 +107,7 @@
     }, methods: {
       //初始化数据
       getList(){
+        this.title="仓库详情";
         var _this = this;  //将当前vue对象保存到临时变量  _this中
         _this.loading = false;
         _this.$axios({
@@ -124,7 +125,6 @@
           //计算总页数
           _this.total = result.data.total;
           // alert(_this.form.warehouseVo.name);
-          _this.title=result.data.records[0].warehouseVo.name+'详情';
           _this.loading = false;
 
         })

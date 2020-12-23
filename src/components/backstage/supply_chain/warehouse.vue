@@ -128,8 +128,8 @@
                    :total="total">  <!--//这是显示总共有多少数据，-->
     </el-pagination>
 
-    <my-add ref="addRef" @handleQuery="handleQuery"></my-add>
-    <my-update ref="updateRef" @handleQuery="handleQuery"></my-update>
+    <my-add ref="addWarehouseRef" @handleQuery="handleQuery"></my-add>
+    <my-update ref="updWarehouseRef" @handleQuery="handleQuery"></my-update>
     <my-particulars ref="particularsRef"></my-particulars>
   </div>
 </template>
@@ -190,9 +190,12 @@
           }]
         }
       }
-    }, created() {
-      this.getList();
-    }, methods: {
+    },
+    //初始化
+  created: function () {
+    this.getList();
+  },
+    methods: {
       //分页
       handleCurrentChange: function (pageNum) {
         this.pageNum = pageNum;
@@ -234,7 +237,7 @@
       },
       /** 新增按钮操作 */
       handleAdd() {
-        this.$refs.addRef.getData();
+        this.$refs.addWarehouseRef.getData();
       },
 
       // 多选框选中数据
@@ -250,7 +253,7 @@
       //修改按钮的点击事件
       handleUpdate(row) {
         let id = row.warehouseId || this.ids
-        this.$refs.updateRef.getData(id);
+        this.$refs.updWarehouseRef.getData(id);
       },
       //详情按钮的点击事件
       particulars(row) {
