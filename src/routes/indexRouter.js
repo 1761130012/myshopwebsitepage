@@ -8,6 +8,8 @@ import ShopIncome from '../components/index/userCenter/shopIncome'
 import ShoInfoPage from '../components/index/shoInfoPage'
 import PayMoney from '../components/index/payPage/indexPay'
 
+import ShopOrderIndex from "../components/index/userCenter/shopOrderManage/index";
+
 export default [{
   path: '/index', component: Index, alias: '/index',
   children: [
@@ -19,7 +21,8 @@ export default [{
         {
           path: 'show', components: {
             shopIncome: ShopIncome,
-            userInfo:UserInfo,
+            userInfo: UserInfo,
+            shopOrderIndex: ShopOrderIndex,
           }
         }
       ]
