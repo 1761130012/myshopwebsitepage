@@ -11,7 +11,6 @@
         <div>
           <div style="margin-top: 10px;">
             <el-card shadow="hover" style="padding-bottom: 10px;">
-
               <el-col :offset="1" :span="2">
                 图片
               </el-col>

@@ -1,39 +1,59 @@
 <template>
   <div>
     <el-menu
-       :default-active="activeIndex"
-       class="el-menu-demo"
-       mode="horizontal"
-        @select="handleSelect"
-       id="backstagetop"
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      id="backstagetop"
     >
       <el-menu-item index="3"
-        >欢迎您：管理员 </el-menu-item>
+      >欢迎您：{{showNameOrLoginName}}
+      </el-menu-item>
       <el-menu-item index="2"
-        > 退出</el-menu-item>
+      > 退出
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      activeIndex: "1",
-    };
-  },
-  methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+  export default {
+    data() {
+      return {
+        showNameOrLoginName: sessionStorage.getItem("loginName"),
+        activeIndex: "1",
+      };
     },
-  },
-};
+    created() {
+      this.getNameOrLoginName();
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      getNameOrLoginName() {
+        let _this = this;
+        //根据
+        this.$axios({
+          url: 'staff/queryStaffNameByLoginName',
+          params: {
+            loginName: sessionStorage.getItem("loginName")
+          }
+        }).then((option) => {
+          if (option.data === null && option.data === 'null') {
+            _this.showNameOrLoginName = option.data;
+          }
+        })
+      }
+    },
+  };
 </script>
 
-<style >
-#backstagetop{
+<style>
+  #backstagetop {
     /*margin-top: 10px;
     margin-right: -20px;*/
-}
+  }
 
 </style>

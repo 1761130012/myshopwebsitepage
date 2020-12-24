@@ -6,27 +6,12 @@
           <el-button slot="append" icon="el-icon-search" @click="queryByName">查询</el-button>
         </el-input>
       </el-col>
-      <el-col :span="2" :offset="1">
-        <el-select v-model="selectState" @change="getData" placeholder="请选择">
-          <el-option
-            v-for="item in states"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-button type="primary">通过</el-button>
-        <el-button type="danger">驳回</el-button>
-      </el-col>
     </el-row>
     <el-divider></el-divider>
     <el-row>
       <el-table
         :data="tableData"
         border
-        height="400"
         @selection-change="handleSelectionChange"
         style="width: 100%">
         <el-table-column
@@ -89,8 +74,6 @@
           label="状态">
           <template slot-scope="scope">
             <span v-if="scope.row.state === 0 " class="my-success">未审核</span>
-            <span v-else-if="scope.row.state === 1 " class="my-success">通过</span>
-            <span v-else-if="scope.row.state === 2 " class="my-success">驳回</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -98,6 +81,8 @@
         >
           <template slot-scope="scope">
             <el-button @click="queryUserByUserId(scope.row.userId)" type="primary">点击查看用户</el-button>
+            <el-button type="primary" @click="updatePassState(scope.row.shopId)">通过</el-button>
+            <el-button type="danger" @click="updateErrorState(scope.row.shopId)">驳回</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -115,30 +100,16 @@
         </el-pagination>
       </el-col>
     </el-row>
+    <apr-shop-user ref="aprShopUserRef"></apr-shop-user>
   </div>
 </template>
 
 <script>
+  import aprShopUser from "./aprShopUser";
+
   export default {
     data() {
       return {
-        selectState: -1,
-        states: [
-          {
-            value: -1,
-            label: "未选中"
-          },
-          {
-            value: 0,
-            label: "未审核"
-          }, {
-            value: 1,
-            label: "通过"
-          }, {
-            value: 2,
-            label: "驳回"
-          },
-        ],
         likeShopName: "",
         tableData: undefined,
         total: 0,
@@ -160,7 +131,6 @@
             current: _this.currentPage,
             size: _this.size,
             name: _this.likeShopName,
-            state: _this.selectState,
           },
         }).then((option) => {
           let data = option.data;
@@ -185,11 +155,47 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-
       queryUserByUserId(userId) {
-        console.log(userId)
+        //进行 加载
+        this.$refs.aprShopUserRef.getData(userId)
+        this.$refs.aprShopUserRef.dialogVisible = true;
       },
+      updatePassState(shopId) {
+        let _this = this;
+        this.$axios({
+          url: "shop/updatePassState",
+          params: {
+            shopId: shopId,
+          },
+        }).then((option) => {
+          if (option.data) {
+            _this.$message.success("通过成功！");
+            _this.getData();
+          } else {
+            _this.$message.error("通过失败！");
+          }
+        })
+      },
+      updateErrorState(shopId) {
+        let _this = this;
+        this.$axios({
+          url: "shop/updateErrorState",
+          params: {
+            shopId: shopId,
+          },
+        }).then((option) => {
+          if (option.data) {
+            _this.$message.success("驳回成功！");
+            _this.getData();
+          } else {
+            _this.$message.error("驳回失败！");
+          }
+        })
+      }
     },
+    components: {
+      aprShopUser,
+    }
   }
 </script>
 
