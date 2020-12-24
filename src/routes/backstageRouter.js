@@ -1,4 +1,5 @@
 import Backstage from '../components/backstage/backstage'
+import backstage_login from "../components/backstage/login/backstage_login";
 
 import staff from "../components/backstage/systemSetting/staff/index";
 import role from "../components/backstage/systemSetting/role/index";
@@ -8,14 +9,14 @@ import menu from "../components/backstage/systemSetting/menuItem/index";
 import power from "../components/backstage/systemSetting/power";
 
 
-import order from "../components/backstage/systemSetting/power";
-import shop from "../components/backstage/systemSetting/power";
+import order from "../components/backstage/merchantsOrderSetting/backOrder";
+import shop from "../components/backstage/merchantsOrderSetting/backShop";
 import goods from "../components/backstage/systemSetting/power";
 import purchase from "../components/backstage/supply_chain/purchase_record";
 import warehouse from "../components/backstage/supply_chain/warehouse";
-import supplier from "../components/backstage/systemSetting/power";
+import supplier from "../components/backstage/supply_chain/supplier";
 import apr_purchase from "../components/backstage/approval/purchase_examine";
-import apr_shop from "../components/backstage/systemSetting/power";
+import apr_shop from "../components/backstage/approval/aprShop";
 import apr_goods from "../components/backstage/systemSetting/power";
 import income from "../components/backstage/statistics/income";
 import market from "../components/backstage/statistics/market";
@@ -23,8 +24,8 @@ import market from "../components/backstage/statistics/market";
 
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
-  {
-    path: '/backstage', component: Backstage, alias: '/',
+  {//放开   Backstage 中 初始 化 有session 绕开 登录
+    path: '/backstage', component: Backstage, alias: "/",
     children: [
       {
         path: 'right', components: {
@@ -36,5 +37,6 @@ export default [
       },
     ]
   },
-
+  //路径锁定
+  {path: '/backstageLogin', component: backstage_login},
 ]

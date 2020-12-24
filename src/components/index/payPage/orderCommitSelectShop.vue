@@ -131,6 +131,10 @@
           if (data.length > 0) {
             _this.shopData = data.map((iterator) => {
               //把 item.shopVo 中的  state 替换 成外部的 state
+              if (iterator.shopVo === null) {
+                _this.$message.error("门店id异常!")
+                return;
+              }
               iterator.shopVo.state = iterator.state;
 
               //默认 选中
@@ -147,7 +151,7 @@
       },
       onChangeShop() {
         //进行 赋值
-        this.$emit("updateShop",this.shopData.find(item => item.selectState === 1) );
+        this.$emit("updateShop", this.shopData.find(item => item.selectState === 1));
         this.dialogVisible = false
       },
     }

@@ -2,7 +2,7 @@
   <div style="width: 100%;height: 100%">
     <div class="login_box">
       <div class="login_content">
-        <h1>员工登录</h1>
+        <h1>用户登录</h1>
         <el-form
           :model="ruleForm"
           status-icon
@@ -19,7 +19,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm">登录</el-button>
-            <el-button @click="resetForm" class="testRegister">重置</el-button>
+            <el-button @click="$router.push('/indexRegister')" class="testRegister">注册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -50,25 +50,21 @@
         let _this = this;
         //进行 登录
         this.$axios({
-          url: 'staff/staffLogin',
+          url: 'user/userLogin',
           params: this.ruleForm,
         }).then((option) => {
           if (option.data) {
             _this.$message.success("登录成功")
             sessionStorage.setItem("loginName", _this.ruleForm.loginName);
+
             setTimeout(() => {
-              _this.$router.push("/backstage");
+              _this.$router.push("/index");
             }, 2000)
           } else {
             _this.$message.error("登录失败！")
-            _this.resetForm();
           }
         })
       },
-      resetForm() {
-        this.ruleForm.username = "";
-        this.ruleForm.password = "";
-      }
     }
   }
 </script>

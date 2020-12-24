@@ -17,7 +17,7 @@
           购物车
         </el-badge>
       </el-menu-item>
-      <el-menu-item index="4" @click=" $router.push('/index/userInfo/show') " style='margin-left:100px'
+      <el-menu-item index="4" @click=" toUserPath " style='margin-left:100px'
       ><i class="el-icon-user-solid"></i>
         <span>个人中心</span>
       </el-menu-item>
@@ -36,6 +36,12 @@
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
+      toUserPath() {
+        //进行 身份验证
+        if (this.$store.getters.isIndexLoginName(this.$router)) {
+          this.$router.push('/index/userInfo/show')
+        }
+      }
     },
   };
 </script>
