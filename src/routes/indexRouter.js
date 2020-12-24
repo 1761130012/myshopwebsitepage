@@ -10,13 +10,14 @@ import PayMoney from '../components/index/payPage/indexPay'
 import ShopCar from '../components/index/userCenter/shopCar'
 
 import ShopOrderIndex from "../components/index/userCenter/shopOrderManage/index";
+import UserOrderIndex from "../components/index/userCenter/userOrderManage/index";
 
 import IndexLogin from "../components/index/login/index_login";
 import IndexRegister from "../components/index/login/index_register";
 
 export default [
   {
-    path: '/index', component: Index, alias: '/',
+    path: '/index', component: Index, alias: '/index',
     children: [
       {path: 'indexPage', component: IndexChild,},
       {
@@ -27,13 +28,14 @@ export default [
             path: 'show', components: {
               shopIncome: ShopIncome,
               shopInfo: ShopInfo,
+              shopCar: ShopCar,
               userInfo: UserInfo,
+              userOrderIndex:UserOrderIndex,
               shopOrderIndex: ShopOrderIndex,
             }
           }
         ]
       },
-      {path: 'shopCar', component: ShopCar,},
       {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
       {path: 'payMoney/:orderId', component: PayMoney,},
     ]
