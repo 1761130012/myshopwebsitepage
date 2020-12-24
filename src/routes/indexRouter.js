@@ -6,29 +6,32 @@ import UserInfo from '../components/index/userCenter/userInfo.vue'
 import ShopCar from '../components/index/userCenter/shopCar'
 import ShopIncome from '../components/index/userCenter/shopIncome'
 import ShoInfoPage from '../components/index/shoInfoPage'
+import ShopInfo from '../components/index/userCenter/shopInfo'
 import PayMoney from '../components/index/payPage/indexPay'
 import test from "./test";
 
 export default [
-  {path: '/',component: test},
   {
-  path: '/index', component: Index, alias: '/index',
-  children: [
-    {path: 'indexPage', component: IndexChild,},
-    {
-      path: 'userInfo',
-      component: LeftMenu,
-      children: [
-        {
-          path: 'show', components: {
-            shopIncome: ShopIncome,
-            userInfo:UserInfo,
+    path: '/index', component: Index, alias: '/index',
+    children: [
+      {path: 'indexPage', component: IndexChild,},
+      {path: 'shopCar', component: ShopCar,},
+      {
+        path: 'userInfo',
+        component: LeftMenu,
+        children: [
+          {
+            path: 'show', components: {
+              shopIncome: ShopIncome,
+              userInfo: UserInfo,
+              shopInfo: ShopInfo,
+              shopCar: ShopCar,
+            }
           }
-        }
-      ]
-    },
-    {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
-    {path: 'payMoney/:orderId', component: PayMoney,},
-  ]
-}
+        ]
+      },
+      {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
+      {path: 'payMoney/:orderId', component: PayMoney,},
+    ]
+  }
 ]

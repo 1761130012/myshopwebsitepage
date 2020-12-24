@@ -8,12 +8,12 @@ import menu from "../components/backstage/systemSetting/menuItem/index";
 import power from "../components/backstage/systemSetting/power";
 
 
-import order from "../components/backstage/systemSetting/power";
-import shop from "../components/backstage/systemSetting/power";
+import order from "../components/backstage/merchantsOrderSetting/backOrder";
+import shop from "../components/backstage/merchantsOrderSetting/backShop";
 import goods from "../components/backstage/systemSetting/power";
 import purchase from "../components/backstage/systemSetting/power";
 import warehouse from "../components/backstage/systemSetting/power";
-import supplier from "../components/backstage/systemSetting/power";
+import supplier from "../components/backstage/supply_chain/supplier";
 import apr_purchase from "../components/backstage/systemSetting/power";
 import apr_shop from "../components/backstage/systemSetting/power";
 import apr_goods from "../components/backstage/systemSetting/power";

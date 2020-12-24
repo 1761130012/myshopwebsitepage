@@ -81,7 +81,7 @@
         this.$router.push(
           {
             name: "",
-            params:{id:id}
+            params: {id: id}
           }
         )
       },
@@ -89,7 +89,8 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("goodsId", id);
-        params.append("goodsCount", 1)
+        params.append("goodsCount", 1);
+        params.append("loginName", sessionStorage.getItem("loginName"))
         this.$axios.post("/goods/addCar", params).then(function (result) {  //成功  执行then里面的方法
           _this.$message({
             message: '添加成功',
