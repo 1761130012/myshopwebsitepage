@@ -175,9 +175,10 @@ export default {
         type: "warning"
       }).then(() => {
         let params = new URLSearchParams();
-        params.append("orderId", orderId);
+        params.append("orderId", id);
         this.$axios.post("order/edittihuostate", params).then((option) => {
             this.$message({showClose: true, message: "收货成功", type: "success"});
+            this.OpenoutOrder=false;
             this.getlist();
           }
         )
