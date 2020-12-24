@@ -93,7 +93,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确定</el-button>
         <el-button @click="cancel">取消</el-button>
       </div>
