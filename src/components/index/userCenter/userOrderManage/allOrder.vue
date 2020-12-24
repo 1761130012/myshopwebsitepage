@@ -43,7 +43,7 @@
       <el-table-column
         label="操作">
         <template slot-scope="params">
-          <el-button type="primary" size="small" @click="queryGoodsByOrderId(params.row.orderId)">详情</el-button>
+          <el-button type="primary" size="small" @click="queryGoodsByOrderId(params.row)">详情</el-button>
           <el-button type="primary" size="small" v-if="params.row.payState===0" @click="handlePay(params.row.orderId)">去支付</el-button>
         </template>
       </el-table-column>
@@ -77,15 +77,21 @@
         </el-table-column>
         <el-table-column prop="payNumber" label="购买数量"></el-table-column>
       </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChange1"
-                     @current-change="handleCurrentChange1"
-                     :current-page="currentPage1"
-                     :page-sizes="[5, 10, 20, 40]"
-                     :page-size="size1"
-                     layout="sizes, prev, pager, next"
-                     :total="total1">
-      </el-pagination>
+      <el-row :gutter="15">
+        <el-col :span="6">
+          <el-pagination background @size-change="handleSizeChange1"
+                         @current-change="handleCurrentChange1"
+                         :current-page="currentPage1"
+                         :page-sizes="[5, 10, 20, 40]"
+                         :page-size="size1"
+                         layout="sizes, prev, pager, next"
+                         :total="total1">
+          </el-pagination>
+        </el-col>
+        <el-col :span="6" :offset="12">
+          <el-button type="primary" size="small" @click="handlePay" v-if="pay==0">去支付</el-button>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -109,6 +115,8 @@ export default {
       currentPage1: 1,
       total1: 0,
       size1: 5,
+      id:undefined,
+      pay:undefined
     }
   },
   created() {
@@ -140,13 +148,16 @@ export default {
       this.currentPage = 1;
       this.getlist();
     },
-    queryGoodsByOrderId(orderId) {
+    queryGoodsByOrderId(row) {
       let _this=this;
       _this.OpenAllOrder=true;
+      _this.id=row.orderId;
+      _this.pay=row.payState;
+      console.log(_this.pay)
       let params = new URLSearchParams();
       params.append("current", _this.currentPage1);
       params.append("size", _this.size1);
-      params.append("orderId",orderId);
+      params.append("orderId",row.orderId);
       _this.$axios({url:"order/queryOrderShopByOrderId",method:"post",data:params}).then(response=>{
         _this.allOrderData=response.data.records;
         _this.total1=response.data.total;
@@ -158,6 +169,10 @@ export default {
     handleCurrentChange1(val) {
       this.currentPage1 = val;
     },
+    handlePay(orderId) {
+      let id=this.id ||orderId;
+      alert(id);
+    }
   }
 }
 </script>
