@@ -26,6 +26,7 @@ export default [
               userInfo: UserInfo,
               shopInfo: ShopInfo,
               shopCar: ShopCar,
+              shopOrderIndex: ShopOrderIndex,
             }
           }
         ]
@@ -33,5 +34,4 @@ export default [
       {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
       {path: 'payMoney/:orderId', component: PayMoney,},
     ]
-  }
-]
+  }]

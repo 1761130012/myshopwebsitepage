@@ -34,14 +34,15 @@
 
     <!--    表格.slice((queryParams.pageNum-1)*queryParams.pageSize,queryParams.pageNum*queryParams.pageSize)"-->
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange" @row-click="clickRow"
-              ref="moviesTable">
+              ref="moviesTable" style="width: 100%" header-align="center">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="用户账号" align="center" prop="loginName"/>
-      <el-table-column label="用户姓名" align="center" prop="name"/>
-      <el-table-column label="用户密码" align="center" prop="password"/>
-      <el-table-column label="用户邮箱" align="center" prop="email"/>
-      <el-table-column label="手机号码" align="center" prop="phone"/>
-      <el-table-column label="用户性别" align="center" prop="sex" :formatter="formatter"/>
+      <el-table-column label="用户账号" align="center"  prop="loginName"/>
+      <el-table-column label="用户姓名" align="center"  prop="name"/>
+      <el-table-column label="用户密码" align="center"  prop="password"/>
+      <el-table-column label="用户邮箱" align="center" :show-overflow-tooltip="true" prop="email"/>
+      <el-table-column label="手机号码" align="center"  prop="phone"/>
+      <el-table-column label="用户性别" align="center"  prop="sex" :formatter="formatter"/>
+      <el-table-column label="创建时间" align="center"  :show-overflow-tooltip="true"  prop="createTime"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
@@ -165,7 +166,7 @@ export default {
         name: undefined,
         email: undefined,
         phone: undefined,
-        sex: undefined
+        sex: 0
       },
       // 表单校验
       rules: {
@@ -397,7 +398,7 @@ export default {
   watch: {
     total (newValue, oldValue) {
       // alert("我total变了")
-      console.log(newValue,oldValue)
+      // console.log(newValue,oldValue)
       if(newValue != 0 &&  newValue == ((this.pageNum -1)*this.pageSize)){
         // alert("我执行了！！！")
         // console.log("watch生效了")
