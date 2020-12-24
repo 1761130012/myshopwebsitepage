@@ -35,7 +35,6 @@
         let _this = this;
         this.$axios({
           url: 'order/queryCountMoneyByOrderId',
-          methods: 'get',
           params: {orderId: _this.orderId},
         }).then((option) => {
           if (option.data > 0) {
@@ -46,7 +45,6 @@
         })
       },
       payMoneyCommit() {
-
         //进行 支付
         this.$axios({
           url: 'alipay/payUrl',

@@ -213,6 +213,7 @@
           option.data.forEach((item) => {
             item.checked = false;
           })
+
           this.orderShopData = option.data;
         })
       },
@@ -254,20 +255,23 @@
         return configFn.addLineBr(value, 10);
       },
       orderCommit() {
-
         let _this = this
         let arrayOrderShopIdNum = this.orderShopData.map(iterator => {
           return {
             id: iterator.id,
+            goodsId: iterator.goodsId,
             payNumber: iterator.payNumber,
           }
         })
-
         //需要修改 数量
         this.$axios({
           url: 'order/updatePayNumberByOrderShopId',
           method: 'post',
-          data: JSON.stringify(arrayOrderShopIdNum),
+          data: JSON.stringify({
+            orderShopVos: arrayOrderShopIdNum,
+            shopId: _this.shopInfo.shopId,
+            orderId: _this.orderId,
+          }),
           headers: {
             "Content-Type": "application/json;charset=utf-8"
           },

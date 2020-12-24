@@ -5,6 +5,7 @@
       <el-breadcrumb-item>供应商管理</el-breadcrumb-item>
     </el-breadcrumb>
     <hr>
+    <div style="width: 650px">
     <!--        查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item label="供应商名姓名：">
@@ -26,69 +27,64 @@
 
     <el-table border
               :data="supplierList"
-              style="width: 100%;" header-align="center"
+              style="width: 570px;" header-align="center"
               @selection-change="handleSelectionChange"
     >
       <el-table-column
         type="selection"
         align="center"
-        min-width="70"
+        min-width="50"
       >
-      </el-table-column>
-      <el-table-column
-        prop="supId"
-        align="center"
-        label="供应商id"
-        min-width="100">
       </el-table-column>
       <el-table-column
         prop="name"
         align="center"
         label="供应商名"
-        min-width="150">
+        min-width="50">
       </el-table-column>
       <el-table-column
         prop="joinName"
         align="center"
         label="联系人"
-        min-width="120">
+        min-width="50">
       </el-table-column>
       <el-table-column
         prop="phone"
         align="center"
         label="联系电话"
-        min-width="150">
+        min-width="50">
       </el-table-column>
       <el-table-column label="供应商地址" align="center">
         <el-table-column
           align="center"
           prop="gpsProvinceVo.name"
           label="省份"
-          min-width="100">
+          min-width="50">
         </el-table-column>
         <el-table-column
           align="center"
           prop="gpsCityVo.name"
           label="市区"
-          min-width="100">
+          min-width="50">
         </el-table-column>
         <el-table-column
           align="center"
           prop="gpsAreaVo.name"
           label="区县"
-          min-width="100">
+          min-width="50">
         </el-table-column>
         <el-table-column
           align="center"
           prop="address"
           label="详细地址"
-          min-width="100">
+          min-width="50">
         </el-table-column>
       </el-table-column>
       <el-table-column
+        fixed="right"
         label="操作"
         align="center"
-        min-width="150">
+        min-width="100">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
             <el-button type="warning" icon="el-icon-edit" @click=" update(scope.row)" size="small"></el-button>
@@ -119,7 +115,12 @@
     <my-add ref="addRef" @getData="getData"></my-add>
 
     <my-update ref="updateRef" @getData="getData"></my-update>
+    </div>
 
+    <div>
+
+
+    </div>
   </div>
 </template>
 

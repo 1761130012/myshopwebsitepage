@@ -6,8 +6,7 @@
           <div class="grzlbt ml40">我的资料 <a href="javascript:" @click="openUpdateModal"
                                            style="color:#1baeae;margin-left: 600px;">更改个人信息</a></div>
 
-          <div style="position:absolute;left:590px;top: 90px"><img :src="userList.picture"
-                                                                   style="width: 427px;height: 217px"/></div>
+          <div style="position:absolute;left:590px;top: 90px"><img :src="userList.picture" style="width: 427px;height: 217px"/></div>
 
           <div class="info_item ml40"><span>昵称</span><span>{{ userList.name }}</span></div>
           <div class="info_item ml40"><span>手机号</span><span>{{ userList.phone }}</span></div>

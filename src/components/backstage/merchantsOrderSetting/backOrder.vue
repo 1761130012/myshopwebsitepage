@@ -71,10 +71,10 @@
         align="center"
         label="物流状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.state==0">未发货</span>
-          <span v-if="scope.row.state==1">已发货</span>
-          <span v-if="scope.row.state==2">到达商户</span>
-          <span v-if="scope.row.state==3">已收货</span>
+          <span v-if="scope.row.state===0">未发货</span>
+          <span v-if="scope.row.state===1">已发货</span>
+          <span v-if="scope.row.state===2">到达商户</span>
+          <span v-if="scope.row.state===3">已收货</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -99,7 +99,8 @@
             </el-popconfirm>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="查看详情" placement="top-start">
-            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)" size="small"></el-button>
+            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)"
+                       size="small"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -129,13 +130,12 @@
 
       getData: function () {
         var _this = this;
-        console.log("刷新")
         var params = new URLSearchParams();
         params.append("page", _this.currentPage);
         params.append("rows", _this.pagesize);
-        params.append("name", _this.oname);
+        params.append("userName", _this.oname);
         params.append("state", _this.ostate);
-        this.$axios.post("/order/selectOrderVo",params).then(function (result) {  //成功  执行then里面的方法
+        this.$axios.post("/order/selectOrderVo", params).then(function (result) {  //成功  执行then里面的方法
           _this.orderList = result.data.records;
           _this.total = result.data.total;
 
@@ -165,7 +165,7 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("orderId", id);
-        params.append("state",1)
+        params.append("state", 1)
         this.$axios.post("/order/updateOrderVo", params).then(function (result) {  //成功  执行then里面的方法
 
           _this.$message({
@@ -223,9 +223,13 @@
         pagesize: 5,  //  每页的数据
         total: 0, //总页数
         oname: "",
-        ostate: "",
+        ostate: "-1",
         multipleSelection: [],//多选的数据
         options: [
+          {
+            value: '-1',
+            label: '全部'
+          },
           {
             value: '0',
             label: '未发货'

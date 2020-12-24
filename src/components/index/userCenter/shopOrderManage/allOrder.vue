@@ -46,9 +46,10 @@
           <el-table-column
             label="状态">
             <template slot-scope="params">
-              <span v-if="params.row.state===2">待取货</span>
-              <span v-if="params.row.state===3">已取货</span>
-              <span v-else>待收货</span>
+              <span v-if="params.row.state===0">待发货</span>
+              <span v-if="params.row.state===1">待取货</span>
+              <span v-if="params.row.state===2">已取货</span>
+              <span v-else>已提货</span>
             </template>
           </el-table-column>
           <el-table-column
