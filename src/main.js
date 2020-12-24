@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import ElementUi from 'element-ui'
+import {Loading} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueRouter from 'vue-router'
 import BackstageRouter from './routes/backstageRouter.js'
@@ -9,7 +10,6 @@ import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
 import moment from 'moment'
-import fa from "element-ui/src/locale/lang/fa";
 
 
 //所有axios的默认请求地址
@@ -81,6 +81,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+
 let vm = new Vue({
   el: '#app',
   router: router,
@@ -136,6 +137,7 @@ axios.interceptors.request.use((request) => {
 }, function (error) {
   return Promise.reject(error);
 })
+
 axios.interceptors.response.use((response) => {
   hideFullScreenLoading();
   return response;
@@ -144,3 +146,5 @@ axios.interceptors.response.use((response) => {
   hideFullScreenLoading();
   return Promise.reject(error);
 })
+
+

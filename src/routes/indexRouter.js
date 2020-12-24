@@ -5,7 +5,9 @@ import LeftMenu from '../components/index/userCenter/leftMenu.vue'
 import UserInfo from '../components/index/userCenter/userInfo.vue'
 import ShopIncome from '../components/index/userCenter/shopIncome'
 import ShoInfoPage from '../components/index/shoInfoPage'
+import ShopInfo from '../components/index/userCenter/shopInfo'
 import PayMoney from '../components/index/payPage/indexPay'
+import ShopCar from '../components/index/userCenter/shopCar'
 
 import ShopOrderIndex from "../components/index/userCenter/shopOrderManage/index";
 
@@ -24,6 +26,8 @@ export default [
           {
             path: 'show', components: {
               shopIncome: ShopIncome,
+              shopInfo: ShopInfo,
+              shopCar: ShopCar,
               userInfo: UserInfo,
               shopOrderIndex: ShopOrderIndex,
             }

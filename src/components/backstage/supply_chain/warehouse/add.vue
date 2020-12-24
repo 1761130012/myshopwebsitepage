@@ -120,7 +120,6 @@
               url: "warehouse/addWarehouse",
               method: "post",
               params:  _this.form,
-
             }).then(function (result) {
               console.log(result)
               _this.$emit("handleQuery");

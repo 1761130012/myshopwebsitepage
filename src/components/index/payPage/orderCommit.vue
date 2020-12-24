@@ -213,6 +213,7 @@
           option.data.forEach((item) => {
             item.checked = false;
           })
+
           this.orderShopData = option.data;
         })
       },

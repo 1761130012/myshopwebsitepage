@@ -11,9 +11,9 @@
         <span style="font-size: 20px">兴盛优选</span>
       </el-menu-item
       >
-      <el-menu-item index="3" style='margin-left:700px'>
+      <el-menu-item index="3" @click=" $router.push('/index/shopCar') " style='margin-left:700px'>
         <i class="el-icon-shopping-cart-full"></i>
-        <el-badge :value="shoppingCartNumber" :max="99">
+        <el-badge :value="shoppingCartNumber"  :max="99">
           购物车
         </el-badge>
       </el-menu-item>

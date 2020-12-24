@@ -1,5 +1,4 @@
 import Backstage from '../components/backstage/backstage'
-import backstage_login from "../components/backstage/login/backstage_login";
 
 import staff from "../components/backstage/systemSetting/staff/index";
 import role from "../components/backstage/systemSetting/role/index";
@@ -37,6 +36,5 @@ export default [
       },
     ]
   },
-  //路径锁定
-  {path: '/backstageLogin', component: backstage_login},
+
 ]
