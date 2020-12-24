@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>供应链管理</el-breadcrumb-item>
+      <el-breadcrumb-item>审批管理</el-breadcrumb-item>
       <el-breadcrumb-item>采购审批</el-breadcrumb-item>
     </el-breadcrumb>
     <hr>
@@ -180,7 +180,7 @@
         var _this = this;  //将当前vue对象保存到临时变量  _this中
         _this.loading = true;
         _this.$axios({
-          url: 'purchase/queryPageVo',
+          url: 'purchase/queryshenpiPageVo',
           method: 'post',
           params: {
             page: _this.pageNum,
@@ -196,7 +196,6 @@
           _this.total = result.data.total;
           //反入vo对象
           _this.vo = result.data.records;
-          console.log(_this.vo)
           _this.loading = false;
         })
       },
