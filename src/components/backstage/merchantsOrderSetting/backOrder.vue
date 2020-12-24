@@ -53,11 +53,18 @@
         min-width="100">
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="startTime"
         min-width="100"
         sortable
         align="center"
-        label="订单时间">
+        label="订单开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="endTime"
+        min-width="100"
+        sortable
+        align="center"
+        label="订单结束时间">
       </el-table-column>
       <el-table-column
         prop="money"
@@ -88,16 +95,20 @@
         align="center"
         min-width="150">
         <template slot-scope="scope">
+          <span v-if="scope.row.state=== 0">
           <el-tooltip class="item" effect="dark" content="发货" placement="top-start">
             <el-popconfirm title="确定发货吗？" @confirm="update(scope.row.orderId)">
               <el-button type="warning" slot="reference" icon="el-icon-edit" size="small"></el-button>
             </el-popconfirm>
           </el-tooltip>
+            </span>
+          <span v-if="scope.row.state=== 3">
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-popconfirm title="确定删除吗？" @confirm="delpinlun(scope.row.orderId)">
               <el-button type="danger" slot="reference" icon="el-icon-delete" size="small"></el-button>
             </el-popconfirm>
           </el-tooltip>
+            </span>
           <el-tooltip class="item" effect="dark" content="查看详情" placement="top-start">
             <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)"
                        size="small"></el-button>

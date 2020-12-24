@@ -35,23 +35,30 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     perms: [],
+    loginDialogVisible: false,
   },
   getters: {
+    getDialogVisible(state) {
+      return state.loginDialogVisible;
+    },
     //可以进行 传参数
     getMenuPerms: (state) => (perms) => {
       return state.perms.find((item) => item === perms) !== undefined;
     },
-    isIndexLoginName: (state) => (router) => {
+    isIndexLoginName: (state) => (fn) => {
       //进行 判断 没 登录 需要 登录
-      let flag = true;
       if (!sessionStorage.getItem("loginName")) {
-        router.push("/indexLogin");//进行 跳转
-        flag = false;
+        //需要询问
+        state.loginDialogVisible = true;
+      } else {
+        fn();
       }
-      return flag;
     }
   },
   mutations: {
+    setDialogVisible(state, flag) {
+      state.loginDialogVisible = flag;
+    },
     setMenuPerms(state, loginName) {
       //连接数据库 进行 查询
       axios({

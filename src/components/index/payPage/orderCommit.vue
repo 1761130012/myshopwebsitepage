@@ -31,7 +31,7 @@
               </el-tag>
               </span>
               <el-button style="float: right; padding: 3px 0" type="text"
-                         @click="$refs.selectShopRef.dialogVisible = true">更换店铺
+                         @click=" updateShop ">更换店铺
               </el-button>
             </div>
             <div>
@@ -127,8 +127,6 @@
         </div>
       </el-col>
     </el-row>
-
-    <select-shop ref="selectShopRef" @updateShop="updateShop"></select-shop>
     <div>
       <el-dialog
         title="批量删除"
@@ -141,6 +139,7 @@
       </span>
       </el-dialog>
     </div>
+    <select-shop ref="selectShopRef" :orderId="orderId" @getShopInfo="getShopInfo"></select-shop>
   </div>
 </template>
 
@@ -210,6 +209,13 @@
             orderId: this.orderId,
           },
         }).then((option) => {
+          if (option.data.length === 0) {
+            this.$router.push("/index");
+            //进行 跳转
+            this.$message.error("订单编号错误！跳转首页!")
+            return;
+          }
+
           option.data.forEach((item) => {
             item.checked = false;
           })
@@ -218,13 +224,15 @@
         })
       },
       getShopInfo() {
+        let _this = this;
         //为什么 要 shopId 因为 到时候 可以选择
         this.$axios({
           url: 'shop/queryShopVoByLoginName',
           method: 'get',
-          params: {loginName: sessionStorage.getItem("loginName")},
+          params: {loginName: sessionStorage.getItem("loginName"), orderId: this.orderId},
         }).then((option) => {
-          this.shopInfo = option.data;
+          _this.shopInfo = option.data.shopVo;
+          _this.showDefault = option.data.state;
         })
       },
       getOrderShopShowData() {
@@ -291,12 +299,6 @@
       handleSizeChange(val) {
         this.size = val;
       },
-      updateShop(shopInfo) {
-        // console.log(shopInfo)
-        //默认 的 状态 是 1
-        this.showDefault = shopInfo.state === 1;
-        this.shopInfo = shopInfo;
-      },
       addressMethod(address) {
         return configFn.addLineBr(address, 20);
       },
@@ -358,6 +360,10 @@
 
         this.dialogVisible = false
       },
+      updateShop() {
+        this.$refs.selectShopRef.getShopData();
+        this.$refs.selectShopRef.dialogVisible = true
+      }
     },
     computed: {
       payMoneyComputed() {

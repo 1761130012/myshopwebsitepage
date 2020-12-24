@@ -16,7 +16,7 @@ import IndexRegister from "../components/index/login/index_register";
 
 export default [
   {
-    path: '/index', component: Index, alias: '/index',
+    path: '/index', component: Index, alias: '/',
     children: [
       {path: 'indexPage', component: IndexChild,},
       {
@@ -27,13 +27,13 @@ export default [
             path: 'show', components: {
               shopIncome: ShopIncome,
               shopInfo: ShopInfo,
-              shopCar: ShopCar,
               userInfo: UserInfo,
               shopOrderIndex: ShopOrderIndex,
             }
           }
         ]
       },
+      {path: 'shopCar', component: ShopCar,},
       {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
       {path: 'payMoney/:orderId', component: PayMoney,},
     ]

@@ -141,17 +141,17 @@
         this.price = 0;
         var _this = this;
         this.cars.forEach((item) => {
-          if(item.checked == true ){
-            _this.price += item.goodsCount*item.goodsVo.price;
+          if (item.checked == true) {
+            _this.price += item.goodsCount * item.goodsVo.price;
           }
         })
         var bool = true;
         this.cars.forEach((item) => {
-          if(item.checked == false){
+          if (item.checked == false) {
             bool = false;
           }
         })
-        if(bool) {
+        if (bool) {
           this.checkAll = true;
         }
       },
@@ -220,6 +220,8 @@
             type: 'success'
           });
           _this.getData();
+          //进行 取消全选
+          _this.checkAll = false;
         }).catch(function (error) { //失败 执行catch方法
           _this.$message.error("添加失败");
         });
@@ -244,7 +246,7 @@
         }).catch(function () { //失败 执行catch方法
         });
       },
-      addOrderShop(id,car){
+      addOrderShop(id, car) {
 
         var _this = this;
         var params = new URLSearchParams();
@@ -267,11 +269,11 @@
           alert(error)
         });
       },
-      mai(){
-        if(this.price!=0){
+      mai() {
+        if (this.price != 0) {
           var car = [];
           this.cars.forEach((item) => {
-            if(item.checked == true){
+            if (item.checked == true) {
               car.push(item);
             }
           })
@@ -280,20 +282,19 @@
           var params = new URLSearchParams();
           params.append("loginName", sessionStorage.getItem("loginName"));
           params.append("money", _this.price);
-          params.append("price")
           this.$axios.post("/order/addCarOrderVo", params).then(function (result) {
             //成功  执行then里面的方法
             console.log(result.data);
             console.log(car)
-            car.forEach((item)=>{
-              _this.addOrderShop(result.data,item);
+            car.forEach((item) => {
+              _this.addOrderShop(result.data, item);
               _this.dele(item.id);
             })
             _this.getData();
           }).catch(function (error) { //失败 执行catch方法
             alert(error)
           });
-        }else {
+        } else {
           this.$message.error('请先选择需要购买的商品 ！！！');
         }
         this.checkAll = false;
