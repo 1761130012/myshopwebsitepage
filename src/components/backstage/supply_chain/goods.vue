@@ -129,8 +129,8 @@
 </template>
 
 <script>
-  import Add from "./goods/add";
-  import Update from "./goods/update";
+  import Add from "./update/goods/add";
+  import Update from "./update/goods/update";
 
   export default {
     name: "goods",

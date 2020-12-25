@@ -156,6 +156,7 @@
                 type: 'success'
               });
               _this.$emit("getData");
+
             }).catch(function (error) { //失败 执行catch方法
               this.$message.error("添加失败");
             });

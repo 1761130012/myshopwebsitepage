@@ -20,6 +20,7 @@ export default [
     path: '/index', component: Index, alias: '/index',
     children: [
       {path: 'indexPage', component: IndexChild,},
+      {path: 'shopCar', component: ShopCar,},
       {
         path: 'userInfo',
         component: LeftMenu,
@@ -27,9 +28,9 @@ export default [
           {
             path: 'show', components: {
               shopIncome: ShopIncome,
+              userInfo: UserInfo,
               shopInfo: ShopInfo,
               shopCar: ShopCar,
-              userInfo: UserInfo,
               userOrderIndex:UserOrderIndex,
               shopOrderIndex: ShopOrderIndex,
             }
