@@ -26,7 +26,7 @@ export default [
               userInfo: UserInfo,
               shopInfo: ShopInfo,
               shopCar: ShopCar,
-              shopOrderIndex: ShopOrderIndex,
+              // shopOrderIndex: ShopOrderIndex,
             }
           }
         ]

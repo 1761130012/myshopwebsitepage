@@ -153,25 +153,43 @@
         this.getData();
       },
       del() {
-        var _this = this;
-        const length = this.multipleSelection.length;
-
-        for (let i = 0; i < length; i++) {
-          var params = new URLSearchParams();
-          params.append("id", _this.multipleSelection[i]);
-          this.$axios.post("/shop/deleteShopVo", params).then(function (result) {  //成功  执行then里面的方法
-
-            _this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-
-            _this.getData();  //删除操作做完，刷新数据
-
-          }).catch(function (error) { //失败 执行catch方法
-            this.$message.error("删除失败");
+        if(this.multipleSelection[0]==null){
+          return this.$message({
+            message: '请选择需要删除的供应商',
+            type: 'warning'
           });
         }
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var _this = this;
+          const length = _this.multipleSelection.length;
+
+          for (let i = 0; i < length; i++) {
+            var params = new URLSearchParams();
+            params.append("id", _this.multipleSelection[i]);
+            this.$axios.post("/shop/deleteShopVo", params).then(function (result) {  //成功  执行then里面的方法
+
+              _this.$message({
+                message: '删除成功',
+                type: 'success'
+              });
+
+              _this.getData();  //删除操作做完，刷新数据
+
+            }).catch(function (error) { //失败 执行catch方法
+              _this.$message.error("删除失败");
+            });
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
       },
       //操作多选
       handleSelectionChange(val) {

@@ -22,9 +22,6 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="getData" size="small">查询</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-button type="danger" size="small" @click="del" icon="el-icon-delete">批量删除</el-button>
-      </el-form-item>
     </el-form>
 
     <el-table
@@ -89,8 +86,8 @@
         min-width="150">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="发货" placement="top-start">
-            <el-popconfirm title="确定发货吗？" @confirm="update(scope.row.orderId)">
-              <el-button type="warning" slot="reference" icon="el-icon-edit" size="small"></el-button>
+            <el-popconfirm title="确定发货吗？" @confirm="update(scope.row)">
+              <el-button type="success" slot="reference" icon="el-icon-truck" size="small"></el-button>
             </el-popconfirm>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
@@ -99,7 +96,8 @@
             </el-popconfirm>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="查看详情" placement="top-start">
-            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)" size="small"></el-button>
+            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)"
+                       size="small"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -126,7 +124,6 @@
   export default {
     name: "backOrder",
     methods: {
-
       getData: function () {
         var _this = this;
         console.log("刷新")
@@ -135,7 +132,7 @@
         params.append("rows", _this.pagesize);
         params.append("name", _this.oname);
         params.append("state", _this.ostate);
-        this.$axios.post("/order/selectOrderVo",params).then(function (result) {  //成功  执行then里面的方法
+        this.$axios.post("/order/selectOrderVo", params).then(function (result) {  //成功  执行then里面的方法
           _this.orderList = result.data.records;
           _this.total = result.data.total;
 
@@ -161,23 +158,30 @@
         });
 
       },
-      update(id) {
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("orderId", id);
-        params.append("state",1)
-        this.$axios.post("/order/updateOrderVo", params).then(function (result) {  //成功  执行then里面的方法
+      update(row) {
+        if (row.state == 0) {
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("orderId", row.orderId);
+          params.append("state", 1)
+          this.$axios.post("/order/updateOrderVo", params).then(function (result) {  //成功  执行then里面的方法
 
-          _this.$message({
-            message: '发货成功',
-            type: 'success'
+            _this.$message({
+              message: '发货成功',
+              type: 'success'
+            });
+
+            _this.getData();  //删除操作做完，刷新数据
+
+          }).catch(function (error) { //失败 执行catch方法
+            this.$message.error("发货失败");
           });
-
-          _this.getData();  //删除操作做完，刷新数据
-
-        }).catch(function (error) { //失败 执行catch方法
-          this.$message.error("发货失败");
-        });
+        }else {
+          this.$message({
+            message: '该订单已发货',
+            type: 'warning'
+          });
+        }
       },
       handleSizeChange(val) {
         this.pagesize = val;
@@ -186,27 +190,6 @@
       handleCurrentChange(val) {
         this.currentPage = val;
         this.getData();
-      },
-      del() {
-        var _this = this;
-        const length = this.multipleSelection.length;
-
-        for (let i = 0; i < length; i++) {
-          var params = new URLSearchParams();
-          params.append("id", _this.multipleSelection[i]);
-          this.$axios.post("/order/deleteOrderVo", params).then(function (result) {  //成功  执行then里面的方法
-
-            _this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-
-            _this.getData();  //删除操作做完，刷新数据
-
-          }).catch(function (error) { //失败 执行catch方法
-            this.$message.error("删除失败");
-          });
-        }
       },
       //操作多选
       handleSelectionChange(val) {
