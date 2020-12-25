@@ -1,6 +1,7 @@
 import Index from '../components/index/index.vue'
 import IndexChild from '../components/index/indexChild.vue'
 import LeftMenu from '../components/index/userCenter/leftMenu.vue'
+import indexPage from "../components/index/indexPage";
 
 import UserInfo from '../components/index/userCenter/userInfo.vue'
 import ShopIncome from '../components/index/userCenter/shopIncome'
@@ -17,9 +18,10 @@ import IndexRegister from "../components/index/login/index_register";
 
 export default [
   {
-    path: '/index', component: Index, alias: '/index',
+    path: '/index', component: Index,
     children: [
-      {path: 'indexPage', component: IndexChild,},
+      {path: 'indexPage', component: indexPage,},
+      {path: 'goodsPage', component: IndexChild,},
       {path: 'shopCar', component: ShopCar,},
       {
         path: 'userInfo',
@@ -31,7 +33,7 @@ export default [
               userInfo: UserInfo,
               shopInfo: ShopInfo,
               shopCar: ShopCar,
-              userOrderIndex:UserOrderIndex,
+              userOrderIndex: UserOrderIndex,
               shopOrderIndex: ShopOrderIndex,
             }
           }
@@ -39,7 +41,7 @@ export default [
       },
       {path: 'shoInfoPage/:goodsId', component: ShoInfoPage,},
       {path: 'payMoney/:orderId', component: PayMoney,},
-    ]
+    ],
   },
   {path: '/indexLogin', component: IndexLogin},
   {path: '/indexRegister', component: IndexRegister},

@@ -11,7 +11,11 @@
         <span style="font-size: 20px">兴盛优选</span>
       </el-menu-item
       >
-      <el-menu-item index="3" @click=" toGoodsCar " style='margin-left:700px'>
+      <el-menu-item index="2" @click=" $router.push('/index/goodsPage') " style='margin-left:500px'>
+        <i class="el-icon-shopping-cart-full"></i>
+        商品中心
+      </el-menu-item>
+      <el-menu-item index="3" @click=" toGoodsCar " style='margin-left:100px'>
         <i class="el-icon-shopping-cart-full"></i>
         购物车
       </el-menu-item>
