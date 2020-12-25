@@ -97,7 +97,9 @@
                 {{goods.goodsVo.price}}
               </el-col>
               <el-col :offset="1" :span="4">
-                <el-input-number v-model="goods.payNumber" :min="1" :max="100"></el-input-number>
+                <el-input-number v-model="goods.payNumber" @change=" handleChange(goods.id,goods.payNumber) "
+                                 :min="1"
+                                 :max="100"></el-input-number>
               </el-col>
               <el-col :offset="2" :span="1">
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
@@ -357,12 +359,26 @@
             _this.$message.error("批量删除失败！")
           }
         })
-
         this.dialogVisible = false
       },
       updateShop() {
         this.$refs.selectShopRef.getShopData();
         this.$refs.selectShopRef.dialogVisible = true
+      },
+      handleChange(id, payNumber) {
+        //根据 订单 id 和 商品 id 进行 修改
+        this.$axios({
+          url: 'order/updateNumberById',
+          method: "post",
+          params: {
+            id: id,
+            payNumber: payNumber,
+          },
+        }).then((option) => {
+          if (!option.data) {
+            this.$message.error("错误！");
+          }
+        })
       }
     },
     computed: {

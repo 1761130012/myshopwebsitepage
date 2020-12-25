@@ -39,7 +39,7 @@
       }
     },
     created() {
-      sessionStorage.setItem("loginName", "admin");
+      //sessionStorage.setItem("loginName", "admin");
     },
     methods: {
       loginCommit() {
