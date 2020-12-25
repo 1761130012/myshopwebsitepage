@@ -25,25 +25,16 @@
           prop="date"
           label="地址">
           <el-table-column
-            prop="provinceVo"
+            prop="provinceVo.name"
             label="省">
-            <template slot-scope="scope">
-              {{scope.row.provinceVo.name}}
-            </template>
           </el-table-column>
           <el-table-column
-            prop="cityVo"
+            prop="cityVo.name"
             label="市">
-            <template slot-scope="scope">
-              {{scope.row.cityVo.name}}
-            </template>
           </el-table-column>
           <el-table-column
-            prop="areaVo"
+            prop="areaVo.name"
             label="区/县">
-            <template slot-scope="scope">
-              {{scope.row.areaVo.name}}
-            </template>
           </el-table-column>
           <el-table-column
             prop="address"
@@ -93,20 +84,18 @@
 
 <script>
   export default {
+    props: ["orderId"],
     data() {
       return {
         dialogVisible: false,
-        shopData: undefined,
+        shopData: [],
         selectShopId: undefined,
       }
-    },
-    created() {
-      this.getShopData();
     },
     watch: {
       selectShopId(newValue, oldValue) {
         if (oldValue !== undefined) {
-          //进行 查询state=2 不能等于 newValue
+          //进行 查询 state=2 不能等于 newValue
           this.shopData.forEach((item) => {
             if (item.shopId === newValue) {
               item.selectState = 1;
@@ -125,29 +114,33 @@
         this.$axios({
           url: "shop/queryAllShopVoByLoginName",
           method: 'post',
-          params: {loginName: sessionStorage.getItem("loginName")}
+          params: {loginName: sessionStorage.getItem("loginName"), orderId: this.orderId}
         }).then((option) => {
-          let data = option.data;
-          if (data.length > 0) {
-            _this.shopData = data.map((iterator) => {
-              //把 item.shopVo 中的  state 替换 成外部的 state
-              iterator.shopVo.state = iterator.state;
-
-              //默认 选中
-              iterator.shopVo.selectState = 0;
-              if (iterator.shopVo.state === 1) {
-                //设置 默认 的 商铺
-                iterator.shopVo.selectState = 1;
-                _this.selectShopId = iterator.shopVo.shopId;
-              }
-              return iterator.shopVo;
-            })
-          }
+          _this.selectShopId = option.data.selectShopId;
+          option.data.shopVos.forEach((item) => {
+            item.selectState = 0;
+            if (item.shopId === _this.selectShopId) {
+              item.selectState = 1;
+            }
+          })
+          _this.shopData = option.data.shopVos;
         })
       },
-      onChangeShop() {
+      async onChangeShop() {
+        //进行 修改 数据库 选中 id
+        await this.$axios({
+          url: "order/updateOrderShopIdById",
+          method: 'post',
+          params: {orderId: this.orderId, shopId: this.selectShopId},
+        }).then((option) => {
+          if (option.data) {
+            this.$message.success("成功！")
+          } else {
+            this.$message.success("错误！")
+          }
+        })
         //进行 赋值
-        this.$emit("updateShop",this.shopData.find(item => item.selectState === 1) );
+        this.$emit("getShopInfo");
         this.dialogVisible = false
       },
     }

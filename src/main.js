@@ -35,14 +35,30 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     perms: [],
+    loginDialogVisible: false,
   },
   getters: {
+    getDialogVisible(state) {
+      return state.loginDialogVisible;
+    },
     //可以进行 传参数
     getMenuPerms: (state) => (perms) => {
       return state.perms.find((item) => item === perms) !== undefined;
+    },
+    isIndexLoginName: (state) => (fn) => {
+      //进行 判断 没 登录 需要 登录
+      if (!sessionStorage.getItem("loginName")) {
+        //需要询问
+        state.loginDialogVisible = true;
+      } else {
+        fn();
+      }
     }
   },
   mutations: {
+    setDialogVisible(state, flag) {
+      state.loginDialogVisible = flag;
+    },
     setMenuPerms(state, loginName) {
       //连接数据库 进行 查询
       axios({
@@ -52,16 +68,30 @@ const store = new Vuex.Store({
       }).then((option) => {
         state.perms = option.data;
       })
-    }
+    },
+
   },
+})
+//路由 外置
+const router = new VueRouter({
+  routes: BackstageRouter.concat(IndexRouter)
+})
+//导航守卫
+router.beforeEach((to, from, next) => {
+  //并且 必须 是 包含 backstage 的 路由
+  if (to.path.indexOf("backstage") >= 0 && to.path.indexOf("backstageLogin") <= 0 && !sessionStorage.getItem("loginName")) {
+    //导航 到 登录
+    next({path: '/backstageLogin'});
+    return;
+  }
+  //next 通过
+  next()
 })
 
 
 let vm = new Vue({
   el: '#app',
-  router: new VueRouter({
-    routes: BackstageRouter.concat(IndexRouter)
-  }),
+  router: router,
   store: store,
 })
 
@@ -107,7 +137,6 @@ export default {
   showFullScreenLoading,
   hideFullScreenLoading
 }
-
 //进行 匹配 拦截器  加效果
 axios.interceptors.request.use((request) => {
   showFullScreenLoading(".loadingtext");// loadingtext class right.vue
@@ -115,10 +144,12 @@ axios.interceptors.request.use((request) => {
 }, function (error) {
   return Promise.reject(error);
 })
+
 axios.interceptors.response.use((response) => {
   hideFullScreenLoading();
   return response;
 }, function (error) {
+  ElementUi.Message.error("加载失败")
   hideFullScreenLoading();
   return Promise.reject(error);
 })

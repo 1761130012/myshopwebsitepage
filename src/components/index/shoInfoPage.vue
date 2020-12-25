@@ -5,7 +5,7 @@
       <el-col :span="8">
         <!-- 幻灯片 -->
         <el-carousel height="400px">
-          <div v-for="image in images">
+          <div v-for="image in goodsVo.images">
             <el-carousel-item>
               <el-image :src="'./src/resource/image/'+image.adders"></el-image>
             </el-carousel-item>
@@ -39,42 +39,78 @@
 
 <script>
   export default {
-
     data() {
       return {
-        images: [],
-        goodsVo: undefined,
+        goodsId: this.$route.params.goodsId,
+        goodsVo: {
+          name: "",
+          remark: "",
+          price: "",
+          images: []
+        },
         num: 1,
         max: 10,
       }
     },
-    created() {
-      this.getData();
+    watch: {
+      goodsId() {
+        console.log(this.goodsId)
+      }
+    },
+    async created() {
+      await this.getData();
     },
     methods: {
-      getData() {
-        let goodsId = this.$route.params.goodsId;
-        console.log(goodsId)
-        this.images = [
-          {adders: "/drinks/1.jpg"},
-          {adders: "/drinks/2.jpg"},
-          {adders: "/drinks/3.jpg"},
-          {adders: "/drinks/4.jpg"},
-          {adders: "/drinks/5.jpg"},
-        ];
-        this.goodsVo = {
-          name: "可乐",
-          price: "9.9",
-          remark: "快乐肥宅水",
-        };
+      async getData() {
+        let _this = this;
+        await this.$axios({
+          url: 'goods/queryGoodsVoByGoodId',
+          params: {
+            goodsId: _this.goodsId,
+          }
+        }).then(function (option) {
+          option.data.images = [
+            {adders: "/drinks/1.jpg"},
+            {adders: "/drinks/2.jpg"},
+            {adders: "/drinks/3.jpg"},
+            {adders: "/drinks/4.jpg"},
+            {adders: "/drinks/5.jpg"},
+          ];
+          _this.goodsVo = option.data;
+        })
       },
-      //支付商品
+      //支付商品 需要获取 orderId
       payGoods() {
-        console.log("支付商品");
+        let _this = this;
+        this.$axios({
+          url: 'order/insertOrderByOneGoods',
+          params: {
+            goodsId: this.goodsId,
+            num: this.num,
+            loginName: sessionStorage.getItem("login_name"),
+          }
+        }).then(function (option) {
+          //进行 跳转
+          _this.$router.push({path: `/index/payMoney/${option.data}`});
+        })
       },
       //购物车
       addShopCart() {
-        console.log("购物车");
+        let _this = this;
+        this.$axios({
+          url: 'user/insertUserGoodsByInfo',
+          params: {
+            goodsId: this.goodsId,
+            goodsCount: this.num,
+            loginName: sessionStorage.getItem("loginName"),
+          }
+        }).then(function (option) {
+          if (option.data) {
+            _this.$message.success("加入成功！");
+          } else {
+            _this.$message.success("加入失败！");
+          }
+        })
       },
     },
     computed: {

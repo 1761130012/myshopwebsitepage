@@ -115,6 +115,7 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -180,7 +181,6 @@
         dels.forEach((item) => {
           _this.delpinlun(item);
         })
-
       },
       delpinlun(id) {
         var _this = this;
@@ -193,7 +193,6 @@
           });
           //成功  执行then里面的方法
           _this.getData();
-
         }).catch(function (error) { //失败 执行catch方法
           alert(error)
         });
@@ -242,7 +241,7 @@
         }).catch(function () { //失败 执行catch方法
         });
       },
-      addOrderShop(id, car) {
+      addOrderShop(id,car){
 
         var _this = this;
         var params = new URLSearchParams();
