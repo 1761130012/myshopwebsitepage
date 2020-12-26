@@ -19,6 +19,7 @@ import apr_shop from "../components/backstage/approval/aprShop";
 import apr_goods from "../components/backstage/systemSetting/power";
 import income from "../components/backstage/statistics/income";
 import market from "../components/backstage/statistics/market";
+import goodsType from '../components/backstage/supply_chain/goodstype/index'
 
 import backstage_login from "../components/backstage/login/backstage_login";
 
@@ -32,10 +33,10 @@ export default [
           staff, role, user, staff_role, menu, power,
           order, shop, goods, purchase, warehouse, supplier,
           apr_purchase, apr_shop, apr_goods,
-          income, market
+          income, market,goodsType
         }
       },
     ]
   },
-  {path: '/backstageLogin',component: backstage_login}
+  {path: "/backstageLogin",component: backstage_login}
 ]

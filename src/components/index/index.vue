@@ -39,7 +39,8 @@
       }
     },
     created() {
-      sessionStorage.setItem("loginName", "admin");
+      //sessionStorage.setItem("loginName", "admin");
+      this.$router.push("/index/indexPage");
     },
     methods: {
       loginCommit() {

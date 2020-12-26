@@ -7,26 +7,41 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery" size="small">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="danger" @click="deleteBathOrder" icon="el-icon-delete-solid">批量删除
+        </el-button>
+      </el-form-item>
     </el-form>
 
-    <el-table :data="orderData" v-loading="loading" width="100%" header-align="center">
+    <el-table :data="orderData"
+              v-loading="loading"
+              width="100%"
+              header-align="center">
+      <el-table-column>
+        <template slot="header" slot-scope="{ column, $index }">
+          <el-checkbox v-model="checkedAll"></el-checkbox>
+        </template>
+        <template slot-scope="params">
+          <el-checkbox v-model="params.row.checked" :disabled="params.row.disabled"></el-checkbox>
+        </template>
+      </el-table-column>
       <el-table-column prop="orderId" label="订单号" min-width="80" align="center"></el-table-column>
-      <el-table-column  label="收货人" min-width="50" align="center">
+      <el-table-column label="收货人" min-width="50" align="center">
         <template slot-scope="params">
           <span>{{ params.row.userVo.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column  label="收货人电话" min-width="70" align="center">
+      <el-table-column label="收货人电话" min-width="70" align="center">
         <template slot-scope="params">
           <span>{{params.row.userVo.phone}}</span>
         </template>
       </el-table-column>
-      <el-table-column  label="总金额" min-width="60" align="center">
+      <el-table-column label="总金额" min-width="60" align="center">
         <template slot-scope="params">
           <span>{{params.row.money}}￥</span>
         </template>
       </el-table-column>
-      <el-table-column  label="支付状态" min-width="60" align="center">
+      <el-table-column label="支付状态" min-width="60" align="center">
         <template slot-scope="params">
           <span v-if="params.row.payState===0">未支付</span>
           <span v-if="params.row.payState===1">已支付</span>
@@ -44,7 +59,9 @@
         label="操作">
         <template slot-scope="params">
           <el-button type="primary" size="small" @click="queryGoodsByOrderId(params.row)">详情</el-button>
-          <el-button type="primary" size="small" v-if="params.row.payState===0" @click="handlePay(params.row.orderId)">去支付</el-button>
+          <el-button type="primary" size="small" v-if="params.row.payState===0" @click="handlePay(params.row.orderId)">
+            去支付
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,83 +115,135 @@
 
 <script>
 
-export default {
-  name: "allOrder",
-  data() {
-    return {
-      queryParams: {
-        orderId: "",
-      },
-      currentPage: 1,
-      total: 0,
-      size: 5,
-      orderData: [],
-      loading: true,
-      OpenAllOrder:false,
-      allOrderData:[],
-      currentPage1: 1,
-      total1: 0,
-      size1: 5,
-      id:undefined,
-      pay:undefined
-    }
-  },
-  created() {
-    this.getlist();
-  },
-  methods: {
-    getlist() {
-      let _this = this;
-      _this.loading = true;
-      let params = new URLSearchParams();
-      params.append("current", _this.currentPage);
-      params.append("size", _this.size);
-      params.append("orderId",_this.queryParams.orderId);
-      params.append("loginName", sessionStorage.getItem("loginName"));
-      _this.$axios.post("order/queryAllOrderByUserId", params).then((response) => {
-        _this.orderData = response.data.records;
-        _this.total = response.data.total;
-        _this.loading=false;
+  export default {
+    name: "allOrder",
+    data() {
+      return {
+        queryParams: {
+          orderId: "",
+        },
+        currentPage: 1,
+        total: 0,
+        size: 5,
+        orderData: [],
+        loading: true,
+        OpenAllOrder: false,
+        allOrderData: [],
+        currentPage1: 1,
+        total1: 0,
+        size1: 5,
+        id: undefined,
+        pay: undefined,
 
-      })
+        checkedAll: false,
+      }
     },
-    handleSizeChange(val) {
-      this.size = val;
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
-    },
-    handleQuery() {
-      this.currentPage = 1;
+    created() {
       this.getlist();
     },
-    queryGoodsByOrderId(row) {
-      let _this=this;
-      _this.OpenAllOrder=true;
-      _this.id=row.orderId;
-      _this.pay=row.payState;
-      console.log(_this.pay)
-      let params = new URLSearchParams();
-      params.append("current", _this.currentPage1);
-      params.append("size", _this.size1);
-      params.append("orderId",row.orderId);
-      _this.$axios({url:"order/queryOrderShopByOrderId",method:"post",data:params}).then(response=>{
-        _this.allOrderData=response.data.records;
-        _this.total1=response.data.total;
-      })
+    watch: {
+      checkedAll(newValue) {
+        this.orderData.forEach((option) => {
+          //需要 进行 限制
+          if (!option.disabled) {
+            option.checked = newValue;
+          }
+        })
+      },
     },
-    handleSizeChange1(val) {
-      this.size1 = val;
-    },
-    handleCurrentChange1(val) {
-      this.currentPage1 = val;
-    },
-    handlePay(orderId) {
-      let id=this.id ||orderId;
-      alert(id);
+    methods: {
+      getlist() {
+        let _this = this;
+        _this.loading = true;
+        let params = new URLSearchParams();
+        params.append("current", _this.currentPage);
+        params.append("size", _this.size);
+        params.append("orderId", _this.queryParams.orderId);
+        params.append("loginName", sessionStorage.getItem("loginName"));
+        _this.$axios.post("order/queryAllOrderByUserId", params).then((response) => {
+          response.data.records.forEach((option) => {
+            option.checked = false;
+            option.disabled = true;
+            if (option.payState === 0 || (option.payState === 1 && option.state === 3)) {
+              option.disabled = false;
+            }
+          })
+          _this.orderData = response.data.records;
+          _this.total = response.data.total;
+          _this.loading = false;
+
+        })
+      },
+      handleSizeChange(val) {
+        this.size = val;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
+      handleQuery() {
+        this.currentPage = 1;
+        this.getlist();
+      },
+      queryGoodsByOrderId(row) {
+        let _this = this;
+        _this.OpenAllOrder = true;
+        _this.id = row.orderId;
+        _this.pay = row.payState;
+        console.log(_this.pay)
+        let params = new URLSearchParams();
+        params.append("current", _this.currentPage1);
+        params.append("size", _this.size1);
+        params.append("orderId", row.orderId);
+        _this.$axios({url: "order/queryOrderShopByOrderId", method: "post", data: params}).then(response => {
+          _this.allOrderData = response.data.records;
+          _this.total1 = response.data.total;
+        })
+      },
+      handleSizeChange1(val) {
+        this.size1 = val;
+      },
+      handleCurrentChange1(val) {
+        this.currentPage1 = val;
+      },
+      handlePay(orderId) {
+        let id = this.id || orderId;
+        alert(id);
+      },
+      handleSelectionChange(val) {
+        console.log(val)
+        this.multipleSelection = val;
+      },
+      deleteBathOrder() {
+        let orderIds = [];
+        this.orderData.forEach((option) => {
+          if (option.checked) {
+            orderIds.push(option.orderId)
+          }
+        });
+        if (orderIds.length === 0) {
+          this.$message.error("未选中！")
+          return;
+        }
+
+        this.$axios({
+          url: 'order/deleteBathOrder',
+          method: 'post',
+          data: JSON.stringify(orderIds),
+          headers: {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+        }).then((option) => {
+          if (option.data) {
+            this.$message.success("删除成功！");
+            this.getlist();
+            this.checkedAll = false;
+          } else {
+            this.$message.error("删除失败！");
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
