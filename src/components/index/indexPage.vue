@@ -3,10 +3,10 @@
     <el-row>
       <el-col>
         <el-carousel height="400px">
-          <div v-for="image in images" @click="toGoodsInfo(images.goodsId)">
+          <div v-for="image in images">
             <el-carousel-item>
               <el-image style="width: 100%; height: 100%;cursor:pointer"
-                        src="./src/resource/image/drinks/1.jpg"></el-image>
+                        :src="'./src/resource/image/'+image.adders"></el-image>
             </el-carousel-item>
           </div>
         </el-carousel>
@@ -14,7 +14,7 @@
     </el-row>
 
     <el-divider/>
-    <h2>热销商品：</h2>
+    <el-divider content-position="left"><span style="font-size: 25px">热销商品：</span></el-divider>
     <el-row>
       <el-col :span="4" v-for="(o, index) in goodsUpFive" :key="o.goodsId"
               :offset="index > 0 ? 1 : 0">
@@ -43,11 +43,10 @@
       return {
         goodsUpFive: [],
         images: [
-          {adders: "/drinks/1.jpg", goodsId: '1'},
-          {adders: "/drinks/2.jpg", goodsId: '1'},
-          {adders: "/drinks/3.jpg", goodsId: '1'},
-          {adders: "/drinks/4.jpg", goodsId: '1'},
-          {adders: "/drinks/5.jpg", goodsId: '1'},
+          {adders: "/indexPage/1.jpg"},
+          {adders: "/indexPage/2.jpg"},
+          {adders: "/indexPage/3.jpg"},
+          {adders: "/indexPage/4.jpg"},
         ]
       }
     },

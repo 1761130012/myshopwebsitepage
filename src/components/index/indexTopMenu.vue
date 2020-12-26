@@ -4,7 +4,6 @@
       :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
     >
       <el-menu-item index="1" @click=" $router.push('/index/indexPage') "
       >
@@ -34,9 +33,6 @@
       };
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
       toUserPath() {
         let _this = this;
         this.$store.getters.isIndexLoginName(function () {

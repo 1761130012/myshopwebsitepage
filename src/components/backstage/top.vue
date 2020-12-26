@@ -10,7 +10,7 @@
       <el-menu-item index="3"
       >欢迎您：{{showNameOrLoginName}}
       </el-menu-item>
-      <el-menu-item index="2"
+      <el-menu-item @click=" exitMethod " index="2"
       > 退出
       </el-menu-item>
     </el-menu>
@@ -29,6 +29,10 @@
       this.getNameOrLoginName();
     },
     methods: {
+      exitMethod() {
+        sessionStorage.clear();
+        this.$router.push("/backstageLogin");
+      },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },

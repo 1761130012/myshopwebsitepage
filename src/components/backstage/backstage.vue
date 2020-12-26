@@ -38,6 +38,8 @@
     },
     methods: {
       addTable(target) {
+        //进行 刷新
+        //this.$refs.rightRef.reload();
         this.$refs.rightRef.addTab(target);
       },
     },

@@ -81,6 +81,8 @@
           } else {
             _this.$message.error("错误！")
           }
+        }).catch((option) => {
+          _this.$message.error("权限问题！")
         })
       },
       addTable(target) {

@@ -1,20 +1,25 @@
 <template>
-  <div class="loadingtext">
-    <el-tabs
-      v-model="editableTabsValue"
-      type="card"
-      closable
-      @tab-remove="removeTab"
-    >
-      <el-tab-pane
-        v-for="item in editableTabs"
-        :key="item.name"
-        :name="item.name"
+  <div class="loadingtext" style="margin-left: -15px">
+    <el-col :span="1">
+      <el-button icon="el-icon-refresh-right" circle @click="reload "></el-button>
+    </el-col>
+    <el-col :span="23">
+      <el-tabs
+        v-model="editableTabsValue"
+        type="card"
+        closable
+        @tab-remove="removeTab"
       >
-        <span slot="label"><i :class="item.icon"></i> {{ item.title }}</span>
-        <router-view v-if="isRouterActive" :name="item.viewUrl"></router-view>
-      </el-tab-pane>
-    </el-tabs>
+        <el-tab-pane
+          v-for="item in editableTabs"
+          :key="item.name"
+          :name="item.name"
+        >
+          <span slot="label"><i :class="item.icon"></i> {{ item.title }}</span>
+          <router-view v-if="isRouterActive" :name="item.viewUrl"></router-view>
+        </el-tab-pane>
+      </el-tabs>
+    </el-col>
   </div>
 </template>
 <script>

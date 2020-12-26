@@ -3,7 +3,7 @@
     <!-- 设置了 自动的 登录 init -->
     <el-row>
       <el-col :span="20" :offset="2">
-        <my-top-menu></my-top-menu>
+        <my-top-menu ref="topMenu"></my-top-menu>
       </el-col>
     </el-row>
     <el-row>
@@ -21,7 +21,7 @@
       :before-close="handleClose">
       <span>当前操作需要登录！是否登录</span>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="$store.commit('setDialogVisible',false)">取 消</el-button>
+    <el-button @click=" cancelMethod ">取 消</el-button>
     <el-button type="primary" @click=" loginCommit ">确 定</el-button>
   </span>
     </el-dialog>
@@ -43,7 +43,12 @@
       this.$router.push("/index/indexPage");
     },
     methods: {
+      cancelMethod() {
+        this.$refs.topMenu.activeIndex = this.$refs.topMenu.oldIndex;
+        this.$store.commit('setDialogVisible', false)
+      },
       loginCommit() {
+        this.$refs.topMenu.oldIndex = this.$refs.topMenu.activeIndex;
         //关闭
         this.$store.commit('setDialogVisible', false)
         this.$router.push("/indexLogin");
