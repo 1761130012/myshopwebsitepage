@@ -41,20 +41,30 @@
         prop="orderId"
         label="订单id"
         align="center"
-        min-width="100">
+        min-width="120">
       </el-table-column>
       <el-table-column
         prop="userVo.name"
         label="用户姓名"
         align="center"
-        min-width="100">
+        min-width="80">
       </el-table-column>
       <el-table-column
-        prop="time"
-        min-width="100"
+        prop="startTime"
+        min-width="120"
         sortable
         align="center"
-        label="订单时间">
+        label="订单开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="endTime"
+        min-width="120"
+        sortable
+        align="center"
+        label="订单结束时间">
+        <template slot-scope="scope">
+          <span v-if="scope.row.endTime==null">NAN</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="money"
@@ -79,24 +89,22 @@
         min-width="100"
         align="center"
         label="备注">
+        <template slot-scope="scope">
+          <span v-if="scope.row.remark==null">NAN</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
         align="center"
         min-width="150">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="发货" placement="top-start">
-            <el-popconfirm title="确定发货吗？" @confirm="update(scope.row.orderId)">
-              <el-button type="warning" slot="reference" icon="el-icon-edit" size="small"></el-button>
-            </el-popconfirm>
-          </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
             <el-popconfirm title="确定删除吗？" @confirm="delpinlun(scope.row.orderId)">
               <el-button type="danger" slot="reference" icon="el-icon-delete" size="small"></el-button>
             </el-popconfirm>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="查看详情" placement="top-start">
-            <el-button type="primary" icon="el-icon-search" @click="details(scope.row.orderId)" size="small"></el-button>
+            <el-button type="primary" icon="el-icon-search" @click="details(scope.row)" size="small"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -113,7 +121,7 @@
       :total="total">
     </el-pagination>
 
-    <my-select ref="selectRef"></my-select>
+    <my-select ref="selectRef" @getData="getData"></my-select>
   </div>
 </template>
 
@@ -158,24 +166,6 @@
         });
 
       },
-      update(id) {
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("orderId", id);
-        params.append("state",1)
-        this.$axios.post("/order/updateOrderVo", params).then(function (result) {  //成功  执行then里面的方法
-
-          _this.$message({
-            message: '发货成功',
-            type: 'success'
-          });
-
-          _this.getData();  //删除操作做完，刷新数据
-
-        }).catch(function (error) { //失败 执行catch方法
-          this.$message.error("发货失败");
-        });
-      },
       handleSizeChange(val) {
         this.pagesize = val;
         this.getData();
@@ -210,8 +200,8 @@
         this.multipleSelection = val.map(item => item.orderId);
         console.log(this.multipleSelection)
       },
-      details(id) {
-        this.$refs.selectRef.getData(id);
+      details(order) {
+        this.$refs.selectRef.getData(order);
       }
     },
     data() {

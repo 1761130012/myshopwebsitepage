@@ -375,7 +375,6 @@
           _this.total = result.data.total;
         }).catch(function () { //失败 执行catch方法
         });
-        this.supShop();
       },
       delpinlun(id) {
         var _this = this;
@@ -400,12 +399,6 @@
         this.$refs.updateRef.getData(list);
       },
       delGoods(id) {
-        if (this.multipleSelectionShop[0] == null) {
-          return this.$message({
-            message: '请选择需要删除的供应商商品',
-            type: 'warning'
-          });
-        }
         var _this = this;
         var params = new URLSearchParams();
         params.append("id", id);
@@ -418,7 +411,7 @@
           });
           _this.goods();
         }).catch(function (error) { //失败 执行catch方法
-          this.$message.error("删除失败");
+          _this.$message.error("删除失败");
         });
       },
       goods() {

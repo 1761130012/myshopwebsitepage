@@ -1,10 +1,11 @@
 <template>
   <div class="demo-type">
-    <div class="demo-fit">
-      <el-avatar shape="circle" style="margin-left: 43%" :size="150" :fit="fits" :src="url"></el-avatar>
-      <br>
-      <span class="title" style="margin-left: 46.5%">{{ fits }}</span>
-    </div>
+<!--    <div class="demo-fit">-->
+<!--      <el-avatar shape="circle" style="margin-left: 43%" :size="150" :fit="fits" :src="url"></el-avatar>-->
+<!--      <br>-->
+<!--      <span class="title" style="margin-left: 46.5%">{{ fits }}</span>-->
+<!--    </div>-->
+
     <el-form :model="shop" :rules="shoprules" label-width="100px" ref="shop">
       <br>
       <el-form-item label="店铺名:" prop="name">
