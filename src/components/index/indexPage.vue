@@ -41,13 +41,7 @@
   export default {
     data() {
       return {
-        goodsUpFive: [
-          {goodsId: "1", price: "10", name: "可乐"},
-          {goodsId: "2", price: "10", name: "可乐"},
-          {goodsId: "3", price: "10", name: "可乐"},
-          {goodsId: "4", price: "10", name: "可乐"},
-          {goodsId: "5", price: "10", name: "可乐"},
-        ],
+        goodsUpFive: [],
         images: [
           {adders: "/drinks/1.jpg", goodsId: '1'},
           {adders: "/drinks/2.jpg", goodsId: '1'},

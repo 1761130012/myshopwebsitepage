@@ -9,6 +9,7 @@ import ShoInfoPage from '../components/index/shoInfoPage'
 import ShopInfo from '../components/index/userCenter/shopInfo'
 import PayMoney from '../components/index/payPage/indexPay'
 import ShopCar from '../components/index/userCenter/shopCar'
+import userOrder from "../components/index/userCenter/userOrderManage/index"
 
 import ShopOrderIndex from "../components/index/userCenter/shopOrderManage/index";
 import UserOrderIndex from "../components/index/userCenter/userOrderManage/index";
@@ -18,7 +19,7 @@ import IndexRegister from "../components/index/login/index_register";
 
 export default [
   {
-    path: '/index', component: Index,
+    path: '/index', component: Index, alias: "/",
     children: [
       {path: 'indexPage', component: indexPage,},
       {path: 'goodsPage', component: IndexChild,},
@@ -32,9 +33,9 @@ export default [
               shopIncome: ShopIncome,
               userInfo: UserInfo,
               shopInfo: ShopInfo,
-              shopCar: ShopCar,
               userOrderIndex: UserOrderIndex,
               shopOrderIndex: ShopOrderIndex,
+              userOrder: userOrder,
             }
           }
         ]

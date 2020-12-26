@@ -91,7 +91,7 @@
           </el-pagination>
         </el-col>
         <el-col :span="6" :offset="12">
-          <el-button type="primary" size="small" @click="handleEdit">提货</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(1)">提货</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -100,93 +100,97 @@
 
 <script>
 
-export default {
-  name: "allOrder",
-  data() {
-    return {
-      queryParams: {
-        orderId: "",
-      },
-      currentPage: 1,
-      total: 0,
-      size: 5,
-      orderData: [],
-      loading: true,
-      OpenoutOrder: false,
-      tihuoData: [],
-      currentPage2: 1,
-      total2: 0,
-      size2: 5,
-      id: undefined
-    }
-  },
-  created() {
-    this.getlist();
-  },
-  methods: {
-    getlist() {
-      let _this = this;
-      _this.loading = true;
-      let params = new URLSearchParams();
-      params.append("current", _this.currentPage);
-      params.append("size", _this.size);
-      params.append("orderId", _this.queryParams.orderId);
-      params.append("loginName", sessionStorage.getItem("loginName"));
-      _this.$axios.post("order/queryAllOrderByUserIdti", params).then((response) => {
-        _this.orderData = response.data.records;
-        _this.total = response.data.total;
-        _this.loading = false;
-      })
+  export default {
+    name: "allOrder",
+    data() {
+      return {
+        queryParams: {
+          orderId: "",
+        },
+        currentPage: 1,
+        total: 0,
+        size: 5,
+        orderData: [],
+        loading: true,
+        OpenoutOrder: false,
+        tihuoData: [],
+        currentPage2: 1,
+        total2: 0,
+        size2: 5,
+        id: undefined
+      }
     },
-    handleSizeChange(val) {
-      this.size = val;
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val;
-    },
-    handleQuery() {
-      this.currentPage = 1;
+    created() {
       this.getlist();
     },
-    queryGoodsByOrderId2(orderId) {
-      let _this = this;
-      _this.OpenoutOrder = true;
-      let params = new URLSearchParams();
-      params.append("current", _this.currentPage2);
-      params.append("size", _this.size2);
-      params.append("orderId", orderId);
-      _this.id = orderId;
-      _this.$axios({url: "order/queryOrderShopByOrderId", method: "post", data: params}).then(response => {
-        _this.tihuoData = response.data.records;
-        _this.total2 = response.data.total;
-      })
-    },
-    handleSizeChange2(val) {
-      this.size2 = val;
-    },
-    handleCurrentChange2(val) {
-      this.currentPage2 = val;
-    },
-    handleEdit: function (orderId) {
-      let id = this.id || orderId;
-      this.$confirm('是否确认已收到货物?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
+    methods: {
+      getlist() {
+        let _this = this;
+        _this.loading = true;
         let params = new URLSearchParams();
-        params.append("orderId", id);
-        this.$axios.post("order/edittihuostate", params).then((option) => {
-            this.$message({showClose: true, message: "收货成功", type: "success"});
-            this.OpenoutOrder=false;
-            this.getlist();
-          }
-        )
-      }).catch(() => {
-      })
+        params.append("current", _this.currentPage);
+        params.append("size", _this.size);
+        params.append("orderId", _this.queryParams.orderId);
+        params.append("loginName", sessionStorage.getItem("loginName"));
+        _this.$axios.post("order/queryAllOrderByUserIdti", params).then((response) => {
+          _this.orderData = response.data.records;
+          _this.total = response.data.total;
+          _this.loading = false;
+        })
+      },
+      handleSizeChange(val) {
+        this.size = val;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
+      handleQuery() {
+        this.currentPage = 1;
+        this.getlist();
+      },
+      queryGoodsByOrderId2(orderId) {
+        let _this = this;
+        _this.OpenoutOrder = true;
+        let params = new URLSearchParams();
+        params.append("current", _this.currentPage2);
+        params.append("size", _this.size2);
+        params.append("orderId", orderId);
+        _this.id = orderId;
+        _this.$axios({url: "order/queryOrderShopByOrderId", method: "post", data: params}).then(response => {
+          _this.tihuoData = response.data.records;
+          _this.total2 = response.data.total;
+        })
+      },
+      handleSizeChange2(val) {
+        this.size2 = val;
+      },
+      handleCurrentChange2(val) {
+        this.currentPage2 = val;
+      },
+      handleEdit: function (orderId) {
+        let id = this.id || orderId;
+
+        //进行 更改 为
+        this.$router.push({path: `/index/payMoney/${id}`});
+
+        /*this.$confirm('是否确认已收到货物?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          let params = new URLSearchParams();
+          params.append("orderId", id);
+          this.$axios.post("order/edittihuostate", params).then((option) => {
+              this.$message({showClose: true, message: "收货成功", type: "success"});
+              this.OpenoutOrder = false;
+              this.getlist();
+            }
+          )
+        }).catch(() => {
+        })*/
+      }
     }
   }
-}
 </script>
 
 <style scoped>
