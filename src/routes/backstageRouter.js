@@ -26,14 +26,14 @@ import backstage_login from "../components/backstage/login/backstage_login";
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
   {//放开   Backstage 中 初始 化 有session 绕开 登录
-    path: '/backstage', component: Backstage, alias: "/backstage",
+    path: '/backstage', component: Backstage, alias: "/",
     children: [
       {
         path: 'right', components: {
           staff, role, user, staff_role, menu, power,
           order, shop, goods, purchase, warehouse, supplier,
           apr_purchase, apr_shop, apr_goods,
-          income, market, goodsType
+          income, market,goodsType
         }
       },
     ]
