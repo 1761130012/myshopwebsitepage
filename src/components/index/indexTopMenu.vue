@@ -11,11 +11,13 @@
         <span style="font-size: 20px">兴盛优选</span>
       </el-menu-item
       >
-      <el-menu-item index="3" @click=" $router.push('/index/shopCar') " style='margin-left:700px'>
+      <el-menu-item index="2" @click=" $router.push('/index/goodsPage') " style='margin-left:500px'>
         <i class="el-icon-shopping-cart-full"></i>
-        <el-badge :value="shoppingCartNumber"  :max="99">
-          购物车
-        </el-badge>
+        商品中心
+      </el-menu-item>
+      <el-menu-item index="3" @click=" toGoodsCar " style='margin-left:100px'>
+        <i class="el-icon-shopping-cart-full"></i>
+        购物车
       </el-menu-item>
       <el-menu-item index="4" @click=" toUserPath " style='margin-left:100px'
       ><i class="el-icon-user-solid"></i>
@@ -29,7 +31,6 @@
     data() {
       return {
         activeIndex: "1",
-        shoppingCartNumber: 100,
       };
     },
     methods: {
@@ -37,10 +38,16 @@
         console.log(key, keyPath);
       },
       toUserPath() {
-        //进行 身份验证
-        if (this.$store.getters.isIndexLoginName(this.$router)) {
-          this.$router.push('/index/userInfo/show')
-        }
+        let _this = this;
+        this.$store.getters.isIndexLoginName(function () {
+          _this.$router.push('/index/userInfo/show')
+        })
+      },
+      toGoodsCar() {
+        let _this = this;
+        this.$store.getters.isIndexLoginName(function () {
+          _this.$router.push('/index/shopCar');
+        })
       }
     },
   };

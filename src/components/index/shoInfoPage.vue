@@ -102,7 +102,7 @@
           params: {
             goodsId: this.goodsId,
             goodsCount: this.num,
-            loginName: sessionStorage.get("loginName"),
+            loginName: sessionStorage.getItem("loginName"),
           }
         }).then(function (option) {
           if (option.data) {

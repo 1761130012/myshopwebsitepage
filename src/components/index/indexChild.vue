@@ -11,9 +11,11 @@
               <el-menu-item @click="goodAll" :index="(0).toString()">
                 <span slot="title">全部</span>
               </el-menu-item>
-              <el-menu-item v-for="type in shopType" @click="good(type.typeId)" :index="(type.typeId).toString()">
-                <span slot="title">{{type.name}}</span>
-              </el-menu-item>
+              <div v-for="type in shopType">
+                <el-menu-item @click="good(type.typeId)" :index="(type.typeId).toString()">
+                  <span slot="title">{{type.name}}</span>
+                </el-menu-item>
+              </div>
             </el-menu>
           </el-col>
         </el-row>
@@ -26,22 +28,27 @@
         </el-header>
         <el-main>
           <el-row>
-            <el-col style="height: 300px;width: 270px;margin-left: 55px" v-for="(o, index) in goods" :key="index">
-              <el-card :body-style="{ padding: '0px' }">
-                <img @click="details(o.goodsId)"
-                     src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                     class="image">
-                <div style="text-align:center;padding: 10px;" @click="details(o.goodsId)">
-                  <span>{{ o.name }}</span>
-                  <div class="bottom clearfix">
-                    <span class="price" style="color: #ff0000;margin-right: 10px">${{o.price}}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <time class="time">{{o.remark}}</time>
-                    <el-button type="text" class="button" @click="car(o.goodsId)">加入购物车</el-button>
-                  </div>
+            <div v-for="(o, index) in goods">
+              <el-col style="height: 300px;width: 270px;margin-left: 55px"
+                      :key="index">
+                <div @click=" toGoodsInfo(o.goodsId) ">
+                  <el-card :body-style="{ padding: '0px',cursor:'pointer' }">
+                    <img @click="details(o.goodsId)"
+                         src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                         class="image">
+                    <div style="text-align:center;padding: 10px;" @click="details(o.goodsId)">
+                      <span>{{ o.name }}</span>
+                      <div class="bottom clearfix">
+                        <span class="price" style="color: #ff0000;margin-right: 10px">${{o.price}}</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <time class="time">{{o.remark}}</time>
+                        <el-button type="text" class="button" @click.stop="car(o.goodsId)">加入购物车</el-button>
+                      </div>
+                    </div>
+                  </el-card>
                 </div>
-              </el-card>
-            </el-col>
+              </el-col>
+            </div>
           </el-row>
           <!-- 分页-->
           <el-pagination
@@ -86,19 +93,21 @@
         )
       },
       car(id) {
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("goodsId", id);
-        params.append("goodsCount", 1);
-        params.append("loginName", sessionStorage.getItem("loginName"))
-        this.$axios.post("/goods/addCar", params).then(function (result) {  //成功  执行then里面的方法
-          _this.$message({
-            message: '添加成功',
-            type: 'success'
+        let _this = this;
+        this.$store.getters.isIndexLoginName(this.$router, function () {
+          var params = new URLSearchParams();
+          params.append("goodsId", id);
+          params.append("goodsCount", 1);
+          params.append("loginName", sessionStorage.getItem("loginName"))
+          _this.$axios.post("/goods/addCar", params).then(function (result) {  //成功  执行then里面的方法
+            _this.$message({
+              message: '添加成功',
+              type: 'success'
+            });
+          }).catch(function (error) { //失败 执行catch方法
+            _this.$message.error("添加失败");
           });
-        }).catch(function (error) { //失败 执行catch方法
-          this.$message.error("添加失败");
-        });
+        })
       },
       goodAll() {
         this.typeId = '';
@@ -160,6 +169,10 @@
       handleCurrentChange(val) {
         this.currentPage = val;
         this.getData();
+      },
+      toGoodsInfo(goodsId) {
+        let routeUrl = this.$router.resolve({path: `/index/shoInfoPage/${goodsId}`})
+        window.open(routeUrl.href, '_blank');
       },
     },
     created: function () {

@@ -124,7 +124,7 @@
     </el-form>
     <my-add ref="addGoodsRef" @handleQuery="handleQuery"></my-add>
     <my-update ref="updGoodsRef" @handleQuery="handleQuery"></my-update>
-    <my-particulars ref="addParticularsRef"></my-particulars>
+
   </div>
 </template>
 
@@ -264,8 +264,7 @@
           })
         })
 
-      },
-
+      }
 
     },
     //组件创建成功调用
