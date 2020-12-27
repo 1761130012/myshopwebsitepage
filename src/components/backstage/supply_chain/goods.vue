@@ -105,9 +105,9 @@
             <el-tooltip class="item" effect="dark" content="删除" placement="top-end">
               <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
-            <!--            <el-tooltip class="item" effect="dark" content="详情" placement="top-end">-->
-            <!--              <el-button type="primary" size="small" icon="el-icon-edit" @click="particulars(scope.row)"></el-button>-->
-            <!--            </el-tooltip>-->
+            <el-tooltip class="item" effect="dark" content="添加商品图片" placement="top-end">
+              <el-button type="primary" size="small" icon="el-icon-edit" @click="particulars(scope.row)"></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -124,14 +124,14 @@
     </el-form>
     <my-add ref="addGoodsRef" @handleQuery="handleQuery"></my-add>
     <my-update ref="updGoodsRef" @handleQuery="handleQuery"></my-update>
-
+    <my-particulars ref="addParticularsRef"></my-particulars>
   </div>
 </template>
 
 <script>
   import Add from "./goods/add";
   import Update from "./goods/update";
-
+  import Particulars from "./goods/particulars";
   export default {
     name: "goods",
     data: function () {
@@ -236,6 +236,11 @@
         let id = row.goodsId || this.ids
         this.$refs.updGoodsRef.getData(id);
       },
+      //添加商品图片的按钮
+      particulars(row){
+        let id = row.goodsId;
+        this.$refs.addParticularsRef.getData(id);
+      },
       //删除
       handleDelete(row) {
         var _this = this;
@@ -259,7 +264,8 @@
           })
         })
 
-      }
+      },
+
 
     },
     //组件创建成功调用
@@ -270,6 +276,7 @@
     components: {
       myAdd: Add,
       myUpdate: Update,
+      myParticulars:Particulars,
     }
 
   }

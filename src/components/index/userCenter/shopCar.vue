@@ -140,6 +140,7 @@
       che() {
         this.price = 0;
         var _this = this;
+
         this.cars.forEach((item) => {
           if(item.checked == true ){
             _this.price += item.goodsCount*item.goodsVo.price;
