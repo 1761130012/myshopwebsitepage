@@ -13,7 +13,7 @@
       <!--      表格-->
       <el-table
         @size-change="handleSizeChange" :data="purchaseList" v-loading="loading" ref="moviesTable" border
-        style="width: 100%" header-align="center">
+        style="width: 100%"  header-align="center">
 
 
         <el-table-column
@@ -42,7 +42,7 @@
           label="商品单价"
           min-width="120">
           <template slot-scope="scope">
-            <span style="margin-left: 10px" v-if="scope.row.goodsVo.price!=null">{{scope.row.goodsVo.price}}</span>
+            <span style="margin-left: 10px" v-if="scope.row.factoryPrice!=null">{{scope.row.factoryPrice}}</span>
           </template>
         </el-table-column>
 
@@ -72,8 +72,8 @@
       <el-row >
         <el-col :span="24">
           <el-card shadow="hover">
-            <span style="font-size: 25px">总价</span>
-            <span style="color: red;font-size: 25px">$({{}})</span>
+            <span style="font-size: 25px">总价格:</span>
+            <span style="color: red;font-size: 25px">￥{{form.money}}</span>
           </el-card>
         </el-col>
       </el-row>
@@ -129,7 +129,7 @@
           factoryPrice: undefined,
           createTime: undefined,
           saveTime: undefined,
-          money: undefined,
+          money: 0,
         },
         purchaseParticularsVisible: false,
         title: undefined,
@@ -160,6 +160,12 @@
           _this.total = result.data.total;
           _this.loading = false;
           _this.vo = result.data.records;
+          _this.form.money = 0;
+          // var money1=0;
+          _this.purchaseList.forEach((item) => {
+            _this.form.money +=Number(item.factoryPrice)*Number(item.goodsCount);
+          })
+
         })
 
       },
