@@ -16,6 +16,16 @@
         <el-form-item label="联系人:" prop="joinName">
           <el-input placeholder="请输入店铺联系人" v-model="shopadd.joinName"></el-input>
         </el-form-item>
+        <el-form-item label="用户:" prop="userId">
+          <el-select v-model="shopadd.userId" clearable placeholder="请选择店铺状态">
+            <el-option
+              v-for="item in user"
+              :key="item.userId"
+              :label="item.name"
+              :value="item.userId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="店铺状态:" prop="state">
           <el-select v-model="shopadd.state" clearable placeholder="请选择店铺状态">
             <el-option
@@ -26,7 +36,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label=  "省:" prop="gpsPName">
+        <el-form-item label="省:" prop="gpsPName">
           <el-select v-model="shopadd.gpsPName" @change="getGpsCName" placeholder="请选择省">
             <el-option
               v-for="group in gpsPName"
@@ -63,7 +73,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="shopaddresetForm('shopadd')">重置</el-button>
+        <el-button @click="addresetForm('shopadd')">重置</el-button>
         <el-button type="primary" @click="shopaddsubmit('shopadd')">确 定</el-button>
       </div>
     </el-dialog>
@@ -92,6 +102,7 @@
             label: '下线'
           }
         ],
+        user: [],
         gpsPName: [],
         gpsCName: [],
         gpsAName: [],
@@ -101,6 +112,7 @@
           phone: '',
           joinName: '',
           state: '',
+          userId: '',
           gpsPName: '',
           gpsCName: '',
           gpsAName: ''
@@ -118,8 +130,11 @@
           joinName: [
             {required: true, message: '请输入联系人', trigger: 'blur'}
           ],
+          userId: [
+            {required: true, message: '请选择用户', trigger: 'blur'}
+          ],
           state: [
-            {required: true, message: '请输入地址状态', trigger: 'blur'}
+            {required: true, message: '请输入店铺状态', trigger: 'blur'}
           ],
           gpsPName: [
             {required: true, message: '请选择省', trigger: 'blur'}
@@ -143,6 +158,7 @@
         params.append("phone", _this.shopadd.phone);
         params.append("joinName", _this.shopadd.joinName);
         params.append("state", _this.shopadd.state);
+        params.append("userId", _this.shopadd.userId);
         params.append("provinceId", _this.shopadd.gpsPName);
         params.append("cityId", _this.shopadd.gpsCName);
         params.append("areaId", _this.shopadd.gpsAName);
@@ -169,6 +185,11 @@
         var _this = this;
         this.$axios.post("/gpsProvince/gpsProvinceVo").then(function (result) {  //成功  执行then里面的方法
           _this.gpsPName = result.data;
+        }).catch(function (error) { //失败 执行catch方法
+          this.$message.error(error);
+        });
+        this.$axios.post("/user/queryList").then(function (result) {  //成功  执行then里面的方法
+          _this.user = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
