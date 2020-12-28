@@ -10,6 +10,7 @@ import axios from 'axios'
 import echarts from "echarts/dist/echarts.js"
 import "./resource/css/myColor.css"
 import moment from 'moment'
+import da from "element-ui/src/locale/lang/da";
 
 
 //所有axios的默认请求地址
@@ -45,11 +46,22 @@ const store = new Vuex.Store({
     getMenuPerms: (state) => (perms) => {
       return state.perms.find((item) => item === perms) !== undefined;
     },
-    isIndexLoginName: (state) => (fn) => {
+    isIndexLoginName: (state) => (obj, fn) => {
+      let loginName = sessionStorage.getItem("loginName");
       //进行 判断 没 登录 需要 登录
-      if (!sessionStorage.getItem("loginName")) {
-        //需要询问
-        state.loginDialogVisible = true;
+      if (!loginName) {
+        //进行 查询 数据库
+        obj.$axios({
+          url: 'user/queryIsLoginName',
+          params: {loginName: loginName},
+        }).then(({data}) => {
+          if (data) {
+            //需要询问
+            state.loginDialogVisible = true;
+          } else {
+            fn();
+          }
+        })
       } else {
         fn();
       }

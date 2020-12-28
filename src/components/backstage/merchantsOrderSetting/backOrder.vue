@@ -64,6 +64,7 @@
         label="订单结束时间">
         <template slot-scope="scope">
           <span v-if="scope.row.endTime==null">NAN</span>
+          <span v-else>{{scope.row.endTime}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -91,6 +92,7 @@
         label="备注">
         <template slot-scope="scope">
           <span v-if="scope.row.remark==null">NAN</span>
+          <span v-else>{{scope.row.remark}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -134,7 +136,6 @@
 
       getData: function () {
         var _this = this;
-        console.log("刷新")
         var params = new URLSearchParams();
         params.append("page", _this.currentPage);
         params.append("rows", _this.pagesize);

@@ -43,7 +43,7 @@
           align="center"
           min-width="100">
           <template slot-scope="scope">
-            <el-select v-if="scope.row.warehousesVo.size!=0" v-model="scope.row.warehouse" clearable
+            <el-select v-if="scope.row.warehousesVo.length!=0" v-model="scope.row.warehouse" clearable
                        placeholder="请选择">
               <el-option
                 v-for="item in scope.row.warehousesVo"
@@ -52,7 +52,7 @@
                 :value="item.id">
               </el-option>
             </el-select>
-            <span style="color: red" v-if="scope.row.warehousesVo.size==0">
+            <span style="color: red" v-if="scope.row.warehousesVo.length==0">
               仓库货物不足
             </span>
           </template>
@@ -100,7 +100,6 @@
       },
       getData(row) {
         this.order = row;
-        console.log(row)
         this.orderdialogVisible = true;
         var _this = this;
         var params = new URLSearchParams();

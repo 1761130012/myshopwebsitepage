@@ -27,8 +27,8 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="18" :offset="1">
-        <div v-show="showIncome" style="width: 1000px;height: 600px" id="incomeChart">
+      <el-col :offset="1">
+        <div v-show="showIncome" style="width: 500px;height: 400px" id="incomeChart">
         </div>
         <div v-show="!showIncome">
           <h1>数据为空！</h1>
