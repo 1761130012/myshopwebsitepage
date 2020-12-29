@@ -32,8 +32,6 @@
                    layout="sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
-
-
     <el-dialog title="收货信息" :visible.sync="OpenAllOrder" width="60%">
       <el-row type="flex" class="row-bg" justify="center">
         <el-col :span="24"><span>收货人:{{ listuser.userVo.name }}</span></el-col>
@@ -60,21 +58,21 @@ export default {
     return {
       list: [],
       listuser: {
-        userVo:{
-          name:"",
-          phone:"",
-        },
-        shopVo:{
-          name:"",
+        userVo: {
+          name: "",
           phone: "",
-          provinceVo:{
-            name:"",
+        },
+        shopVo: {
+          name: "",
+          phone: "",
+          provinceVo: {
+            name: "",
           },
-          cityVo:{
-            name:""
+          cityVo: {
+            name: ""
           },
-          areaVo:{naem:""},
-          address:"",
+          areaVo: {naem: ""},
+          address: "",
         }
       },
       OpenAllOrder: false,
