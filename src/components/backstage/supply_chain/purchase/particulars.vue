@@ -15,7 +15,6 @@
         @size-change="handleSizeChange" :data="purchaseList" v-loading="loading" ref="moviesTable" border
         style="width: 100%"  header-align="center">
 
-
         <el-table-column
           prop="id"
           label="编号"
