@@ -254,7 +254,7 @@
       addGoods() {
         if (this.goodsname == '') {
           return this.$message({
-            message: '请选择需要删除的供应商商品',
+            message: '请先选择供应商',
             type: 'warning'
           });
         }
@@ -417,7 +417,7 @@
       goods() {
         if (this.goodsname == '') {
           return this.$message({
-            message: '请选择需要删除的供应商商品',
+            message: '请先选择供应商',
             type: 'warning'
           });
         }

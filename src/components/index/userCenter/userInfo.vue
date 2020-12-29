@@ -34,7 +34,7 @@
       direction="btt"
       size="80%"
       :before-close="handleClose">
-      <el-button style="width: 100px;height: 30px;"
+      <el-button style="width: 100px;margin-right:40px;height: 30px;"
                  @click="addShop"
                  type="primary">添加商铺
       </el-button>

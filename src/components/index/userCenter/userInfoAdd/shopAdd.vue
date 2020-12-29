@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+      align="center"
       title="添加地址"
       :visible.sync="dialogVisible"
       width="60%">

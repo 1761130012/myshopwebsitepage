@@ -155,7 +155,7 @@
             this.$message.error(error);
           });
         } else {
-          this.$message.error('请把发货仓库选择完整');
+          this.$message.error('请先选择发货仓库');
         }
 
 
