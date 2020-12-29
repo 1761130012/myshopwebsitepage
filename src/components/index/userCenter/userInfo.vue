@@ -14,8 +14,9 @@
           <div class="info_item ml40"><span>账号</span><span>{{ userList.loginName }}</span></div>
           <div class="info_item ml40"><span>密码</span><span>******</span></div>
           <div class="info_item ml40"><span>个性签名</span><span>&nbsp;{{ userList.signature }}</span></div>
-          <div class="info_item ml40"><span>详细地址</span><span>{{ shops.address }}</span>
-            <el-link type="primary" @click="address">收货地址</el-link>
+          <div class="info_item ml40"><span>详细地址</span>
+            <span>{{ shops.provinceVo.name }}&nbsp;{{ shops.cityVo.name }}&nbsp;{{ shops.cityVo.name }}&nbsp;{{ shops.address }}</span>
+            <el-link type="primary" @click="address">更改收货地址</el-link>
           </div>
           <el-button v-if="shop.length==0" style="width: 100px;height: 30px;margin-left: 100px;margin-top: 50px"
                      @click="apply"
@@ -101,12 +102,14 @@
           align="center"
           min-width="100">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="设置" placement="top-start">
+
+            <el-tooltip v-if="scope.row.state==0" class="item" effect="dark" content="设置" placement="top-start">
               <el-popconfirm title="确定要设置吗？" @confirm="update(scope.row.shopVo.shopId)">
                 <el-button type="primary" style="width: 50px;height: 30px" slot="reference" icon="el-icon-check"
                            size="small"></el-button>
               </el-popconfirm>
             </el-tooltip>
+            <el-tag v-if="scope.row.state==1">默认地址</el-tag>
           </template>
         </el-table-column>
       </el-table>
