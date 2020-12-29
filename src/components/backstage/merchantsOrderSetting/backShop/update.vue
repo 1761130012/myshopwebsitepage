@@ -79,7 +79,6 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editresetForm('shopedit')">重置</el-button>
         <el-button type="primary" @click="editsubmit('shopedit')">确 定</el-button>
       </div>
     </el-dialog>
@@ -177,7 +176,7 @@
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
-        
+
         this.$axios.post("/gpsProvince/gpsProvinceVo").then(function (result) {  //成功  执行then里面的方法
           _this.gpsPName = result.data;
         }).catch(function (error) { //失败 执行catch方法
@@ -245,15 +244,12 @@
               });
               _this.$emit("getData");
             }).catch(function (error) { //失败 执行catch方法
-              this.$message.error("修改失败");
+              _this.$message.error("修改失败");
             });
             this.dialogVisible = false;
             _this.editresetForm(formName);
           }
         })
-      },
-      editresetForm(formName) {
-        this.$refs[formName].resetFields();
       },
     }
   }

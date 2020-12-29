@@ -35,13 +35,13 @@
     methods: {
       toUserPath() {
         let _this = this;
-        this.$store.getters.isIndexLoginName(function () {
+        this.$store.getters.isIndexLoginName(this,function () {
           _this.$router.push('/index/userInfo/show')
         })
       },
       toGoodsCar() {
         let _this = this;
-        this.$store.getters.isIndexLoginName(function () {
+        this.$store.getters.isIndexLoginName(this,function () {
           _this.$router.push('/index/shopCar');
         })
       }

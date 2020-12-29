@@ -11,7 +11,7 @@
           <!--        查询表单-->
           <el-form :inline="true" class="demo-form-inline">
             <el-form-item label="供应商名姓名：">
-              <el-input v-model="sname" placeholder="请输入供应商姓名"></el-input>
+              <el-input v-model="sname" style="width: 150px" placeholder="请输入供应商姓名"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="getData" size="small">查询</el-button>
@@ -36,58 +36,58 @@
             <el-table-column
               type="selection"
               align="center"
-              min-width="50"
+              min-width="30"
             >
             </el-table-column>
             <el-table-column
               prop="name"
               align="center"
               label="供应商名"
-              min-width="50">
+              min-width="30">
             </el-table-column>
             <el-table-column
               prop="joinName"
               align="center"
               label="联系人"
-              min-width="50">
+              min-width="30">
             </el-table-column>
             <el-table-column
               prop="phone"
               align="center"
               label="联系电话"
-              min-width="50">
+              min-width="30">
             </el-table-column>
             <el-table-column label="供应商地址" align="center">
               <el-table-column
                 align="center"
                 prop="gpsProvinceVo.name"
                 label="省份"
-                min-width="50">
+                min-width="30">
               </el-table-column>
               <el-table-column
                 align="center"
                 prop="gpsCityVo.name"
                 label="市区"
-                min-width="50">
+                min-width="30">
               </el-table-column>
               <el-table-column
                 align="center"
                 prop="gpsAreaVo.name"
                 label="区县"
-                min-width="50">
+                min-width="30">
               </el-table-column>
               <el-table-column
                 align="center"
                 prop="address"
                 label="详细地址"
-                min-width="50">
+                min-width="30">
               </el-table-column>
             </el-table-column>
             <el-table-column
               fixed="right"
               label="操作"
               align="center"
-              min-width="100">
+              min-width="70">
               <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark" content="修改" placement="top-start">
                   <el-button type="warning" icon="el-icon-edit" @click=" update(scope.row)" size="small"></el-button>
@@ -119,7 +119,7 @@
           <!--          表单查询-->
           <el-form :inline="true" class="demo-form-inline">
             <el-form-item label="商品名称：">
-              <el-input v-model="gname" placeholder="请输入商品名称"></el-input>
+              <el-input v-model="gname" style="width: 150px" placeholder="请输入商品名称"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="goods" size="small">查询</el-button>

@@ -23,10 +23,10 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="grid-content bg-purple">
-            <el-form-item label="省:" prop="provinceId">
-              <el-select v-model="shop.provinceId" :disabled="disabled" @change="getGpsCName" placeholder="请选择省">
+            <el-form-item label="省:" >
+              <el-select v-model="shop.provinceVo.provinceId" :disabled="disabled" @change="getGpsCName" placeholder="请选择省">
                 <el-option
-                  v-for="group in gpsPName"
+                  v-for="group in provinceId"
                   :key="group.provinceId"
                   :label="group.name"
                   :value="group.provinceId">
@@ -37,10 +37,10 @@
         </el-col>
         <el-col :span="7">
           <div class="grid-content bg-purple">
-            <el-form-item label="市:" prop="cityId">
-              <el-select v-model="shop.cityId" :disabled="disabled" @change="getGpsAName" placeholder="请选择市">
+            <el-form-item label="市:" >
+              <el-select v-model="shop.cityVo.cityId" :disabled="disabled" @change="getGpsAName" placeholder="请选择市">
                 <el-option
-                  v-for="group in gpsCName"
+                  v-for="group in cityId"
                   :key="group.cityId"
                   :label="group.name"
                   :value="group.cityId">
@@ -51,10 +51,10 @@
         </el-col>
         <el-col :span="7">
           <div class="grid-content bg-purple">
-            <el-form-item label="县:" prop="areaId">
-              <el-select v-model="shop.areaId" :disabled="disabled" placeholder="请选择县">
+            <el-form-item label="县:" >
+              <el-select v-model="shop.areaVo.areaId" :disabled="disabled" placeholder="请选择县">
                 <el-option
-                  v-for="group in gpsAName"
+                  v-for="group in areaId"
                   :key="group.areaId"
                   :label="group.name"
                   :value="group.areaId">
@@ -98,20 +98,11 @@
           ],
           state: [
             {required: true, message: '请输入地址状态', trigger: 'blur'}
-          ],
-          provinceId: [
-            {required: true, message: '请选择省', trigger: 'blur'}
-          ],
-          cityId: [
-            {required: true, message: '请选择市', trigger: 'blur'}
-          ],
-          areaId: [
-            {required: true, message: '请选择县', trigger: 'blur'}
           ]
         },
-        gpsPName: [],
-        gpsCName: [],
-        gpsAName: [],
+        provinceId: [],
+        cityId: [],
+        areaId: [],
         shop: {},
         disabled: true,
         fits: '店铺图片',
@@ -138,9 +129,9 @@
             params.append("loginName", sessionStorage.getItem("loginName"))
             params.append("shopId", this.shop.shopId);
             params.append("name", this.shop.name);
-            params.append("provinceId", this.shop.provinceId);
-            params.append("cityId", this.shop.cityId);
-            params.append("areaId", this.shop.areaId);
+            params.append("provinceId", this.shop.provinceVo.provinceId);
+            params.append("cityId", this.shop.cityVo.cityId);
+            params.append("areaId", this.shop.areaVo.areaId);
             params.append("address", this.shop.address);
             params.append("phone", this.shop.phone);
             params.append("joinName", this.shop.joinName);
@@ -169,41 +160,40 @@
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
-      }
-      ,
+      },
       gps() {
         var _this = this;
         this.$axios.post("/gpsProvince/gpsProvinceVo").then(function (result) {  //成功  执行then里面的方法
-          _this.gpsPName = result.data;
+          _this.provinceId = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
 
         var params = new URLSearchParams();
-        params.append("provinceId", this.shop.provinceId);
+        params.append("provinceId", this.shop.provinceVo.provinceId);
         this.$axios.post("/gpsCity/gpsCityVo", params).then(function (result) {  //成功  执行then里面的方法
-          _this.gpsCName = result.data;
+          _this.cityId = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
 
         var params = new URLSearchParams();
-        params.append("cityId", this.shop.cityId);
+        params.append("cityId", this.shop.cityVo.cityId);
         this.$axios.post("/gpsArea/gpsAreaVo", params).then(function (result) {  //成功  执行then里面的方法
-          _this.gpsAName = result.data;
+          _this.areaId = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
       }
       ,
       getGpsCName() {
-        this.shop.cityId = '';
-        this.shop.areaId = '';
+        this.shop.cityVo.cityId = '';
+        this.shop.areaVo.areaId = '';
         var _this = this;
         var params = new URLSearchParams();
-        params.append("provinceId", _this.shop.provinceId);
+        params.append("provinceId", _this.shop.provinceVo.provinceId);
         this.$axios.post("/gpsCity/gpsCityVo", params).then(function (result) {  //成功  执行then里面的方法
-          _this.gpsCName = result.data;
+          _this.cityId = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });
@@ -213,9 +203,9 @@
         this.shop.areaId = '';
         var _this = this;
         var params = new URLSearchParams();
-        params.append("cityId", _this.shop.cityId);
+        params.append("cityId", _this.shop.cityVo.cityId);
         this.$axios.post("/gpsArea/gpsAreaVo", params).then(function (result) {  //成功  执行then里面的方法
-          _this.gpsAName = result.data;
+          _this.areaId = result.data;
         }).catch(function (error) { //失败 执行catch方法
           this.$message.error(error);
         });

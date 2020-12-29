@@ -132,8 +132,8 @@
             }
           });
         },
-        getData(list) {
-          this.dialogVisible2 = true;
+        getData(list,dialogVisible2) {
+          this.dialogVisible2 = dialogVisible2;
           this.shopadd.userId = list.userId;
           var _this = this;
           this.$axios.post("/gpsProvince/gpsProvinceVo").then(function (result) {  //成功  执行then里面的方法

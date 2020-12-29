@@ -56,10 +56,10 @@ const store = new Vuex.Store({
           params: {loginName: loginName},
         }).then(({data}) => {
           if (data) {
+            fn();
+          } else {
             //需要询问
             state.loginDialogVisible = true;
-          } else {
-            fn();
           }
         })
       } else {

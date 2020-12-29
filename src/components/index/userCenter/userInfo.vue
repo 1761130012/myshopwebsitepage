@@ -13,15 +13,106 @@
           <div class="info_item ml40"><span>手机号</span><span>{{ userList.phone }}</span></div>
           <div class="info_item ml40"><span>账号</span><span>{{ userList.loginName }}</span></div>
           <div class="info_item ml40"><span>密码</span><span>******</span></div>
-          <div class="info_item ml40"><span>个性签名</span><span>{{ userList.signature }}</span></div>
-          <el-button v-if="shop.length!=0" style="width: 100px;height: 30px;margin-left: 100px;margin-top: 50px" @click="apply"
+          <div class="info_item ml40"><span>个性签名</span><span>&nbsp;{{ userList.signature }}</span></div>
+          <div class="info_item ml40"><span>详细地址</span><span>{{ shops.address }}</span>
+            <el-link type="primary" @click="address">收货地址</el-link>
+          </div>
+          <el-button v-if="shop.length==0" style="width: 100px;height: 30px;margin-left: 100px;margin-top: 50px"
+                     @click="apply"
                      type="primary">申请商户
           </el-button>
         </div>
         <div class="clear"></div>
       </div>
     </div>
-    <my-add ref="addRef"></my-add>
+
+    <el-drawer
+      align="center"
+      title="选择地址"
+      :visible.sync="drawer"
+      direction="btt"
+      size="80%"
+      :before-close="handleClose">
+      <el-button style="width: 100px;height: 30px;"
+                 @click="addShop"
+                 type="primary">添加商铺
+      </el-button>
+      <el-table border
+                style="width: 100%;" header-align="center"
+                :data="shopAddress">
+        <el-table-column
+          type="selection"
+          align="center"
+          min-width="80">
+        </el-table-column>
+        <el-table-column
+          v-if="false"
+          prop="shopVo.shopId"
+          align="center"
+          label="店铺id"
+          min-width="100">
+        </el-table-column>
+        <el-table-column
+          prop="shopVo.name"
+          align="center"
+          label="商铺名"
+          min-width="100">
+        </el-table-column>
+        <el-table-column
+          prop="shopVo.joinName"
+          align="center"
+          label="联系人"
+          min-width="100">
+        </el-table-column>
+        <el-table-column
+          prop="shopVo.phone"
+          align="center"
+          label="联系电话"
+          min-width="100">
+        </el-table-column>
+        <el-table-column label="店铺地址" align="center">
+          <el-table-column
+            align="center"
+            prop="shopVo.provinceVo.name"
+            label="省份"
+            min-width="100">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="shopVo.cityVo.name"
+            label="市区"
+            min-width="100">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="shopVo.areaVo.name"
+            label="区县"
+            min-width="100">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="shopVo.address"
+            label="详细地址"
+            min-width="100">
+          </el-table-column>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          min-width="100">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" content="设置" placement="top-start">
+              <el-popconfirm title="确定要设置吗？" @confirm="update(scope.row.shopVo.shopId)">
+                <el-button type="primary" style="width: 50px;height: 30px" slot="reference" icon="el-icon-check"
+                           size="small"></el-button>
+              </el-popconfirm>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
+    <my-add ref="addRef" ></my-add>
+    <my-shop-add ref="shopAddRef" @address="address"></my-shop-add>
     <!-- 对话框-->
     <el-dialog :title="title" :visible.sync="open">
       <el-row :gutter="15">
@@ -72,14 +163,18 @@
 </template>
 <script>
   import Add from "./userInfoAdd/add";
+  import ShopAdd from "./userInfoAdd/shopAdd"
 
   export default {
     data() {
       return {
+        drawer: false,
         open: false,
         title: "",
         userList: [],
-        shop:[],
+        shop: [],
+        shopAddress: [],
+        shops: [],
         form: {
           userId: undefined,
           name: undefined,
@@ -110,14 +205,61 @@
             message: '请输入密码',
             trigger: 'blur'
           }],
-        }
+        },
       }
-    }, created() {
+    },
+    created() {
       this.getlist();
     },
     methods: {
+      update(id) {
+        console.log(id)
+        console.log(this.shopAddress)
+
+        let _this = this;
+        let params = new URLSearchParams();
+        params.append("shopId", id);
+        params.append("loginName", sessionStorage.getItem("loginName"))
+        this.$axios.post("user/updateUserShopState", params)
+          .then(function (response) {
+            if (response.data == 1) {
+              _this.$message({
+                message: '修改成功',
+                type: 'success'
+              });
+              _this.getlist();
+              _this.drawer = false;
+            }else {
+              _this.$message.error("修改失败");
+            }
+          }).catch(function (error) { //失败 执行catch方法
+          _this.$message.error("error");
+        });
+      },
+      address() {
+        this.drawer = true;
+        let _this = this;
+        let params = new URLSearchParams();
+        console.log(this.userList);
+        params.append("userId", this.userList.userId);
+        this.$axios.post("user/queryUserShop", params)
+          .then(function (response) {
+            _this.shopAddress = response.data;
+          })
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {
+          });
+      },
       apply() {
-        this.$refs.addRef.getData(this.userList);
+        this.$refs.addRef.getData(this.userList, true);
+      },
+      addShop(){
+        this.$refs.shopAddRef.getData(this.userList,true);
       },
       openUpdateModal() {
         let _this = this;
@@ -132,18 +274,26 @@
           })
       },
       getlist() {
+        console.log("sdf")
         let _this = this;
-        let params = new URLSearchParams();
+        var params = new URLSearchParams();
         params.append("id", 1);
         this.$axios.post("user/querybid", params)
           .then(function (response) {
             _this.userList = response.data;
           })
-        var param =  new URLSearchParams();
+        var param = new URLSearchParams();
         param.append("userId", 1);
         this.$axios.post("shop/selectShopVoId", param)
           .then(function (response) {
             _this.shop = response.data;
+          })
+
+        var param = new URLSearchParams();
+        params.append("loginName", sessionStorage.getItem("loginName"))
+        this.$axios.post("shop/queryShopId", params)
+          .then(function (response) {
+            _this.shops = response.data;
           })
       },
       submitForm(event) {
@@ -180,6 +330,7 @@
     },
     components: {
       myAdd: Add,
+      myShopAdd: ShopAdd,
     },
   }
 </script>

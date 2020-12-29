@@ -2,7 +2,7 @@
   <div>
     <div align="center">
 
-      <h1 v-if="cars[0]==null" align="center" style="color: silver">你还没有添加任何商品哦 ~</h1>
+      <h1 v-if="cars[0]==null" align="center" style="color: silver"><br>你还没有添加任何商品哦 ~</h1>
       <br>
 
       <el-row v-if="cars[0]!=null">
@@ -147,7 +147,7 @@
             countMoney+=item.goodsVo.price * item.goodsCount;
           }
         })
-        return countMoney;
+        return parseFloat(countMoney).toFixed(2);
       },
     },
     methods: {
@@ -280,9 +280,11 @@
           this.$axios.post("/order/addCarOrderVo", params).then(function (result) {
             //成功  执行then里面的方法
             console.log(result.data);
+            console.log("------------------")
             console.log(car)
+            const data=result.data;
             car.forEach((item) => {
-              _this.addOrderShop(result.data, item);
+              _this.addOrderShop(data, item);
               _this.dele(item.id);
             })
             _this.getData();

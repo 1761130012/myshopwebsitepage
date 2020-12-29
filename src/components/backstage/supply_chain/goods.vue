@@ -122,15 +122,15 @@
                      :total="total">  <!--//这是显示总共有多少数据，-->
       </el-pagination>
     </el-form>
-    <my-add ref="addGoodsRef" @handleQuery="handleQuery"></my-add>
-    <my-update ref="updGoodsRef" @handleQuery="handleQuery"></my-update>
+<!--    <my-add ref="addGoodsRef" @handleQuery="handleQuery"></my-add>-->
+<!--    <my-update ref="updGoodsRef" @handleQuery="handleQuery"></my-update>-->
 
   </div>
 </template>
 
 <script>
-  import Add from "./goods/add";
-  import Update from "./goods/update";
+  // import Add from "./goods/add";
+  // import Update from "./goods/update";
   import Particulars from "./goods/particulars";
   export default {
     name: "goods",
@@ -273,8 +273,8 @@
     },
     //导入外部vue
     components: {
-      myAdd: Add,
-      myUpdate: Update,
+      // myAdd: Add,
+      // myUpdate: Update,
       myParticulars:Particulars,
     }
 
