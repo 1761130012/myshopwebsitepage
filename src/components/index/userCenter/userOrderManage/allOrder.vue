@@ -7,7 +7,6 @@
                    @click="handlePay(item.orderId)">去支付
         </el-button>
       </div>
-
       <div v-for="one in item.goodsVoList" class="text item order-item-header">
         <img src="http://localhost:8080/maven_custom_web_war_exploded/resource/image/drinks/1.jpg" style="width: 100px;height: 100px"/>
         <ul>
