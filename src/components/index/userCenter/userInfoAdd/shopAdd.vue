@@ -16,6 +16,7 @@
         <el-table-column
           v-if="false"
           prop="shopId"
+
           align="center"
           label="店铺id"
           min-width="100">
@@ -96,6 +97,10 @@
         param.append("shopId", id)
         this.$axios.post("shop/addUserShop", param)
           .then(function (response) {
+            _this.$message({
+              message: '添加成功',
+              type: 'success'
+            });
             _this.dialogVisible = false;
             _this.$emit("address");
           }).catch(function (error) { //失败 执行catch方法
