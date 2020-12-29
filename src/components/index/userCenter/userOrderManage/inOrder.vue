@@ -1,112 +1,87 @@
 <template>
   <div>
-    <el-form :inline="true" :model="queryParams">
-      <el-form-item label="订单号">
-        <el-input v-model="queryParams.orderId" placeholder="请输入订单号" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="handleQuery" size="small">查询</el-button>
-      </el-form-item>
-    </el-form>
-    <el-table :data="orderData" v-loading="loading" width="100%" header-align="center">
-      <el-table-column prop="orderId" label="订单号" min-width="90" align="center"></el-table-column>
-      <el-table-column label="收货人" min-width="60" align="center">
-        <template slot-scope="params">
-          <span>{{ params.row.userVo.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="收货人电话" min-width="80" align="center">
-        <template slot-scope="params">
-          <span>{{ params.row.userVo.phone }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="总金额" min-width="60" align="center">
-        <template slot-scope="params">
-          <span>{{ params.row.money }}￥</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="支付状态" min-width="60" align="center">
-        <template slot-scope="params">
-          <span v-if="params.row.payState===0">未支付</span>
-          <span v-if="params.row.payState===1">已支付</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="操作">
-        <template slot-scope="params">
-          <el-button type="primary" size="small" @click="queryGoodsByOrderId4(params.row.orderId)">详情</el-button>
-          <el-button type="primary" size="small" @click="handlePay(params.row.orderId)">去支付</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-card class="order-item-box" v-for="(item,index) in list" :key="index">
+      <div slot="header" class="clearfix">
+        <span>订单：{{ item.orderId }}</span>
+        <el-button style="margin-left: 760px; padding: 3px 0" type="text" v-if="item.payState===0"
+                   @click="handlePay(item.orderId)">去支付
+        </el-button>
+      </div>
+
+      <div v-for="one in item.goodsVoList" class="text item order-item-header">
+        <img src="http://localhost:8080/maven_custom_web_war_exploded/resource/image/drinks/1.jpg" style="width: 100px;height: 100px"/>
+        <ul>
+          <ol>{{ one.goodsVo.name }}</ol>
+        </ul>
+        <ul>
+          <ol>￥{{ one.goodsVo.price }} *   {{ one.payNumber }}</ol>
+        </ul>
+      </div>
+      <el-button style="margin-left: 920px; padding: 3px 0" type="text" @click="queryallOrder(item.orderId)">详情
+      </el-button>
+      <hr>
+      <el-row type="flex" justify="end">
+        <el-col :span="4"><span>实付:￥{{ item.money }}</span></el-col>
+      </el-row>
+    </el-card>
     <el-pagination background
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
-                   :page-sizes="[5, 10, 20, 40]"
+                   :page-sizes="[3, 5, 7, 9]"
                    :page-size="size"
                    layout="sizes, prev, pager, next"
                    :total="total">
     </el-pagination>
 
-    <el-dialog title="提示" :visible.sync="OpeninOrder" width="60%">
-      <el-table :data="payData" width="100%">
-        <el-table-column label="商品名称">
-          <template slot-scope="params">
-            <span>{{ params.row.goodsVo.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品售价">
-          <template slot-scope="params">
-            <span>{{ params.row.goodsVo.price }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品描述">
-          <template slot-scope="params">
-            <span>{{ params.row.goodsVo.remark }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="payNumber" label="购买数量"></el-table-column>
-      </el-table>
 
-      <el-row :gutter="15">
-        <el-col :span="6">
-          <el-pagination background @size-change="handleSizeChange4"
-                         @current-change="handleCurrentChange4"
-                         :current-page="currentPage4"
-                         :page-sizes="[5, 10, 20, 40]"
-                         :page-size="size4"
-                         layout="sizes, prev, pager, next"
-                         :total="total4">
-          </el-pagination>
-        </el-col>
-        <el-col :span="6" :offset="12">
-          <el-button type="primary" size="small" @click="handlePay">去支付</el-button>
-        </el-col>
+    <el-dialog title="收货信息" :visible.sync="OpenAllOrder" width="60%">
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="24"><span>收货人:{{ listuser.userVo.name }}</span></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="24"><span>收货电话:{{ listuser.userVo.phone }}</span></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="24"><span>收货店铺:{{listuser.shopVo.name}}</span></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="24"><span>收货地址:{{listuser.shopVo.provinceVo.name}}{{listuser.shopVo.cityVo.name}}{{listuser.shopVo.areaVo.name}}{{listuser.shopVo.address}}</span></el-col>
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="24"><span>店铺联系电话:{{listuser.shopVo.phone}}</span></el-col>
       </el-row>
     </el-dialog>
   </div>
 </template>
-
 <script>
 export default {
-  name: "inOrder",
+  name: "test",
   data() {
     return {
-      queryParams: {
-        orderId: "",
+      list: [],
+      listuser: {
+        userVo:{
+          name:"",
+          phone:"",
+        },
+        shopVo:{
+          name:"",
+          phone: "",
+          provinceVo:{
+            name:"",
+          },
+          cityVo:{
+            name:""
+          },
+          areaVo:{naem:""},
+          address:"",
+        }
       },
+      OpenAllOrder: false,
       currentPage: 1,
       total: 0,
-      size: 5,
-      orderData: [],
-      loading: true,
-      OpeninOrder: false,
-      payData: [],
-      currentPage4: 1,
-      total4: 0,
-      size4: 5,
-      id:undefined
+      size: 3,
     }
   },
   created() {
@@ -115,16 +90,13 @@ export default {
   methods: {
     getlist() {
       let _this = this;
-      _this.loading = true;
       let params = new URLSearchParams();
-      params.append("current", _this.currentPage);
-      params.append("size", _this.size);
-      params.append("orderId", _this.queryParams.orderId);
+      params.append("page", _this.currentPage);
+      params.append("rows", _this.size);
       params.append("loginName", sessionStorage.getItem("loginName"));
-      _this.$axios.post("order/queryAllOrderByUserIdshou", params).then((response) => {
-        _this.orderData = response.data.records;
+      _this.$axios({url: "order/queryAllOrderByUserIdshou", method: "post", data: params}).then(response => {
+        _this.list = response.data.list;
         _this.total = response.data.total;
-        _this.loading = false;
       })
     },
     handleSizeChange(val) {
@@ -133,34 +105,18 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-    handleQuery() {
-      this.currentPage = 1;
-      this.getlist();
-    },
 
-    queryGoodsByOrderId4(orderId) {
+    queryallOrder(id) {
       let _this = this;
-      _this.OpeninOrder = true;
-      _this.id=orderId;
       let params = new URLSearchParams();
-      params.append("current", _this.currentPage4);
-      params.append("size", _this.size4);
-      params.append("orderId", orderId);
-      _this.$axios({url: "order/queryOrderShopByOrderId", method: "post", data: params}).then(response => {
-        _this.payData = response.data.records;
-        _this.total4 = response.data.total;
+      params.append("orderId", id);
+      _this.$axios({url: "order/queryAllOrder12", method: "post", data: params}).then(({data}) => {
+        _this.listuser = data;
+        _this.OpenAllOrder = true;
       })
     },
-    handleSizeChange4(val) {
-      this.size4 = val;
-    },
-    handleCurrentChange4(val) {
-      this.currentPage4 = val;
-    },
-
-
     handlePay(orderId) {
-      let id=this.id ||orderId;
+      let id = orderId;
       alert(id);
     }
   }
@@ -168,5 +124,23 @@ export default {
 </script>
 
 <style scoped>
+.order-item-box {
+  margin: 15px -10px;
+
+}
+
+.order-item-header {
+  padding: 10px 20px 0 20px;
+  display: flex;
+
+}
+
+.text {
+  font-size: 18px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
 
 </style>

@@ -7,7 +7,8 @@
           <el-menu-item index="2" class="shopOrder" @click="clickButton('inOrder')">未支付订单</el-menu-item>
           <el-menu-item index="3" class="shopOrder" @click="clickButton('faOrder')">已发货订单</el-menu-item>
           <el-menu-item index="4" class="shopOrder" @click="clickButton('outOrder')">待提货订单</el-menu-item>
-          <el-menu-item index="5" class="shopOrder" @click="clickButton('outOrderCommit')">已提货订单</el-menu-item>
+         <el-menu-item index="5" class="shopOrder" @click="clickButton('outOrderCommit')">已提货订单</el-menu-item>
+
         </el-menu>
       </el-col>
     </el-row>

@@ -25,7 +25,7 @@ import goodsType from "../components/backstage/supply_chain/goodstype/index"
 export default [
   //地址输入 / 就会 进入 /backstage 相当于 有 两个 地址
   {
-    path: '/backstage', component: Backstage, alias: '/',
+    path: '/backstage', component: Backstage, alias: '/backstage',
     children: [
       {
         path: 'right', components: {
