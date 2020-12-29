@@ -20,9 +20,14 @@
       <el-col :span="5">
         <el-button type="primary" @click="screenInfoByTime"><i class="el-icon-search"></i>查询</el-button>
       </el-col>
+      <el-col :span="5" :offset="1">
+        <el-card shadow="always">
+          总收入：{{countMoney}}
+        </el-card>
+      </el-col>
     </el-row>
     <el-row>
-      <el-col :span="18" :offset="1">
+      <el-col :offset="1">
         <div v-show="showIncome" style="width: 500px;height: 400px" id="incomeChart">
         </div>
         <div v-show="!showIncome">
@@ -37,6 +42,7 @@
   export default {
     data() {
       return {
+        countMoney: 0,
         timeForm: {
           startDateValue: undefined,
           endDateValue: undefined,
@@ -56,7 +62,7 @@
       getIncomeData: async function () {
         let legendData = [];
         let seriesData = [];
-
+        let _this = this;
         await this.$axios({
           url: "order/queryIncomeByTime",
           params: {
@@ -66,11 +72,13 @@
         })
           .then((option) => {
             let data = option.data;
-            let _this = this;
+            let countMoney = 0
             Object.keys(data).forEach((item) => {
               legendData.push(_this.$moment(item).format("yyyy-MM-DD"));
+              countMoney += data[item];
               seriesData.push(data[item]);
-            })
+            });
+            _this.countMoney = countMoney;
           })
         this.income.legendData = legendData;
         this.income.seriesData = seriesData;
@@ -82,6 +90,8 @@
         } else {
           this.incomeChart = this.$echarts.init(document.getElementById("incomeChart"));
         }
+
+
         this.incomeChart.setOption({
           xAxis: {
             type: 'category',

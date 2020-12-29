@@ -32,12 +32,14 @@
   export default {
     created() {
       //进行 设置登录 名
-      sessionStorage.setItem("loginName", "staff_admin");
+      //sessionStorage.setItem("loginName", "staff_admin");
       //进行 设置 权限
       this.$store.commit("setMenuPerms", "staff_admin");
     },
     methods: {
       addTable(target) {
+        //进行 刷新
+        //this.$refs.rightRef.reload();
         this.$refs.rightRef.addTab(target);
       },
     },

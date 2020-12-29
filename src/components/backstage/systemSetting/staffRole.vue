@@ -177,7 +177,33 @@
       },
       updateStaffRole() {
         let _this = this;
-        console.log(_this.getMultipleSelectionId(_this.multipleSelection));
+        let roleIds = _this.getMultipleSelectionId(_this.multipleSelection);
+        let staffId = this.selectStaffId;
+        if (staffId === undefined || roleIds.length === 0) {
+          _this.$message.error("请选中！")
+          return;
+        }
+        //进行 修改
+        this.$axios({
+          url: 'staff/updateStaffRoleIds',
+          method: 'post',
+          data: JSON.stringify({
+            roleIds: roleIds,
+            staffId: staffId
+          }),
+          headers: {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+        }).then((option) => {
+          if (option.data) {
+            _this.$message.success("成功！");
+            _this.getAllStaff();
+            _this.getAllRole();
+          } else {
+            _this.$message.success("失败！")
+          }
+        })
+
       },
       //解析 multipleSelection 提取 id
       getMultipleSelectionId(multipleSelection) {

@@ -50,7 +50,6 @@
 </template>
 
 <script>
-  import main from "../../../main"
 
   export default {
     data() {
@@ -67,10 +66,6 @@
     created() {
       this.getRoleData();
       this.getMenuData();
-    },
-    mounted() {
-      let aa = this.$store.getters.getMenuPerms("system");
-      console.log(aa)
     },
     methods: {
       getRoleData() {

@@ -1,114 +1,118 @@
 <template>
+  <div>
+    <div align="center">
 
-  <div align="center">
-
-    <h1 v-if="goods==null" align="center" style="color: silver">你还没有添加任何商品哦 ~</h1>
-    <br>
-
-    <el-row>
-      <el-card shadow="hover">
-        <el-col :span="1" style="padding-top: 10px">
-          <el-checkbox v-model="checkAll">全选
-          </el-checkbox>
-        </el-col>
-        <el-col style="padding-top: 10px;padding-right: 40px" :offset="2" :span="2">
-          图片
-        </el-col>
-        <el-col :offset="1" :span="2" style="padding-top: 10px">
-          商品名
-        </el-col>
-        <el-col :offset="1" :span="3" style="padding-top: 10px">
-          描述
-        </el-col>
-        <el-col :offset="1" :span="3" style="padding-top: 10px">
-          单价
-        </el-col>
-        <el-col :offset="1" :span="4" style="padding-top: 10px">
-          数量
-        </el-col>
-        <el-col :span="1" :offset="2">
-          <el-tooltip class="item" effect="dark" content="批量删除" placement="top-start">
-            <el-popconfirm title="确定删除吗？" @confirm="deletes()">
-              <el-button style="margin-bottom: 30px" slot="reference" type="danger" icon="el-icon-delete"
-                         circle></el-button>
-            </el-popconfirm>
-          </el-tooltip>
-        </el-col>
-      </el-card>
+      <h1 v-if="cars[0]==null" align="center" style="color: silver"><br>你还没有添加任何商品哦 ~</h1>
       <br>
-    </el-row>
 
-    <el-row v-for="c in cars">
-      <el-card shadow="hover">
-        <el-col :span="1">
-          <el-checkbox style="padding-top: 60px" v-model="c.checked" @change="che"></el-checkbox>
-        </el-col>
-        <el-col :offset="1" :span="3">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-               style="margin-bottom: 17px" width="150px" height="150px">
-        </el-col>
-        <el-col style="padding-top: 60px" :offset="1" :span="2">
-          {{c.goodsVo.name}}
-        </el-col>
-        <el-col style="padding-top: 60px" :offset="1" :span="3">
-          {{c.goodsVo.remark}}
-        </el-col>
-        <el-col style="padding-top: 50px" :offset="1" :span="3">
-          <span style="color: red;font-size: 25px">￥{{c.goodsVo.price}}</span>
-        </el-col>
-        <el-col style="padding-top: 60px" :offset="1" :span="4">
-          <el-input-number @change="num(c.id,c.goodsCount,c.goodsVo.goodsId)" v-model="c.goodsCount"></el-input-number>
-        </el-col>
-        <el-col style="padding-top: 50px" :span="1" :offset="2">
-          <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-            <el-popconfirm title="确定删除吗？" @confirm="delpinlun(c.id)">
-              <el-button style="margin-bottom: 30px" slot="reference" type="danger" icon="el-icon-delete"
-                         circle></el-button>
-            </el-popconfirm>
-          </el-tooltip>
-        </el-col>
-      </el-card>
-      <br>
-    </el-row>
-
-    <el-row>
-      <el-col :span="24">
+      <el-row v-if="cars[0]!=null">
         <el-card shadow="hover">
-          <span style="font-size: 25px">总价:</span>
-          <span style="color: red;font-size: 25px">￥{{price}}</span>
-          <el-button style="margin-left: 200px" type="danger" @click="mai">立即购买</el-button>
+          <el-col :span="1" style="padding-top: 10px">
+            <el-checkbox v-model="checkAll">全选
+            </el-checkbox>
+          </el-col>
+          <el-col style="padding-top: 10px;padding-right: 40px" :offset="2" :span="2">
+            图片
+          </el-col>
+          <el-col :offset="1" :span="2" style="padding-top: 10px">
+            商品名
+          </el-col>
+          <el-col :offset="1" :span="3" style="padding-top: 10px">
+            描述
+          </el-col>
+          <el-col :offset="1" :span="3" style="padding-top: 10px">
+            单价
+          </el-col>
+          <el-col :offset="1" :span="4" style="padding-top: 10px">
+            数量
+          </el-col>
+          <el-col :span="1" :offset="2">
+            <el-tooltip class="item" effect="dark" content="批量删除" placement="top-start">
+              <el-popconfirm title="确定删除吗？" @confirm="deletes()">
+                <el-button style="margin-bottom: 30px" slot="reference" type="danger" icon="el-icon-delete"
+                           circle></el-button>
+              </el-popconfirm>
+            </el-tooltip>
+          </el-col>
         </el-card>
-      </el-col>
-    </el-row>
+        <br>
+      </el-row>
 
-    <!--  猜你喜欢  -->
-    <el-main>
-      <el-row>
-        <h1 align="center"><i style="color: #ff0000;">♥</i>&nbsp; 猜你喜欢 &nbsp;<i style="color: red">♥</i></h1>
+      <el-row v-for="c in cars">
+        <el-card shadow="hover">
+          <el-col :span="1">
+            <el-checkbox style="padding-top: 60px" v-model="c.checked"></el-checkbox>
+          </el-col>
+          <el-col :offset="1" :span="3">
+            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                 style="margin-bottom: 17px" width="150px" height="150px">
+          </el-col>
+          <el-col style="padding-top: 60px" :offset="1" :span="2">
+            {{c.goodsVo.name}}
+          </el-col>
+          <el-col style="padding-top: 60px" :offset="1" :span="3">
+            {{c.goodsVo.remark}}
+          </el-col>
+          <el-col style="padding-top: 50px" :offset="1" :span="3">
+            <span style="color: red;font-size: 25px">￥{{c.goodsVo.price}}</span>
+          </el-col>
+          <el-col style="padding-top: 60px" :offset="1" :span="4">
+            <el-input-number @change="num(c.id,c.goodsCount,c.goodsVo.goodsId)"
+                             v-model="c.goodsCount" :min="1"></el-input-number>
+          </el-col>
+          <el-col style="padding-top: 50px" :span="1" :offset="2">
+            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+              <el-popconfirm title="确定删除吗？" @confirm="delpinlun(c.id)">
+                <el-button style="margin-bottom: 30px" slot="reference" type="danger" icon="el-icon-delete"
+                           circle></el-button>
+              </el-popconfirm>
+            </el-tooltip>
+          </el-col>
+        </el-card>
+        <br>
+      </el-row>
 
-        <el-col style="height: 300px;width: 270px;margin-left: 36px" v-for="(o, index) in goods" :key="index">
-          <el-card :body-style="{ padding: '0px' }">
-            <img @click="details(o.goodsId)"
-                 src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                 class="image">
-            <div style="text-align:center;padding: 10px;" @click="details(o.goodsId)">
-              <span>{{ o.name }}</span>
-              <div class="bottom clearfix">
-                <span class="price" style="color: #ff0000;margin-right: 10px">${{o.price}}</span>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <time class="time">{{o.remark}}</time>
-                <el-button type="text" class="button" @click="car(o.goodsId)">加入购物车</el-button>
+
+      <!--  猜你喜欢  -->
+      <el-main>
+        <el-row>
+          <h1 align="center"><i style="color: #ff0000;">♥</i>&nbsp; 猜你喜欢 &nbsp;<i style="color: red">♥</i></h1>
+
+          <el-col style="height: 300px;width: 270px;margin-left: 36px" v-for="(o, index) in goods" :key="index">
+            <el-card :body-style="{ padding: '0px' }">
+              <img @click="details(o.goodsId)"
+                   src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                   class="image">
+              <div style="text-align:center;padding: 10px;" @click="details(o.goodsId)">
+                <span>{{ o.name }}</span>
+                <div class="bottom clearfix">
+                  <span class="price" style="color: #ff0000;margin-right: 10px">${{o.price}}</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <time class="time">{{o.remark}}</time>
+                  <el-button type="text" class="button" @click="car(o.goodsId)">加入购物车</el-button>
+                </div>
               </div>
-            </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-main>
+
+      <h3 align="center" style="margin-bottom: 100px">已经全部加载完成 -- --</h3>
+
+      <!-- 回到顶部-->
+      <el-backtop style="margin-bottom: 100px"></el-backtop>
+    </div>
+    <div align="center" class="gouMai">
+      <el-row >
+        <el-col :span="21">
+          <el-card shadow="hover">
+            <span style="font-size: 25px">总价:</span>
+            <span style="color: red;font-size: 25px">￥{{che}}</span>
+            <el-button style="margin-left: 200px" type="danger" @click="mai">立即购买</el-button>
           </el-card>
         </el-col>
       </el-row>
-    </el-main>
-
-    <h3 align="center">已经全部加载完成 -- --</h3>
-
-    <!-- 回到顶部-->
-    <el-backtop></el-backtop>
+    </div>
 
   </div>
 
@@ -124,7 +128,6 @@
         pagesize: 8,  //  每页的数据
         checkAll: false,
         cars: [],
-        price: 0,
       }
     },
     watch: {
@@ -133,33 +136,27 @@
         this.cars.forEach((item) => {
           item.checked = newValue;
         })
-        this.che();
       }
     },
-    methods: {
+    computed: {
       che() {
-        this.price = 0;
-        var _this = this;
+        //计算 选中 数量
+        let countMoney = 0;
         this.cars.forEach((item) => {
-          if(item.checked == true ){
-            _this.price += item.goodsCount*item.goodsVo.price;
+          if(item.checked){
+            countMoney+=item.goodsVo.price * item.goodsCount;
           }
         })
-        var bool = true;
-        this.cars.forEach((item) => {
-          if(item.checked == false){
-            bool = false;
-          }
-        })
-        if(bool) {
-          this.checkAll = true;
-        }
+        return parseFloat(countMoney).toFixed(2);
       },
+    },
+    methods: {
       num(id, num, gid) {
         if (num <= 0) {
           var bool = confirm("确定要删除吗？");
           if (bool) {
             this.delpinlun(id);
+            return;
           }
         }
         var _this = this;
@@ -267,11 +264,11 @@
           alert(error)
         });
       },
-      mai(){
-        if(this.price!=0){
+      mai() {
+        if (this.che != 0) {
           var car = [];
           this.cars.forEach((item) => {
-            if(item.checked == true){
+            if (item.checked == true) {
               car.push(item);
             }
           })
@@ -279,25 +276,26 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("loginName", sessionStorage.getItem("loginName"));
-          params.append("money", _this.price);
-          params.append("price")
+          params.append("money", _this.che);
           this.$axios.post("/order/addCarOrderVo", params).then(function (result) {
             //成功  执行then里面的方法
             console.log(result.data);
+            console.log("------------------")
             console.log(car)
-            car.forEach((item)=>{
-              _this.addOrderShop(result.data,item);
+            const data=result.data;
+            car.forEach((item) => {
+              _this.addOrderShop(data, item);
               _this.dele(item.id);
             })
             _this.getData();
+
           }).catch(function (error) { //失败 执行catch方法
             alert(error)
           });
-        }else {
+        } else {
           this.$message.error('请先选择需要购买的商品 ！！！');
         }
         this.checkAll = false;
-        this.price = 0;
       }
     },
     created: function () {
@@ -307,6 +305,13 @@
 </script>
 
 <style scoped>
+  /*左上角*/
+  .gouMai {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
   .el-link {
     font-size: 20px;
     color: blue;
